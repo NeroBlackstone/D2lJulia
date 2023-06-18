@@ -4,7 +4,7 @@
 
 ## Pre-requisite
 
-Install `jupyterlab-desktop`.
+Install `jupyterlab-desktop` or vscode with `jupyter` plugin.
 
 Install `Julia` 1.9:
 
