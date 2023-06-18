@@ -1,6 +1,6 @@
 # D2lJulia
 
-Dive into Deep Learning, with Julia programming language and Flux.jl.
+[Dive into Deep Learning](https://d2l.ai/index.html), with Julia programming language and Flux.jl.
 
 ## Pre-requisite
 
