@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Read Julia version
         id: read_toml
-        uses: SebRollen/toml-action@v1.0.2
+        uses: SebRollen/toml-action@latest
         with:
           file: 'Manifest.toml'
           field: 'julia_version'
