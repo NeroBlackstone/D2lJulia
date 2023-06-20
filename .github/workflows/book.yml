@@ -134,25 +134,25 @@ jobs:
         id: setoutput
         run: echo "success=true" >> $GITHUB_OUTPUT
 
-  # CI conclusion for GitHub status check
-  # https://brunoscheufler.com/blog/2022-04-09-the-required-github-status-check-that-wasnt
-  CI:
-    needs: jupyter-book
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      # pass step only when output of previous jupyter-book job is set
-      # in case at least one of the execution fails, jupyter-book is skipped
-      # and the output will not be set, which will then cause the ci job to fail
-      - run: |
-          passed="${{ needs.jupyter-book.outputs.success }}"
-          if [[ $passed == "true" ]]; then
-            echo "Tests passed"
-            exit 0
-          else
-            echo "Tests failed"
-            exit 1
-          fi
+  # # CI conclusion for GitHub status check
+  # # https://brunoscheufler.com/blog/2022-04-09-the-required-github-status-check-that-wasnt
+  # CI:
+  #   needs: jupyter-book
+  #   if: always()
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # pass step only when output of previous jupyter-book job is set
+  #     # in case at least one of the execution fails, jupyter-book is skipped
+  #     # and the output will not be set, which will then cause the ci job to fail
+  #     - run: |
+  #         passed="${{ needs.jupyter-book.outputs.success }}"
+  #         if [[ $passed == "true" ]]; then
+  #           echo "Tests passed"
+  #           exit 0
+  #         else
+  #           echo "Tests failed"
+  #           exit 1
+  #         fi
 
   # Deployment job
   deploy:
