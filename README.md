@@ -1,8 +1,10 @@
-# D2lJulia
+# Dive into Deep Learning - Julia
 
 [Dive into Deep Learning](https://d2l.ai/index.html), with Julia programming language and Flux.jl.
 
-## Pre-requisite
+This tutorial mainly focuses on using pure julia to implement the code in *Dive into Deep Learing*, rather than explaining the specific principles of deep learning. If you know little about specific principles, please refer to the same chapter of the original book.
+
+## Local installation Pre-requisites
 
 Install `jupyterlab-desktop` or vscode with `jupyter` plugin.
 
@@ -24,10 +26,8 @@ julia> Pkg.instantiate()
 
 You'll install all the dependencies, this may take a few minutes.
 
-## Read
-
-Use `jupyterlab-desktop` open `D2lJulia` path.
-
 ## Contribution
 
-Welcome to contribution! Just add `.ipynb` file to `notebooks` folder.
+Welcome to contribution! Just add `.ipynb` file in `notebooks` folder and create an entry in `_toc.yml`.
+
+The website is built using [jupyter-book](https://github.com/executablebooks/jupyter-book). 
