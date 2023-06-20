@@ -1,173 +1,52 @@
-name: CI
+name: deploy-book
 
+# Only run this when the master branch changes
 on:
-  workflow_dispatch:
   push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+    branches:
+    - master
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-env:
-  TIMEOUT: '-1'
-  EXTRA_ARGS: ''   # Extra arguments for nbconvert
-  JULIA_CACHE: '1' # Set this '0' to disable caching
-  JULIA_NUM_THREADS: 'auto'
-  JULIA_CPU_TARGET: 'generic;sandybridge,-xsaveopt,clone_all;haswell,-rdrnd,base(1);broadwell'
-
+# This job installs dependencies, build the book, and pushes it to `gh-pages`
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    container:
-      image: python:3.11.4-slim
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Setup Julia
-        uses: julia-actions/setup-julia@v1
-      - name: Cache Julia dependencies
-        uses: actions/cache@v3
-        if: ${{ env.JULIA_CACHE != '0'}}
-        with:
-          path: |
-            ~/.julia
-            ~/.local/share/jupyter
-          key: ${{ runner.os }}-julia-${{ env.JULIA_CACHE }}-${{ hashFiles('**/Manifest.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-julia-${{ env.JULIA_CACHE }}-
-      - name: Install IJulia and Julia dependencies
-        shell: julia --project="" --color=yes {0}
-        run: |
-          import Pkg
-          Pkg.Registry.update()
-          Pkg.add(["IJulia"])
-          import IJulia
-          IJulia.installkernel("Julia", "--project=@.")
-          Pkg.activate(".")
-          Pkg.instantiate()
-          Pkg.resolve()
-          Pkg.precompile()
-
-  execute:
-    needs: setup
-    strategy:
-      max-parallel: 20
-      fail-fast: false
-      matrix:
-        # Notebooks need to be executed
-        notebook: ${{ fromJSON(needs.setup.outputs.matrix) }}
-    runs-on: ubuntu-latest
-    container:
-      image: python:3.11.4-slim
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Install Python dependencies
-        run: pip install --no-cache-dir nbconvert -r requirements.txt
-      - name: Setup Julia
-        uses: julia-actions/setup-julia@v1
-      - name: Cache Julia dependencies
-        uses: actions/cache@v3
-        if: ${{ env.JULIA_CACHE != '0'}}
-        with:
-          path: |
-            ~/.julia
-            ~/.local/share/jupyter
-          key: ${{ runner.os }}-julia-${{ env.JULIA_CACHE }}-${{ hashFiles('**/Manifest.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-julia-${{ env.JULIA_CACHE }}-
-      - name: Install Julia dependencies
-        shell: julia --project="" --color=yes {0}
-        run: |
-          import Pkg
-          Pkg.precompile()
-          Pkg.activate(".")
-          Pkg.instantiate()
-          Pkg.precompile()
-      - name: Execute Notebook
-        run: >
-          jupyter nbconvert --to notebook --execute --inplace ${{ env.EXTRA_ARGS }}
-          --ExecutePreprocessor.timeout=${{ env.TIMEOUT }}
-          --ExecutePreprocessor.kernel_name=julia-1.$(julia -e 'print(VERSION.minor)')
-          docs/${{ matrix.notebook }}
-      - name: Upload Notebook
-        uses: actions/upload-artifact@v3
-        with:
-          name: notebooks
-          path: docs*/${{ matrix.notebook }}  # keep folder structure
-          retention-days: 1
-
-  jupyter-book:
-    needs: execute
-    runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/sosiristseng/docker-jupyterbook:latest
-    # store success output flag for the ci job
-    outputs:
-      success: ${{ steps.setoutput.outputs.success }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Download notebooks
-        uses: actions/download-artifact@v3
-        with:
-          name: notebooks
-          path: out/
-      - name: Display structure of downloaded files
-        run: ls -R
-        working-directory: out
-      - name: Copy back built notebooks
-        run: cp --verbose -rf out/docs/* docs/
-      - name: Build website
-        run: jupyter-book build docs/
-      - name: Upload pages artifact
-        if: ${{ github.ref == 'refs/heads/main' }}
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: docs/_build/html
-      - name: Set output flag
-        id: setoutput
-        run: echo "success=true" >> $GITHUB_OUTPUT
-
-  # # CI conclusion for GitHub status check
-  # # https://brunoscheufler.com/blog/2022-04-09-the-required-github-status-check-that-wasnt
-  # CI:
-  #   needs: jupyter-book
-  #   if: always()
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # pass step only when output of previous jupyter-book job is set
-  #     # in case at least one of the execution fails, jupyter-book is skipped
-  #     # and the output will not be set, which will then cause the ci job to fail
-  #     - run: |
-  #         passed="${{ needs.jupyter-book.outputs.success }}"
-  #         if [[ $passed == "true" ]]; then
-  #           echo "Tests passed"
-  #           exit 0
-  #         else
-  #           echo "Tests failed"
-  #           exit 1
-  #         fi
-
-  # Deployment job
-  deploy:
-    name: Deploy to GitHub pages
-    needs: jupyter-book
-    if: ${{ github.ref == 'refs/heads/main' }}
-    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
-    permissions:
-      pages: write # to deploy to Pages
-      id-token: write # to verify the deployment originates from an appropriate source
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  deploy-book:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+    - uses: actions/checkout@v2
+
+    # Install dependencies
+    - name: Set up Python 
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Setup Julia
+      uses: julia-actions/setup-julia@v1
+
+    - name: Install IJulia and Julia dependencies
+      shell: julia --project="" --color=yes {0}
+      run: |
+        import Pkg
+        Pkg.Registry.update()
+        Pkg.add(["IJulia"])
+        import IJulia
+        IJulia.installkernel("Julia", "--project=@.")
+        Pkg.activate(".")
+        Pkg.instantiate()
+        Pkg.resolve()
+        Pkg.precompile()
+
+    # Build the book
+    - name: Build the book
+      run: |
+        jupyter-book build .
+
+    # Push the book's HTML to github-pages
+    - name: GitHub Pages action
+      uses: peaceiris/actions-gh-pages@latest
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./_build/html
