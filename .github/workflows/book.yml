@@ -1,4 +1,4 @@
-name: CI with dynamic parallel matrix
+name: CI
 
 on:
   workflow_dispatch:
@@ -52,10 +52,6 @@ jobs:
           Pkg.instantiate()
           Pkg.resolve()
           Pkg.precompile()
-      - name: List notebooks as a JSON array
-        id: set-matrix
-        working-directory: docs
-        run: echo "matrix=$(python -c 'import glob, json; print(json.dumps(glob.glob("**/*.ipynb", recursive=True)))')" >> "$GITHUB_OUTPUT"
 
   execute:
     needs: setup
