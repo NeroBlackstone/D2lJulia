@@ -1,0 +1,1160 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>1. Data Manipulation &#8212; Dive into Deep Learning - Julia</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_preliminaries/Data Manipulation';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Dive into Deep Learning - Julia" href="../../README.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../README.html">
+                    Dive into Deep Learning - Julia
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Preliminaries</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Data Manipulation</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/NeroBlackstone/D2lJulia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_preliminaries/Data Manipulation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/chapter_preliminaries/Data Manipulation.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Data Manipulation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">1.1. Getting Started</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indexing-and-slicing">1.2. Indexing and Slicing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operations">1.3. Operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#broadcasting">1.4. Broadcasting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-memory">1.5. Saving Memory</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="data-manipulation">
+<h1><span class="section-number">1. </span>Data Manipulation<a class="headerlink" href="#data-manipulation" title="Permalink to this heading">#</a></h1>
+<section id="getting-started">
+<h2><span class="section-number">1.1. </span>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">#</a></h2>
+<p>We can create new <code class="docutils literal notranslate"><span class="pre">Vector</span></code> by <code class="docutils literal notranslate"><span class="pre">UnitRange</span></code>, the syntax <code class="docutils literal notranslate"><span class="pre">a:b</span></code> with <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> creates a <code class="docutils literal notranslate"><span class="pre">UnitRange</span></code>, range starting at <code class="docutils literal notranslate"><span class="pre">a</span></code> (include) and ending at <code class="docutils literal notranslate"><span class="pre">b</span></code>(also include). <a class="reference external" href="https://docs.julialang.org/en/v1/manual/faq/#What-does-the-...-operator-do?">… operator</a> splits one argument into many different arguments in function calls.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Float32</span><span class="p">[</span><span class="mf">1.0</span><span class="o">:</span><span class="mf">12.0</span><span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12-element Vector{Float32}:
+  1.0
+  2.0
+  3.0
+  4.0
+  5.0
+  6.0
+  7.0
+  8.0
+  9.0
+ 10.0
+ 11.0
+ 12.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is equivalent to:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Float32</span><span class="p">}(</span><span class="mf">1.0</span><span class="o">:</span><span class="mf">12.0</span><span class="p">)</span>
+<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">collect</span><span class="p">(</span><span class="mf">1.0</span><span class="o">:</span><span class="mf">12.0</span><span class="p">)</span>
+<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Float32</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">,</span><span class="mf">4.0</span><span class="p">,</span><span class="mf">5.0</span><span class="p">,</span><span class="mf">6.0</span><span class="p">,</span><span class="mf">7.0</span><span class="p">,</span><span class="mf">8.0</span><span class="p">,</span><span class="mf">9.0</span><span class="p">,</span><span class="mf">10.0</span><span class="p">,</span><span class="mf">11.0</span><span class="p">,</span><span class="mf">12.0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12-element Vector{Float32}:
+  1.0
+  2.0
+  3.0
+  4.0
+  5.0
+  6.0
+  7.0
+  8.0
+  9.0
+ 10.0
+ 11.0
+ 12.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>The significant difference between Julia and other programming languages is that array index start from 1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0f0
+</pre></div>
+</div>
+</div>
+</div>
+<p>In julia, <code class="docutils literal notranslate"><span class="pre">Vector</span></code> is a 1-dimensional <code class="docutils literal notranslate"><span class="pre">Array</span></code>, <code class="docutils literal notranslate"><span class="pre">Vector{Int}</span></code> is a shorthand to <code class="docutils literal notranslate"><span class="pre">Array{Int,</span> <span class="pre">1}</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int</span><span class="p">}</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kt">Array</span><span class="p">{</span><span class="kt">Int</span><span class="p">,</span><span class="mi">1</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>true
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can access a <code class="docutils literal notranslate"><span class="pre">Array</span></code>’s shape (the length along each axis) via the <code class="docutils literal notranslate"><span class="pre">size</span></code> function, it will return a <code class="docutils literal notranslate"><span class="pre">Tuple</span></code> containing the dimensions of the specified array. Because we are dealing with a vector here, the returned <code class="docutils literal notranslate"><span class="pre">Tuple</span></code> contains just a single element and is identical to the <code class="docutils literal notranslate"><span class="pre">length</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">size</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(12,)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can inspect the total number of elements in a <code class="docutils literal notranslate"><span class="pre">Vector</span></code> or <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> via the <code class="docutils literal notranslate"><span class="pre">length</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">length</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can change the shape of an <code class="docutils literal notranslate"><span class="pre">Array</span></code> without altering its length or values, by invoking <code class="docutils literal notranslate"><span class="pre">reshape</span></code> function. For example, we can transform our vector x whose shape is (12,) to a matrix X with shape (3, 4). This new matrix retains all elements. Notice that the elements of our vector are laid out one column at a time and thus x[3] == X[3,1]. Because Julia is column-major.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3×4 Matrix{Float32}:
+ 1.0  4.0  7.0  10.0
+ 2.0  5.0  8.0  11.0
+ 3.0  6.0  9.0  12.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to specify the permutation, use <code class="docutils literal notranslate"><span class="pre">permutedims</span></code>,or <code class="docutils literal notranslate"><span class="pre">transpose</span></code> 4x3 matrix:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">permutedims</span><span class="p">(</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">transpose</span><span class="p">(</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3×4 transpose(::Matrix{Float32}) with eltype Float32:
+ 1.0   2.0   3.0   4.0
+ 5.0   6.0   7.0   8.0
+ 9.0  10.0  11.0  12.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Like <code class="docutils literal notranslate"><span class="pre">Vector</span></code>, <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> is an alias for 2-dimensional Array.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="kt">Matrix</span><span class="p">{</span><span class="kt">Int</span><span class="p">}</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kt">Array</span><span class="p">{</span><span class="kt">Int</span><span class="p">,</span><span class="mi">2</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>true
+</pre></div>
+</div>
+</div>
+</div>
+<p>The new dimensions may be specified either as a list of arguments or as a shape tuple,<code class="docutils literal notranslate"><span class="pre">reshape(x,(3,4))</span></code>. At most one dimension may be specified with a <code class="docutils literal notranslate"><span class="pre">:</span></code>, in which case its length is computed such that its product with all the specified dimensions is equal to the length of the original array x, we could have equivalently called <code class="docutils literal notranslate"><span class="pre">reshape(x,</span> <span class="pre">3,</span> <span class="pre">:)</span></code> or <code class="docutils literal notranslate"><span class="pre">reshape(x,</span> <span class="pre">:,</span> <span class="pre">4)</span></code>.</p>
+<p>We can also construct higher dimensional <code class="docutils literal notranslate"><span class="pre">Array</span></code> with reshape function. More about <a class="reference external" href="https://docs.julialang.org/en/v1/manual/arrays/#man-multi-dim-arrays">multi-dimensional Arrays</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">X2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2×2×3 Array{Float32, 3}:
+[:, :, 1] =
+ 1.0  3.0
+ 2.0  4.0
+
+[:, :, 2] =
+ 5.0  7.0
+ 6.0  8.0
+
+[:, :, 3] =
+  9.0  11.0
+ 10.0  12.0
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">reshape</span></code> creates a <code class="docutils literal notranslate"><span class="pre">view</span></code> of original vector, meaning that no copy is formed:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">X2</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12-element Vector{Float32}:
+  1.0
+  1.0
+  3.0
+  4.0
+  5.0
+  6.0
+  7.0
+  8.0
+  9.0
+ 10.0
+ 11.0
+ 12.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can construct a multi-dimensional <code class="docutils literal notranslate"><span class="pre">Array</span></code> with all elements set to zero and a shape of (2, 3, 4) via the <code class="docutils literal notranslate"><span class="pre">zeros</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">zeros</span><span class="p">(</span><span class="kt">Int</span><span class="p">,(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2×3×4 Array{Int64, 3}:
+[:, :, 1] =
+ 0  0  0
+ 0  0  0
+
+[:, :, 2] =
+ 0  0  0
+ 0  0  0
+
+[:, :, 3] =
+ 0  0  0
+ 0  0  0
+
+[:, :, 4] =
+ 0  0  0
+ 0  0  0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using <code class="docutils literal notranslate"><span class="pre">zero(X)</span></code> to have the same shape as X.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">zero</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3×4 Matrix{Float32}:
+ 0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Similarly, we can create a multi-dimensional <code class="docutils literal notranslate"><span class="pre">Array</span></code> with all ones by invoking <code class="docutils literal notranslate"><span class="pre">ones</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2×3×4 Array{Float64, 3}:
+[:, :, 1] =
+ 1.0  1.0  1.0
+ 1.0  1.0  1.0
+
+[:, :, 2] =
+ 1.0  1.0  1.0
+ 1.0  1.0  1.0
+
+[:, :, 3] =
+ 1.0  1.0  1.0
+ 1.0  1.0  1.0
+
+[:, :, 4] =
+ 1.0  1.0  1.0
+ 1.0  1.0  1.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>We often wish to sample each element randomly (and independently) from a given probability distribution. For example, the parameters of neural networks are often initialized randomly. The following snippet creates a matrix with elements drawn from a standard Gaussian (normal) distribution with mean 0 and standard deviation 1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">randn</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3×4 Matrix{Float64}:
+ -0.457131  -1.54876   -0.119089  0.340485
+ -0.41369    0.534643   0.51304   0.722504
+  1.53338   -1.03405   -0.213158  0.172304
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, we can construct matrix by supplying the exact values for each element.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">2</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="mi">4</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">1</span><span class="p">;]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3×4 Matrix{Int64}:
+ 2  1  4  3
+ 1  2  3  4
+ 4  3  4  1
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="indexing-and-slicing">
+<h2><span class="section-number">1.2. </span>Indexing and Slicing<a class="headerlink" href="#indexing-and-slicing" title="Permalink to this heading">#</a></h2>
+<p>We can access array elements by indexing (starting with 1). To access first or last element based in Array, we can use <code class="docutils literal notranslate"><span class="pre">begin</span></code> and <code class="docutils literal notranslate"><span class="pre">end</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">[</span><span class="k">begin</span><span class="p">],</span><span class="n">x</span><span class="p">[</span><span class="k">end</span><span class="p">],</span><span class="n">x</span><span class="p">[</span><span class="k">end</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0f0, 12.0f0, 11.0f0)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can access whole ranges of unfold multi-dimensional Array via slicing (e.g., <code class="docutils literal notranslate"><span class="pre">X[begin:end]</span></code>), where the returned value includes the first index (<code class="docutils literal notranslate"><span class="pre">begin</span></code>) and the last (<code class="docutils literal notranslate"><span class="pre">end</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">[</span><span class="n">begin</span><span class="o">:</span><span class="n">end</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12-element Vector{Float32}:
+  1.0
+  5.0
+  9.0
+  1.0
+  6.0
+ 10.0
+  3.0
+  7.0
+ 11.0
+  4.0
+  8.0
+ 12.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>When only one index is specified for a order multi-dimensional Array, it is applied to unfolded vector.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6.0f0
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the following code, <code class="docutils literal notranslate"><span class="pre">[end,:]</span></code>selects the last row.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">[</span><span class="k">end</span><span class="p">,</span><span class="o">:</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-element Vector{Float32}:
+  9.0
+ 10.0
+ 11.0
+ 12.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>And <code class="docutils literal notranslate"><span class="pre">[2:3,:]</span></code> selects the second and third rows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="o">:</span><span class="mi">3</span><span class="p">,</span><span class="o">:</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2×4 Matrix{Float32}:
+ 5.0   6.0   7.0   8.0
+ 9.0  10.0  11.0  12.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>In reality, we can use any <code class="docutils literal notranslate"><span class="pre">UnitRange</span></code> to slice array.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reshape</span><span class="p">(</span><span class="n">collect</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="mi">36</span><span class="p">),</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">A</span><span class="p">[</span><span class="k">begin</span><span class="o">:</span><span class="mi">2</span><span class="o">:</span><span class="k">end</span><span class="p">,</span><span class="k">begin</span><span class="o">:</span><span class="mi">2</span><span class="o">:</span><span class="k">end</span><span class="p">]</span><span class="w"> </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3×3 Matrix{Int64}:
+ 1  13  25
+ 3  15  27
+ 5  17  29
+</pre></div>
+</div>
+</div>
+</div>
+<p>If we want to assign multiple elements the same value, we can <code class="docutils literal notranslate"><span class="pre">broadcast</span></code> the value via <code class="docutils literal notranslate"><span class="pre">.=</span></code>. For instance, <code class="docutils literal notranslate"><span class="pre">[1:2,:]</span></code>accesses the first and second rows, where <code class="docutils literal notranslate"><span class="pre">:</span></code> takes all the elements along column. While we discussed for matrices, this also works for vectors and for array of more than 2 dimensions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span><span class="o">:</span><span class="p">]</span><span class="w"> </span><span class="o">.=</span><span class="w"> </span><span class="mi">12</span>
+<span class="n">A</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6×6 Matrix{Int64}:
+ 12  12  12  12  12  12
+ 12  12  12  12  12  12
+  3   9  15  21  27  33
+  4  10  16  22  28  34
+  5  11  17  23  29  35
+  6  12  18  24  30  36
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="operations">
+<h2><span class="section-number">1.3. </span>Operations<a class="headerlink" href="#operations" title="Permalink to this heading">#</a></h2>
+<p>Vectorized “dot” operators can be applied elementwise including unary operators:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">exp</span><span class="o">.</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12-element Vector{Float32}:
+      2.7182817
+      2.7182817
+     20.085537
+     54.59815
+    148.41316
+    403.4288
+   1096.6332
+   2980.958
+   8103.084
+  22026.467
+  59874.14
+ 162754.8
+</pre></div>
+</div>
+</div>
+</div>
+<p>Also, for every binary operation like <code class="docutils literal notranslate"><span class="pre">^</span></code>, there is a corresponding “dot” operation <code class="docutils literal notranslate"><span class="pre">.^</span></code> that is automatically defined to perform ^ element-by-element on arrays.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span>
+<span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">2.0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">x</span><span class="o">.+</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="o">.-</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="o">.*</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="o">./</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="n">y</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>([3.0, 4.0, 6.0, 10.0], [-1.0, 0.0, 2.0, 6.0], [2.0, 4.0, 8.0, 16.0], [0.5, 1.0, 2.0, 4.0], [1.0, 4.0, 16.0, 64.0])
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also concatenate multiple arrays together, stacking them end-to-end to form a larger array. We just need to provide a list of arrays and tell the system along which axis to concatenate. The example below shows what happens when we concatenate two matrices along rows (dimension 1) and columns (dimension 2).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reshape</span><span class="p">(</span><span class="n">collect</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="mi">12</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">Y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span>
+<span class="n">vcat</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6×4 Matrix{Float64}:
+ 1.0  4.0  7.0  10.0
+ 2.0  5.0  8.0  11.0
+ 3.0  6.0  9.0  12.0
+ 1.0  1.0  4.0   3.0
+ 1.0  2.0  3.0   4.0
+ 4.0  3.0  2.0   1.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">hcat</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3×8 Matrix{Float64}:
+ 1.0  4.0  7.0  10.0  1.0  1.0  4.0  3.0
+ 2.0  5.0  8.0  11.0  1.0  2.0  3.0  4.0
+ 3.0  6.0  9.0  12.0  4.0  3.0  2.0  1.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can specify the <code class="docutils literal notranslate"><span class="pre">dims</span></code> we want to concatenate.This allows one to construct block-diagonal matrices:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3×8 Matrix{Float64}:
+ 1.0  4.0  7.0  10.0  1.0  1.0  4.0  3.0
+ 2.0  5.0  8.0  11.0  1.0  2.0  3.0  4.0
+ 3.0  6.0  9.0  12.0  4.0  3.0  2.0  1.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6×8 Matrix{Float64}:
+ 1.0  4.0  7.0  10.0  0.0  0.0  0.0  0.0
+ 2.0  5.0  8.0  11.0  0.0  0.0  0.0  0.0
+ 3.0  6.0  9.0  12.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0   0.0  1.0  1.0  4.0  3.0
+ 0.0  0.0  0.0   0.0  1.0  2.0  3.0  4.0
+ 0.0  0.0  0.0   0.0  4.0  3.0  2.0  1.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sometimes, we want to construct a binary array via logical statements. Take <code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">.==</span> <span class="pre">Y</span></code> as an example. For each position i, j, if X[i, j] and Y[i, j] are equal, then the corresponding entry in the result takes value 1, otherwise it takes value 0.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="w"> </span><span class="o">.==</span><span class="w"> </span><span class="n">Y</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3×4 BitMatrix:
+ 1  0  0  0
+ 0  0  0  0
+ 0  0  0  0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Summing all the elements in the array:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">reduce</span><span class="p">(</span><span class="o">+</span><span class="p">,</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>78
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="broadcasting">
+<h2><span class="section-number">1.4. </span>Broadcasting<a class="headerlink" href="#broadcasting" title="Permalink to this heading">#</a></h2>
+<p>Under certain conditions, even when shapes differ, we can still perform elementwise binary operations by invoking the broadcasting mechanism. Broadcasting works according to the following two-step procedure: (i) expand one or both arrays by copying elements along dimension 2 so that after this transformation, the two arrays have the same shape; (ii) perform an elementwise operation on the resulting arrays.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reshape</span><span class="p">(</span><span class="n">collect</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="mi">3</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3×1 Matrix{Int64}:
+ 1
+ 2
+ 3
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reshape</span><span class="p">(</span><span class="n">collect</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="mi">2</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1×2 Matrix{Int64}:
+ 1  2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="o">.+</span><span class="n">b</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3×2 Matrix{Int64}:
+ 2  3
+ 3  4
+ 4  5
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="saving-memory">
+<h2><span class="section-number">1.5. </span>Saving Memory<a class="headerlink" href="#saving-memory" title="Permalink to this heading">#</a></h2>
+<p>Running operations can cause new memory to be allocated to host results. For example, if we write Y = Y .+ X, we dereference the array that Y used to point to and instead point Y at the newly allocated memory. We can demonstrate this issue with Julia’s <code class="docutils literal notranslate"><span class="pre">objectid()</span></code> function,  <code class="docutils literal notranslate"><span class="pre">objectid(x)==objectid(y)</span></code> if <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">===</span> <span class="pre">y</span></code>, and for mutable values (arrays, mutable composite types), <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">===</span> <span class="pre">y</span></code> is true if x and y are the same object, stored at the same location in memory. Note that after we run Y = Y .+ X, <code class="docutils literal notranslate"><span class="pre">objectid(Y)</span></code> points to a different location. That is because julia first evaluates <code class="docutils literal notranslate"><span class="pre">Y</span> <span class="pre">.+</span> <span class="pre">X</span></code>, allocating new memory for the result and then points Y to this new location in memory.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">before</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">objectid</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+<span class="n">Y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Y</span><span class="o">.+</span><span class="n">X</span>
+<span class="n">objectid</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">before</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>false
+</pre></div>
+</div>
+</div>
+</div>
+<p>However, <code class="docutils literal notranslate"><span class="pre">.+=</span></code> is an in-place operation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">before</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">objectid</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+<span class="n">Y</span><span class="w"> </span><span class="o">.+=</span><span class="n">X</span>
+<span class="n">objectid</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">before</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>true
+</pre></div>
+</div>
+</div>
+</div>
+<p>“dotted” updating operators like <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">.+=</span> <span class="pre">b</span></code> (or <code class="docutils literal notranslate"><span class="pre">&#64;.</span> <span class="pre">a</span> <span class="pre">+=</span> <span class="pre">b</span></code>) are parsed as <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">.=</span> <span class="pre">a</span> <span class="pre">.+</span> <span class="pre">b</span></code>, where <code class="docutils literal notranslate"><span class="pre">.=</span></code> is a fused in-place assignment operation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">before</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">objectid</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+<span class="n">Y</span><span class="w"> </span><span class="o">.=</span><span class="w"> </span><span class="n">Y</span><span class="o">.+</span><span class="n">X</span>
+<span class="n">objectid</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">before</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>true
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "julia-1.9"
+        },
+        kernelOptions: {
+            name: "julia-1.9",
+            path: "./notebooks/chapter_preliminaries"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'julia-1.9'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../README.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Dive into Deep Learning - Julia</p>
+      </div>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">1.1. Getting Started</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indexing-and-slicing">1.2. Indexing and Slicing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operations">1.3. Operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#broadcasting">1.4. Broadcasting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-memory">1.5. Saving Memory</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nero Blackstone
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

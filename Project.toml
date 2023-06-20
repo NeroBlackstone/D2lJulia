@@ -1,7 +1,0 @@
-name = "D2lJulia"
-uuid = "8698f12d-944a-413f-8d98-4b55fb52869c"
-authors = ["NeroBlackstone <gf7600gs@gmail.com>"]
-version = "0.1.0"
-
-[deps]
-IJulia = "7073ff75-c697-5162-941a-fcdaad2a7d2a"
