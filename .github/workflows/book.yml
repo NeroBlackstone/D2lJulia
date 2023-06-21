@@ -26,10 +26,18 @@ jobs:
       run: |
         pip install -r requirements.txt
 
+    - name: Check Julia existence
+      id: check_Julia
+      uses: andstor/file-existence-action@v1
+      with:
+        files: "Project.toml"
+
     - name: Setup Julia
+      if: steps.check_Julia.outputs.files_exists == 'true'
       uses: julia-actions/setup-julia@v1
 
     - name: Install IJulia and Julia dependencies
+      if: steps.check_Julia.outputs.files_exists == 'true'
       shell: julia --project="" --color=yes {0}
       run: |
         import Pkg
