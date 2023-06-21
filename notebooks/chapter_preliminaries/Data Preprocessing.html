@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Data Preprocessing &#8212; Dive into Deep Learning - Julia</title>
+    <title>2. Data Preprocessing &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -66,6 +66,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_preliminaries/Data Preprocessing';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="1. Data Manipulation" href="Data%20Manipulation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -157,8 +158,9 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Preliminaries</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Data%20Manipulation.html">1. Data Manipulation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Data Preprocessing</a></li>
 </ul>
 
     </div>
@@ -352,8 +354,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">Reading the Dataset¶</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">Data Preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">2.1. Reading the Dataset¶</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">2.2. Data Preparation</a></li>
 </ul>
             </nav>
         </div>
@@ -366,10 +368,10 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="data-preprocessing">
-<h1>Data Preprocessing<a class="headerlink" href="#data-preprocessing" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">2. </span>Data Preprocessing<a class="headerlink" href="#data-preprocessing" title="Permalink to this heading">#</a></h1>
 <p>In this section, we learn how to preprocess data using <a class="reference external" href="https://csv.juliadata.org/stable/">CSV.jl</a>, and <a class="reference external" href="https://dataframes.juliadata.org/stable/">DataFrames.jl</a></p>
 <section id="reading-the-dataset">
-<h2>Reading the Dataset¶<a class="headerlink" href="#reading-the-dataset" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.1. </span>Reading the Dataset¶<a class="headerlink" href="#reading-the-dataset" title="Permalink to this heading">#</a></h2>
 <p>Comma-separated values (CSV) files are ubiquitous for storing tabular (spreadsheet-like) data. Here, each line corresponds to one record and consists of several (comma-separated) fields, e.g., “Albert Einstein,March 14 1879,Ulm,Federal polytechnic school,Accomplishments in the field of gravitational physics”. To demonstrate how to load CSV files with CSV.jl, we create a CSV file below ../data/house_tiny.csv. This file represents a dataset of homes, where each row corresponds to a distinct home and the columns correspond to the number of rooms (NumRooms), the roof type (RoofType), and the price (Price).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -409,7 +411,7 @@ document.write(`
 </div>
 </section>
 <section id="data-preparation">
-<h2>Data Preparation<a class="headerlink" href="#data-preparation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.2. </span>Data Preparation<a class="headerlink" href="#data-preparation" title="Permalink to this heading">#</a></h2>
 </section>
 </section>
 
@@ -444,6 +446,15 @@ document.write(`
   
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="Data%20Manipulation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>Data Manipulation</p>
+      </div>
+    </a>
 </div></div>
   
 </div>
@@ -462,8 +473,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">Reading the Dataset¶</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">Data Preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">2.1. Reading the Dataset¶</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">2.2. Data Preparation</a></li>
 </ul>
   </nav></div>
 
