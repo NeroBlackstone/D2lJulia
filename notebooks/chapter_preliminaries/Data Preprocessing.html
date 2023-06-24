@@ -356,6 +356,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">2.1. Reading the Dataset¶</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">2.2. Data Preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversion-to-the-matrix-format">2.3. Conversion to the Matrix Format</a></li>
 </ul>
             </nav>
         </div>
@@ -426,7 +427,7 @@ document.write(`
 <span class="c"># one-hot encoding column RoofType, and append to original DataFrames</span>
 <span class="n">inputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FeatureTransforms</span><span class="o">.</span><span class="n">apply_append</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span><span class="n">OneHotEncoding</span><span class="p">(</span><span class="n">roof_types</span><span class="p">);</span><span class="n">cols</span><span class="o">=</span><span class="ss">:RoofType</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="s">&quot;RoofType_&quot;</span><span class="o">.*</span><span class="n">string</span><span class="o">.</span><span class="p">(</span><span class="n">roof_types</span><span class="p">))</span>
 <span class="c"># drop column RoofType</span>
-<span class="n">inputs</span><span class="p">[</span><span class="o">:</span><span class="p">,</span><span class="n">Not</span><span class="p">(</span><span class="ss">:RoofType</span><span class="p">)]</span>
+<span class="n">inputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inputs</span><span class="p">[</span><span class="o">:</span><span class="p">,</span><span class="n">Not</span><span class="p">(</span><span class="ss">:RoofType</span><span class="p">)]</span>
 </pre></div>
 </div>
 </div>
@@ -443,8 +444,11 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div><div style = "float: left;"><span>4×4 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">NumRooms</th><th style = "text-align: left;">RoofType</th><th style = "text-align: left;">RoofType_missing</th><th style = "text-align: left;">RoofType_Slate</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "Union{Missing, Int64}" style = "text-align: left;">Int64?</th><th title = "Union{Missing, String7}" style = "text-align: left;">String7?</th><th title = "Bool" style = "text-align: left;">Bool</th><th title = "Bool" style = "text-align: left;">Bool</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: right;">3</td><td style = "font-style: italic; text-align: left;">missing</td><td style = "text-align: right;">true</td><td style = "text-align: right;">false</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: right;">2</td><td style = "font-style: italic; text-align: left;">missing</td><td style = "text-align: right;">true</td><td style = "text-align: right;">false</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: right;">4</td><td style = "text-align: left;">Slate</td><td style = "text-align: right;">false</td><td style = "text-align: right;">true</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: right;">3</td><td style = "font-style: italic; text-align: left;">missing</td><td style = "text-align: right;">true</td><td style = "text-align: right;">false</td></tr></tbody></table></div></div></div>
+<div class="output text_html"><div><div style = "float: left;"><span>4×3 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">NumRooms</th><th style = "text-align: left;">RoofType_missing</th><th style = "text-align: left;">RoofType_Slate</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "Union{Missing, Int64}" style = "text-align: left;">Int64?</th><th title = "Bool" style = "text-align: left;">Bool</th><th title = "Bool" style = "text-align: left;">Bool</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: right;">3</td><td style = "text-align: right;">true</td><td style = "text-align: right;">false</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: right;">2</td><td style = "text-align: right;">true</td><td style = "text-align: right;">false</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: right;">4</td><td style = "text-align: right;">false</td><td style = "text-align: right;">true</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: right;">3</td><td style = "text-align: right;">true</td><td style = "text-align: right;">false</td></tr></tbody></table></div></div></div>
 </div>
+</section>
+<section id="conversion-to-the-matrix-format">
+<h2><span class="section-number">2.3. </span>Conversion to the Matrix Format<a class="headerlink" href="#conversion-to-the-matrix-format" title="Permalink to this heading">#</a></h2>
 </section>
 </section>
 
@@ -508,6 +512,7 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">2.1. Reading the Dataset¶</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">2.2. Data Preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversion-to-the-matrix-format">2.3. Conversion to the Matrix Format</a></li>
 </ul>
   </nav></div>
 
