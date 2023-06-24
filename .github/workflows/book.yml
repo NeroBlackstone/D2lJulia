@@ -43,7 +43,7 @@ jobs:
 
     - name: Use Julia cache
       if: steps.check_Julia.outputs.files_exists == 'true'
-    - uses: julia-actions/cache@v1
+      uses: julia-actions/cache@v1
 
     - name: Install IJulia and Julia dependencies
       if: steps.check_Julia.outputs.files_exists == 'true'
