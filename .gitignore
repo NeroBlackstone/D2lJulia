@@ -3,4 +3,3 @@
 Manifest.toml
 _build
 notebooks/data/
-poetry.lock

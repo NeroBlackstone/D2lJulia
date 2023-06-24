@@ -6,7 +6,7 @@ authors = ["Nero Blackstone <gf7600gs@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3"
+python = "^3.10"
 jupyter-book = "^0.15.1"
 
 
