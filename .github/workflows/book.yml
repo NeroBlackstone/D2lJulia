@@ -19,7 +19,9 @@ jobs:
       with:
         python-version: 3
         cache: 'poetry'
-      uses: abatilo/actions-poetry@v2
+        
+    - name: Run image
+        uses: abatilo/actions-poetry@v2
 
     - name: Install dependencies
       run: |
