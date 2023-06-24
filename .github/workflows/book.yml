@@ -21,6 +21,7 @@ jobs:
         cache: 'poetry'
 
     - name: Install dependencies
+      uses: abatilo/actions-poetry@v2
       run: |
         poetry install
 
