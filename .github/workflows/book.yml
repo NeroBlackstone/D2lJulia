@@ -16,7 +16,7 @@ jobs:
     - name: Run image
       uses: abatilo/actions-poetry@v2
 
-    - Set Poetry
+    - name: Set Poetry
       run: |
         poetry config virtualenvs.create false
 
