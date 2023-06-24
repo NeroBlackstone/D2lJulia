@@ -9,3 +9,4 @@ parts:
     chapters:
     - file: notebooks/chapter_preliminaries/Data Manipulation.ipynb
     - file: notebooks/chapter_preliminaries/Data Preprocessing.ipynb
+    - file: notebooks/chapter_preliminaries/Linear Algebra.ipynb
