@@ -359,6 +359,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arrays">3.4. Arrays</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-properties-of-array-arithmetic">3.5. Basic Properties of Array Arithmetic</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reduction">3.6. Reduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-reduction-sum">3.7. Non-Reduction Sum</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dot-products">3.8. Dot Products</a></li>
 </ul>
             </nav>
         </div>
@@ -633,7 +635,7 @@ document.write(`
 </div>
 </div>
 </div>
-<p>By default, invoking the <code class="docutils literal notranslate"><span class="pre">sum</span></code> function reduces a array length along all of its dimensions, but it will not producing a scalar. Julia also allow us to specify the dimensions along which the array should be reduced. To sum over all elements along the rows (dimension 2), we specify <code class="docutils literal notranslate"><span class="pre">dims=2</span></code> in <code class="docutils literal notranslate"><span class="pre">sum</span></code>. Since the input matrix reduces along dimension 2 to generate the output <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">x</span> <span class="pre">1</span></code> matrix, this dimension length reduceds to 1. We can use <code class="docutils literal notranslate"><span class="pre">dropdims</span></code> to drop singleton dimensions in array.</p>
+<p>By default, the <code class="docutils literal notranslate"><span class="pre">sum</span></code> function is a non-reduction sum. Julia also allow us to specify the dimensions along which the array should be reduced. To sum over all elements along the rows (dimension 2), we specify <code class="docutils literal notranslate"><span class="pre">dims=2</span></code> in <code class="docutils literal notranslate"><span class="pre">sum</span></code>. Since the input matrix sum along dimension 2 to generate the output <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">x</span> <span class="pre">1</span></code> matrix, this dimension size reduceds to 1. We can use <code class="docutils literal notranslate"><span class="pre">dropdims</span></code> to drop singleton dimensions in array.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">size</span><span class="p">(</span><span class="n">A</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">sum</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="mi">2</span><span class="p">)),</span><span class="n">size</span><span class="p">(</span><span class="n">dropdims</span><span class="p">(</span><span class="n">sum</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span><span class="n">dims</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
@@ -659,7 +661,7 @@ document.write(`
 </div>
 </div>
 </div>
-<p>Reducing a matrix along both rows and columns via summation is not equivalent to summing up all the elements of the matrix, although matrix shape will reduce to (1,1) and has only one value 21.</p>
+<p>Summing a matrix along both rows and columns is equivalent to summing up all the elements of the matrix, although matrix shape will become (1,1) and has only one value 21.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">first</span><span class="p">(</span><span class="n">sum</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
@@ -672,7 +674,7 @@ document.write(`
 </div>
 </div>
 </div>
-<p>A related quantity is the <code class="docutils literal notranslate"><span class="pre">mean</span></code>, also called the average. We calculate the mean by dividing the sum by the total number of elements. Because computing the mean is so common, it gets a dedicated library function that works analogously to sum.</p>
+<p>A related quantity is the <code class="docutils literal notranslate"><span class="pre">mean</span></code>, also called the average. We calculate the mean by dividing the sum by the total number of elements. This function is a part of <code class="docutils literal notranslate"><span class="pre">Statistics</span></code> package.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Statistics</span>
@@ -686,15 +688,86 @@ document.write(`
 </div>
 </div>
 </div>
-<p>Likewise, the function for calculating the mean can also reduce a array along specific dimensions.</p>
+<p>Likewise, the function for calculating the <code class="docutils literal notranslate"><span class="pre">mean</span></code> will not reduce array along specific dimensions, this produces a 1x3 matrix.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span><span class="n">sum</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span><span class="n">sum</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>([3.0; 4.0;;], [3.0; 4.0;;])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>([1.5 3.5 5.5], [1.5 3.5 5.5])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="non-reduction-sum">
+<h2><span class="section-number">3.7. </span>Non-Reduction Sum<a class="headerlink" href="#non-reduction-sum" title="Permalink to this heading">#</a></h2>
+<p>Sometimes it can be useful to keep the number of axes unchanged when invoking the function for calculating the sum or mean. This matters when we want to use the broadcast mechanism. In fact, this is the default behavior of <code class="docutils literal notranslate"><span class="pre">sum</span></code> or <code class="docutils literal notranslate"><span class="pre">mean</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">sum_A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sum_A</span><span class="p">)</span>
+<span class="n">size</span><span class="p">(</span><span class="n">sum_A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2×1 Matrix{Int64}:
+  9
+ 12
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2, 1)
+</pre></div>
+</div>
+</div>
+</div>
+<p>For instance, since sum_A keeps its two dimensions after summing each row, we can divide A by sum_A with broadcasting to create a matrix where each row sums up to 1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="o">./</span><span class="w"> </span><span class="n">sum_A</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2×3 Matrix{Float64}:
+ 0.111111  0.333333  0.555556
+ 0.166667  0.333333  0.5
+</pre></div>
+</div>
+</div>
+</div>
+<p>If we want to calculate the cumulative sum of elements of A along some dimensions, say dims=1 (row by row), we can call the <code class="docutils literal notranslate"><span class="pre">cumsum</span></code> function. By design, this function does not reduce the input array along any dimensions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">cumsum</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2×3 Matrix{Int64}:
+ 1  3   5
+ 3  7  11
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dot-products">
+<h2><span class="section-number">3.8. </span>Dot Products<a class="headerlink" href="#dot-products" title="Permalink to this heading">#</a></h2>
+<p>One of the most fundamental operations is the dot product. We can use <code class="docutils literal notranslate"><span class="pre">⋅</span></code> operator from <code class="docutils literal notranslate"><span class="pre">LinearAlgebra</span></code> package.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">LinearAlgebra</span>
+<span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ones</span><span class="p">(</span><span class="kt">Float32</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">x⋅y</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Float32[1.0, 2.0, 3.0], Float32[1.0, 1.0, 1.0], 6.0f0)
 </pre></div>
 </div>
 </div>
@@ -766,6 +839,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arrays">3.4. Arrays</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-properties-of-array-arithmetic">3.5. Basic Properties of Array Arithmetic</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reduction">3.6. Reduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-reduction-sum">3.7. Non-Reduction Sum</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dot-products">3.8. Dot Products</a></li>
 </ul>
   </nav></div>
 
