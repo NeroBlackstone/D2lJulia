@@ -61,9 +61,12 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_preliminaries/Calculus';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5. Automatic Differentiation" href="Automatic%20Differentiation.html" />
     <link rel="prev" title="3. Linear Algebra" href="Linear%20Algebra.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -161,6 +164,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="Data%20Preprocessing.html">2. Data Preprocessing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Linear%20Algebra.html">3. Linear Algebra</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">4. Calculus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Automatic%20Differentiation.html">5. Automatic Differentiation</a></li>
 </ul>
 
     </div>
@@ -355,6 +359,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivatives-and-differentiation">4.1. Derivatives and Differentiation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-utilities">4.2. Visualization Utilities</a></li>
 </ul>
             </nav>
         </div>
@@ -381,6 +386,48 @@ document.write(`
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>f (generic function with 1 method)
 </pre></div>
 </div>
+</div>
+</div>
+<p>While this experiment lacks the rigor of a mathematical proof, we will soon see that indeed <span class="math notranslate nohighlight">\( f'(1) = 2 \)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Printf</span>
+<span class="k">for</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mf">10.0</span><span class="o">.^</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">:-</span><span class="mi">1</span><span class="o">:-</span><span class="mi">5</span><span class="p">)</span>
+<span class="w">    </span><span class="nd">@printf</span><span class="w"> </span><span class="s">&quot;h=</span><span class="si">%.5f</span><span class="s">, numerical limit=</span><span class="si">%.5f</span><span class="s"> </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">h</span><span class="p">)</span><span class="o">-</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="n">h</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>h=0.10000, numerical limit=2.30000 
+h=0.01000, numerical limit=2.03000 
+h=0.00100, numerical limit=2.00300 
+h=0.00010, numerical limit=2.00030 
+h=0.00001, numerical limit=2.00003 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualization-utilities">
+<h2><span class="section-number">4.2. </span>Visualization Utilities<a class="headerlink" href="#visualization-utilities" title="Permalink to this heading">#</a></h2>
+<p>We can visualize the slopes of functions using the <a class="reference external" href="https://docs.makie.org/stable/">Makie</a> package.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">CairoMakie</span>
+
+<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">fg</span><span class="p">,</span><span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;f(x)&quot;</span><span class="p">)</span>
+<span class="n">lines!</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="o">-&gt;</span><span class="mi">2</span><span class="n">x</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="ss">:dash</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="o">=</span><span class="s">&quot;Tangent line (x=1)&quot;</span><span class="p">)</span>
+<span class="n">axislegend</span><span class="p">(</span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:lt</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">xlabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;x&quot;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">ylabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;f(x)&quot;</span>
+<span class="n">fg</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/fb872c01066cf603d08557b7167bfadeee2b649bc997a9874501606932d9bccc.png" src="../../_images/fb872c01066cf603d08557b7167bfadeee2b649bc997a9874501606932d9bccc.png" />
 </div>
 </div>
 </section>
@@ -426,6 +473,15 @@ document.write(`
         <p class="prev-next-title"><span class="section-number">3. </span>Linear Algebra</p>
       </div>
     </a>
+    <a class="right-next"
+       href="Automatic%20Differentiation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>Automatic Differentiation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div></div>
   
 </div>
@@ -445,6 +501,7 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivatives-and-differentiation">4.1. Derivatives and Differentiation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-utilities">4.2. Visualization Utilities</a></li>
 </ul>
   </nav></div>
 
