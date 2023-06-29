@@ -356,6 +356,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-function">5.1. A Simple Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backward-for-non-scalar-variables">5.2. Backward for Non-Scalar Variables</a></li>
 </ul>
             </nav>
         </div>
@@ -374,6 +375,98 @@ document.write(`
 <p>While autograd libraries have become a hot concern over the past decade, they have a long history. In fact the earliest references to autograd date back over half of a century (Wengert, 1964). The core ideas behind modern backpropagation date to a PhD thesis from 1980 (Speelpenning, 1980) and were further developed in the late 1980s (Griewank, 1989). While backpropagation has become the default method for computing gradients, it is not the only option. For instance, the Julia programming language employs forward propagation (Revels et al., 2016). Before exploring methods, let’s first master the <a class="reference external" href="https://fluxml.ai/Zygote.jl/">Zygote</a> package.</p>
 <section id="a-simple-function">
 <h2><span class="section-number">5.1. </span>A Simple Function<a class="headerlink" href="#a-simple-function" title="Permalink to this heading">#</a></h2>
+<p>To start, we assign x an initial value.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">collect</span><span class="p">(</span><span class="mf">1.0</span><span class="o">:</span><span class="mf">4.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-element Vector{Float64}:
+ 1.0
+ 2.0
+ 3.0
+ 4.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now define a function of x.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">LinearAlgebra</span>
+
+<span class="n">y</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="n">x⋅x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>y (generic function with 1 method)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now take the gradient of y with respect to x by calling <code class="docutils literal notranslate"><span class="pre">gradient</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Zygote</span>
+
+<span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gradient</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>([4.0, 8.0, 12.0, 16.0],)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now verify that the automatic gradient computation and the expected result are identical.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">first</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">x</span><span class="o">.*</span><span class="mi">4</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>true
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s calculate another function of x and take its gradient.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">gradient</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Fill(1.0, 4),)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="backward-for-non-scalar-variables">
+<h2><span class="section-number">5.2. </span>Backward for Non-Scalar Variables<a class="headerlink" href="#backward-for-non-scalar-variables" title="Permalink to this heading">#</a></h2>
+<p>When y is a vector, the most natural interpretation of the derivative of y with respect to a vector x is a matrix called the Jacobian that contains the partial derivatives of each component of y with respect to each component of x. Likewise, for higher-order y and x, the differentiation result could be an even higher-order tensor.</p>
+<p>While Jacobians do show up in some advanced machine learning techniques, more commonly we want to sum up the gradients of each component of y with respect to the full vector x, yielding a vector of the same shape as x. For example, we often have a vector representing the value of our loss function calculated separately for each example among a batch of training examples. Here, we just want to sum up the gradients computed individually for each example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="o">.*</span><span class="n">x</span>
+<span class="n">gradient</span><span class="p">(</span><span class="n">x</span><span class="o">-&gt;</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>([2.0, 4.0, 6.0, 8.0],)
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 
@@ -386,16 +479,16 @@ document.write(`
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "julia-1.9"
         },
         kernelOptions: {
-            name: "python3",
+            name: "julia-1.9",
             path: "./notebooks/chapter_preliminaries"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'julia-1.9'</script>
 
                 </article>
               
@@ -436,6 +529,7 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-function">5.1. A Simple Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backward-for-non-scalar-variables">5.2. Backward for Non-Scalar Variables</a></li>
 </ul>
   </nav></div>
 
