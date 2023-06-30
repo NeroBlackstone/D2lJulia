@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>4. Calculus &#8212; Dive into Deep Learning - Julia</title>
+    <title>6. Probability and Statistics &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -61,13 +61,10 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_preliminaries/Calculus';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_preliminaries/Probability and Statistics';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="5. Automatic Differentiation" href="Automatic%20Differentiation.html" />
-    <link rel="prev" title="3. Linear Algebra" href="Linear%20Algebra.html" />
+    <link rel="prev" title="5. Automatic Differentiation" href="Automatic%20Differentiation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -163,9 +160,9 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="Data%20Manipulation.html">1. Data Manipulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Data%20Preprocessing.html">2. Data Preprocessing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Linear%20Algebra.html">3. Linear Algebra</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">4. Calculus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Calculus.html">4. Calculus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Automatic%20Differentiation.html">5. Automatic Differentiation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Probability%20and%20Statistics.html">6. Probability and Statistics</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Probability and Statistics</a></li>
 </ul>
 
     </div>
@@ -237,7 +234,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_preliminaries/Calculus.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_preliminaries/Probability and Statistics.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -267,7 +264,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../../_sources/notebooks/chapter_preliminaries/Calculus.ipynb" target="_blank"
+      <li><a href="../../_sources/notebooks/chapter_preliminaries/Probability and Statistics.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -349,7 +346,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Calculus</h1>
+    <h1>Probability and Statistics</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -359,8 +356,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivatives-and-differentiation">4.1. Derivatives and Differentiation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-utilities">4.2. Visualization Utilities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-example-tossing-coins">6.1. A Simple Example: Tossing Coins</a></li>
 </ul>
             </nav>
         </div>
@@ -372,65 +368,100 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="calculus">
-<h1><span class="section-number">4. </span>Calculus<a class="headerlink" href="#calculus" title="Permalink to this heading">#</a></h1>
-<section id="derivatives-and-differentiation">
-<h2><span class="section-number">4.1. </span>Derivatives and Differentiation<a class="headerlink" href="#derivatives-and-differentiation" title="Permalink to this heading">#</a></h2>
-<p>Let’s develop some intuition with an example.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="probability-and-statistics">
+<h1><span class="section-number">6. </span>Probability and Statistics<a class="headerlink" href="#probability-and-statistics" title="Permalink to this heading">#</a></h1>
+<p>One way or another, machine learning is all about uncertainty. In supervised learning, we want to predict something unknown (the target) given something known (the features). Depending on our objective, we might attempt to predict the most likely value of the target. Or we might predict the value with the smallest expected distance from the target. And sometimes we wish not only to predict a specific value but to quantify our uncertainty. For example, given some features describing a patient, we might want to know how likely they are to suffer a heart attack in the next year. In unsupervised learning, we often care about uncertainty. To determine whether a set of measurements are anomalous, it helps to know how likely one is to observe values in a population of interest. Moreover, in reinforcement learning, we wish to develop agents that act intelligently in various environments. This requires reasoning about how an environment might be expected to change and what rewards one might expect to encounter in response to each of the available actions.</p>
+<p>Probability is the mathematical field concerned with reasoning under uncertainty. Given a probabilistic model of some process, we can reason about the likelihood of various events. The use of probabilities to describe the frequencies of repeatable events (like coin tosses) is fairly uncontroversial. In fact, frequentist scholars adhere to an interpretation of probability that applies only to such repeatable events. By contrast Bayesian scholars use the language of probability more broadly to formalize our reasoning under uncertainty. Bayesian probability is characterized by two unique features: (i) assigning degrees of belief to non-repeatable events, e.g., what is the probability that the moon is made out of cheese?; and (ii) subjectivity—while Bayesian probability provides unambiguous rules for how one should update their beliefs in light of new evidence, it allows for different individuals to start off with different prior beliefs. Statistics helps us to reason backwards, starting off with collection and organization of data and backing out to what inferences we might draw about the process that generated the data. Whenever we analyze a dataset, hunting for patterns that we hope might characterize a broader population, we are employing statistical thinking. Most courses, majors, theses, careers, departments, companies, and institutions have been devoted to the study of probability and statistics. While this section only scratches the surface, we will provide the foundation that you need to begin building models.</p>
+<section id="a-simple-example-tossing-coins">
+<h2><span class="section-number">6.1. </span>A Simple Example: Tossing Coins<a class="headerlink" href="#a-simple-example-tossing-coins" title="Permalink to this heading">#</a></h2>
+<p>We can get out 0 and 1 with probability 0.5 each by testing whether the returned float is greater than 0.5</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span><span class="o">-</span><span class="mi">4</span><span class="n">x</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">num_tosses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
+<span class="n">heads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">([</span><span class="n">rand</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">100</span><span class="p">])</span>
+<span class="n">tails</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num_tosses</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">heads</span>
+<span class="n">print</span><span class="p">(</span><span class="s">&quot;heads:</span><span class="si">$</span><span class="p">(</span><span class="n">heads</span><span class="p">)</span><span class="s">, tails:</span><span class="si">$</span><span class="p">(</span><span class="n">tails</span><span class="p">)</span><span class="s"> &quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>f (generic function with 1 method)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>heads:42, tails:58 
 </pre></div>
 </div>
 </div>
 </div>
-<p>While this experiment lacks the rigor of a mathematical proof, we will soon see that indeed <span class="math notranslate nohighlight">\( f'(1) = 2 \)</span>.</p>
+<p>More generally, we can simulate multiple draws from any variable with a finite number of possible outcomes (like the toss of a coin or roll of a die) by calling the <a class="reference external" href="https://juliastats.org/Distributions.jl/stable/univariate/#Distributions.Binomial">Binomial</a> type from <a class="reference external" href="https://juliastats.org/Distributions.jl/stable/">Distributions.jl</a>, setting the first argument <code class="docutils literal notranslate"><span class="pre">n</span></code> to the number of draws and the second <code class="docutils literal notranslate"><span class="pre">p</span></code> as probability of success in an individual trial (omit for <code class="docutils literal notranslate"><span class="pre">p=0.5</span></code>). To simulate ten tosses of a fair coin, we omit second argumrnt <code class="docutils literal notranslate"><span class="pre">p</span></code>. The function <code class="docutils literal notranslate"><span class="pre">rand</span></code> returns a random element or array of random elements from the set of values, where tells us the number of occurrences of heads.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Printf</span>
-<span class="k">for</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mf">10.0</span><span class="o">.^</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">:-</span><span class="mi">1</span><span class="o">:-</span><span class="mi">5</span><span class="p">)</span>
-<span class="w">    </span><span class="nd">@printf</span><span class="w"> </span><span class="s">&quot;h=</span><span class="si">%.5f</span><span class="s">, numerical limit=</span><span class="si">%.5f</span><span class="s"> </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">h</span><span class="p">)</span><span class="o">-</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="n">h</span>
-<span class="k">end</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Distributions</span>
+<span class="n">heads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Binomial</span><span class="p">(</span><span class="n">num_tosses</span><span class="p">))</span>
+<span class="n">tails</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num_tosses</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">heads</span>
+<span class="n">heads</span><span class="p">,</span><span class="n">tails</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>h=0.10000, numerical limit=2.30000 
-h=0.01000, numerical limit=2.03000 
-h=0.00100, numerical limit=2.00300 
-h=0.00010, numerical limit=2.00030 
-h=0.00001, numerical limit=2.00003 
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(43, 57)
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="visualization-utilities">
-<h2><span class="section-number">4.2. </span>Visualization Utilities<a class="headerlink" href="#visualization-utilities" title="Permalink to this heading">#</a></h2>
-<p>We can visualize the slopes of functions using the <a class="reference external" href="https://docs.makie.org/stable/">Makie</a> package.</p>
+<p>Each time you run this sampling process, you will receive a new random value that may differ from the previous outcome. Dividing by the number of tosses gives us the frequency of each outcome in our data. Note that these frequencies, like the probabilities that they are intended to estimate, sum to 1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">heads</span><span class="p">,</span><span class="n">tails</span><span class="p">)</span><span class="o">./</span><span class="n">num_tosses</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.43, 0.57)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here, even though our simulated coin is fair, the counts of heads and tails may not be identical. That is because we only drew a finite number of samples. If we did not implement the simulation ourselves, and only saw the outcome, how would we know if the coin were slightly unfair or if the possible deviation from 1/2 was just an artifact of the small sample size? Let’s see what happens when we simulate 10000 tosses.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">num_tosses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10000</span>
+<span class="n">heads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Binomial</span><span class="p">(</span><span class="n">num_tosses</span><span class="p">))</span>
+<span class="n">tails</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num_tosses</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">heads</span>
+<span class="p">(</span><span class="n">heads</span><span class="p">,</span><span class="n">tails</span><span class="p">)</span><span class="o">./</span><span class="n">num_tosses</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.501, 0.499)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s get some more intuition by studying how our estimate evolves as we grow the number of tosses from 1 to 10000.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">CairoMakie</span>
 
-<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">fg</span><span class="p">,</span><span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;f(x)&quot;</span><span class="p">)</span>
-<span class="n">lines!</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="o">-&gt;</span><span class="mi">2</span><span class="n">x</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="ss">:dash</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="o">=</span><span class="s">&quot;Tangent line (x=1)&quot;</span><span class="p">)</span>
-<span class="n">axislegend</span><span class="p">(</span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:lt</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">xlabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;x&quot;</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">ylabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;f(x)&quot;</span>
+<span class="n">counts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">num_tosses</span><span class="p">)</span>
+<span class="n">cum_counts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cumsum</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+<span class="n">estimates</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cum_counts</span><span class="w"> </span><span class="o">./</span><span class="w"> </span><span class="n">collect</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="n">num_tosses</span><span class="p">)</span>
+
+<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">num_tosses</span><span class="p">)</span>
+<span class="n">fg</span><span class="p">,</span><span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">estimates</span><span class="w"> </span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;P(coin=heads)&quot;</span><span class="p">)</span>
+<span class="n">lines!</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">ones</span><span class="p">(</span><span class="n">num_tosses</span><span class="p">)</span><span class="o">.-</span><span class="n">estimates</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="o">=</span><span class="s">&quot;P(coin=tails)&quot;</span><span class="p">)</span>
+<span class="n">axislegend</span><span class="p">()</span>
+<span class="n">hlines!</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="ss">:black</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="ss">:dash</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">yticks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="o">:</span><span class="mf">0.2</span><span class="o">:</span><span class="mf">1.0</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">xticks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="mi">2000</span><span class="o">:</span><span class="n">num_tosses</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">xlabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Samples&quot;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">ylabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Estimated probability&quot;</span>
 <span class="n">fg</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/fb872c01066cf603d08557b7167bfadeee2b649bc997a9874501606932d9bccc.png" src="../../_images/fb872c01066cf603d08557b7167bfadeee2b649bc997a9874501606932d9bccc.png" />
+<img alt="../../_images/d31192489fb10e711298bc2cedd76d8fb48649d88dd3fbdfa012eec4669a3c0a.png" src="../../_images/d31192489fb10e711298bc2cedd76d8fb48649d88dd3fbdfa012eec4669a3c0a.png" />
 </div>
 </div>
+<p>Each solid curve corresponds to one of the two values of the coin and gives our estimated probability that the coin turns up that value after each group of experiments. The dashed black line gives the true underlying probability. As we get more data by conducting more experiments, the curves converge towards the true probability.</p>
 </section>
 </section>
 
@@ -466,22 +497,13 @@ h=0.00001, numerical limit=2.00003
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="Linear%20Algebra.html"
+       href="Automatic%20Differentiation.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">3. </span>Linear Algebra</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="Automatic%20Differentiation.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title"><span class="section-number">5. </span>Automatic Differentiation</p>
       </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div></div>
   
@@ -501,8 +523,7 @@ h=0.00001, numerical limit=2.00003
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivatives-and-differentiation">4.1. Derivatives and Differentiation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-utilities">4.2. Visualization Utilities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-example-tossing-coins">6.1. A Simple Example: Tossing Coins</a></li>
 </ul>
   </nav></div>
 
