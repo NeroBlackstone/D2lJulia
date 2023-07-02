@@ -64,6 +64,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_preliminaries/Probability and Statistics';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7. Linear Regression" href="../chapter_linear_regression/Linear%20Regression.html" />
     <link rel="prev" title="5. Automatic Differentiation" href="Automatic%20Differentiation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -163,6 +164,10 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="Calculus.html">4. Calculus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Automatic%20Differentiation.html">5. Automatic Differentiation</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Probability and Statistics</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Linear Neural Networks for Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_linear_regression/Linear%20Regression.html">7. Linear Regression</a></li>
 </ul>
 
     </div>
@@ -385,7 +390,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>heads:42, tails:58 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>heads:54, tails:46 
 </pre></div>
 </div>
 </div>
@@ -401,7 +406,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(43, 57)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(52, 48)
 </pre></div>
 </div>
 </div>
@@ -414,7 +419,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.43, 0.57)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.52, 0.48)
 </pre></div>
 </div>
 </div>
@@ -430,7 +435,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.501, 0.499)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.5046, 0.4954)
 </pre></div>
 </div>
 </div>
@@ -444,7 +449,7 @@ document.write(`
 <span class="n">cum_counts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cumsum</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
 <span class="n">estimates</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cum_counts</span><span class="w"> </span><span class="o">./</span><span class="w"> </span><span class="n">collect</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="n">num_tosses</span><span class="p">)</span>
 
-<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">num_tosses</span><span class="p">)</span>
+<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">num_tosses</span>
 <span class="n">fg</span><span class="p">,</span><span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">estimates</span><span class="w"> </span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;P(coin=heads)&quot;</span><span class="p">)</span>
 <span class="n">lines!</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">ones</span><span class="p">(</span><span class="n">num_tosses</span><span class="p">)</span><span class="o">.-</span><span class="n">estimates</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="o">=</span><span class="s">&quot;P(coin=tails)&quot;</span><span class="p">)</span>
 <span class="n">axislegend</span><span class="p">()</span>
@@ -458,7 +463,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/d31192489fb10e711298bc2cedd76d8fb48649d88dd3fbdfa012eec4669a3c0a.png" src="../../_images/d31192489fb10e711298bc2cedd76d8fb48649d88dd3fbdfa012eec4669a3c0a.png" />
+<img alt="../../_images/f950c4e458a09e03b9e4e95b23504d5bb97bd5f1905c2b2b7ebd472cd09fb350.png" src="../../_images/f950c4e458a09e03b9e4e95b23504d5bb97bd5f1905c2b2b7ebd472cd09fb350.png" />
 </div>
 </div>
 <p>Each solid curve corresponds to one of the two values of the coin and gives our estimated probability that the coin turns up that value after each group of experiments. The dashed black line gives the true underlying probability. As we get more data by conducting more experiments, the curves converge towards the true probability.</p>
@@ -504,6 +509,15 @@ document.write(`
         <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title"><span class="section-number">5. </span>Automatic Differentiation</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="../chapter_linear_regression/Linear%20Regression.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>Linear Regression</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div></div>
   
