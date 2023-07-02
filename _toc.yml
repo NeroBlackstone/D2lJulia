@@ -15,5 +15,5 @@ parts:
     - file: notebooks/chapter_preliminaries/Probability and Statistics.ipynb
   - caption: Linear Neural Networks for Regression
     numbered: true
+    chapters:
     - file: notebooks/chapter_linear_regression/Linear Regression.ipynb
-    
