@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>7. Linear Regression &#8212; Dive into Deep Learning - Julia</title>
+    <title>Concise Implementation of Linear Regression &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -61,10 +61,9 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_linear_regression/Linear Regression';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_linear_regression/Concise Implementation of Linear Regression';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="6. Probability and Statistics" href="../chapter_preliminaries/Probability%20and%20Statistics.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -165,8 +164,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter_preliminaries/Probability%20and%20Statistics.html">6. Probability and Statistics</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Linear Neural Networks for Regression</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">7. Linear Regression</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Linear%20Regression.html">7. Linear Regression</a></li>
 </ul>
 
     </div>
@@ -238,7 +237,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_linear_regression/Linear Regression.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_linear_regression/Concise Implementation of Linear Regression.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -268,7 +267,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../../_sources/notebooks/chapter_linear_regression/Linear Regression.ipynb" target="_blank"
+      <li><a href="../../_sources/notebooks/chapter_linear_regression/Concise Implementation of Linear Regression.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -350,7 +349,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Linear Regression</h1>
+    <h1>Concise Implementation of Linear Regression</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -360,8 +359,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorization-for-speed">7.1. Vectorization for Speed</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-normal-distribution-and-squared-loss">7.2. The Normal Distribution and Squared Loss</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-the-dataset">Generating the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">Reading the Dataset</a></li>
 </ul>
             </nav>
         </div>
@@ -373,76 +372,79 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="linear-regression">
-<h1><span class="section-number">7. </span>Linear Regression<a class="headerlink" href="#linear-regression" title="Permalink to this heading">#</a></h1>
-<p>Regression problems pop up whenever we want to predict a numerical value. Common examples include predicting prices (of homes, stocks, etc.), predicting the length of stay (for patients in the hospital), forecasting demand (for retail sales), among countless others. Not every prediction problem is a classic regression problem. Later on, we will introduce classification problems, where the goal is to predict membership among a set of categories.</p>
-<p>As a running example, suppose that we wish to estimate the prices of houses (in dollars) based on their area (in square feet) and age (in years). To develop a model for predicting house prices, we need to get our hands on data consisting of sales, including the sales price, area, and age for each home. In the terminology of machine learning, the dataset is called a training dataset or training set, and each row (containing the data corresponding to one sale) is called an example (or data point, instance, sample). The thing we are trying to predict (price) is called a label (or target). The variables (age and area) upon which the predictions are based are called features (or covariates).</p>
-<section id="vectorization-for-speed">
-<h2><span class="section-number">7.1. </span>Vectorization for Speed<a class="headerlink" href="#vectorization-for-speed" title="Permalink to this heading">#</a></h2>
-<p>When training our models, we typically want to process whole minibatches of examples simultaneously. Doing this efficiently requires that we vectorize the calculations and leverage fast linear algebra libraries rather than writing costly for-loops in Julia.</p>
-<p>To illustrate why this matters so much, we can consider two methods for adding vectors. To start, we instantiate two 10,000-dimensional vectors containing all ones. In one method, we loop over the vectors with a Julia for-loop. In the other method, we rely on a single call to +.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10000</span>
-<span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now we can benchmark the workloads. First, we add them, one coordinate at a time, using a for-loop.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@time</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">ae</span><span class="o">+</span><span class="n">be</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ae</span><span class="p">,</span><span class="n">be</span><span class="p">)</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)];</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0.069372 seconds (151.57 k allocations: 10.468 MiB, 88.17% compilation time)
-</pre></div>
-</div>
-</div>
-</div>
-<p>Alternatively, we rely on the reloaded + operator to compute the elementwise sum.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@time</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="o">.+</span><span class="n">b</span><span class="p">;</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0.062264 seconds (98.36 k allocations: 6.826 MiB, 99.60% compilation time)
-</pre></div>
-</div>
-</div>
-</div>
-<p>The second method is dramatically faster than the first. Vectorizing code often yields order-of-magnitude speedups. Moreover, we push more of the mathematics to the library without the need to write as many calculations ourselves, reducing the potential for errors and increasing portability of the code.</p>
-</section>
-<section id="the-normal-distribution-and-squared-loss">
-<h2><span class="section-number">7.2. </span>The Normal Distribution and Squared Loss<a class="headerlink" href="#the-normal-distribution-and-squared-loss" title="Permalink to this heading">#</a></h2>
-<p>We can now visualize the normal distributions.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="concise-implementation-of-linear-regression">
+<h1>Concise Implementation of Linear Regression<a class="headerlink" href="#concise-implementation-of-linear-regression" title="Permalink to this heading">#</a></h1>
+<p>Deep learning has witnessed a Cambrian explosion of sorts over the past decade. The sheer number of techniques, applications and algorithms by far surpasses the progress of previous decades. This is due to a fortuitous combination of multiple factors, one of which is the powerful free tools offered by a number of open source deep learning frameworks. Theano (Bergstra et al., 2010), DistBelief (Dean et al., 2012), and Caffe (Jia et al., 2014) arguably represent the first generation of such models that found widespread adoption. In contrast to earlier (seminal) works like SN2 (Simulateur Neuristique) (Bottou and Le Cun, 1988), which provided a Lisp-like programming experience, modern frameworks offer automatic differentiation and the convenience of Julia. These frameworks allow us to automate and modularize the repetitive work of implementing gradient-based learning algorithms.</p>
+<p>In Section 3.4, we relied only on (i) tensors for data storage and linear algebra; and (ii) automatic differentiation for calculating gradients. In practice, because data iterators, loss functions, optimizers, and neural network layers are so common, modern libraries implement these components for us as well. In this section, we will show you how to implement the linear regression model from Section 3.4 concisely by using high-level APIs of deep learning frameworks.</p>
+<section id="generating-the-dataset">
+<h2>Generating the Dataset<a class="headerlink" href="#generating-the-dataset" title="Permalink to this heading">#</a></h2>
+<p>For this example, we will work low-dimensional for succinctness. The following code snippet generates 1000 examples with 2-dimensional features drawn from a standard normal distribution.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Distributions</span>
-<span class="k">using</span><span class="w"> </span><span class="n">CairoMakie</span>
 
-<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">7</span><span class="o">:</span><span class="mf">0.01</span><span class="o">:</span><span class="mi">7</span>
-<span class="c"># Mean and standard deviation pairs</span>
-<span class="n">params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)]</span>
-
-<span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Figure</span><span class="p">()</span>
-<span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Axis</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">xlabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ylabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;p(x)&quot;</span><span class="p">,</span><span class="n">xticks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">6</span><span class="o">:</span><span class="mi">2</span><span class="o">:</span><span class="mi">6</span><span class="p">)</span>
-<span class="k">for</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">params</span>
-<span class="w">    </span><span class="n">μ</span><span class="p">,</span><span class="n">σ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="w">    </span><span class="n">lines!</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">Normal</span><span class="p">(</span><span class="n">μ</span><span class="p">,</span><span class="n">σ</span><span class="p">),</span><span class="w"> </span><span class="n">label</span><span class="o">=</span><span class="s">&quot;mean </span><span class="si">$</span><span class="p">(</span><span class="n">μ</span><span class="p">)</span><span class="s">, std </span><span class="si">$</span><span class="p">(</span><span class="n">σ</span><span class="p">)</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="k">function</span><span class="w"> </span><span class="n">synthetic_data</span><span class="p">(</span><span class="n">w</span><span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="p">},</span><span class="n">b</span><span class="o">::</span><span class="kt">Real</span><span class="p">,</span><span class="n">num_example</span><span class="o">::</span><span class="kt">Int</span><span class="p">)</span>
+<span class="w">    </span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">num_example</span><span class="p">,</span><span class="n">length</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">.+</span><span class="w"> </span><span class="n">b</span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">X</span><span class="o">&#39;</span><span class="p">,</span><span class="n">y</span>
 <span class="k">end</span>
-<span class="n">axislegend</span><span class="p">(</span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:lt</span><span class="p">)</span>
-<span class="n">f</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/fb3af3be1a999e0f5543241c2d0c989bd7bab79f9a539c7a4463468da2a79213.png" src="../../_images/fb3af3be1a999e0f5543241c2d0c989bd7bab79f9a539c7a4463468da2a79213.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>synthetic_data (generic function with 1 method)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Later, we can check our estimated parameters against these ground truth values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">features</span><span class="p">,</span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">synthetic_data</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mf">3.4</span><span class="p">],</span><span class="mf">4.2</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>([-0.12279935073374365 0.23427746645019112 … 1.3829363043329108 1.2112783672778997; 0.7789172739040593 -0.25836222942375575 … 0.02206495866476098 0.4059850532104842], [1.3118189798786921, 5.572279364752613, 7.307934906608078, 8.053225502529461, 6.712435738255071, 6.537970797117105, 6.565968128726783, 0.9187445916390282, 5.660096541768708, 8.102444847598639  …  10.797463255194037, 5.635942451633789, -3.090376704498724, 4.4758978171393515, 1.1857546675162958, 11.964290257157334, -0.36569418941334697, 6.919690725712639, 6.889907033734347, 5.24308230244096])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s have a look at the first entry.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">println</span><span class="p">(</span><span class="s">&quot;features:</span><span class="si">$</span><span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="o">:</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;label:</span><span class="si">$</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="s">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>features:[-0.12279935073374365, 0.7789172739040593]
+label:1.3118189798786921
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="reading-the-dataset">
+<h2>Reading the Dataset<a class="headerlink" href="#reading-the-dataset" title="Permalink to this heading">#</a></h2>
+<p>To build some intuition, let’s inspect the first minibatch of data. Each minibatch of features provides us with both its size and the dimensionality of input features. Likewise, our minibatch of labels will have a matching shape given by <code class="docutils literal notranslate"><span class="pre">batch_size</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">MLUtils</span>
+<span class="n">train_loader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataLoader</span><span class="p">((</span><span class="n">features</span><span class="p">,</span><span class="n">labels</span><span class="p">),</span><span class="n">batchsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">shuffle</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">first</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;X shape:</span><span class="si">$</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">))</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;y shape:</span><span class="si">$</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="s">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X shape:(2, 10)
+y shape:(10,)
+</pre></div>
+</div>
 </div>
 </div>
 </section>
@@ -479,15 +481,6 @@ document.write(`
   
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="../chapter_preliminaries/Probability%20and%20Statistics.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">6. </span>Probability and Statistics</p>
-      </div>
-    </a>
 </div></div>
   
 </div>
@@ -506,8 +499,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorization-for-speed">7.1. Vectorization for Speed</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-normal-distribution-and-squared-loss">7.2. The Normal Distribution and Squared Loss</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-the-dataset">Generating the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">Reading the Dataset</a></li>
 </ul>
   </nav></div>
 
