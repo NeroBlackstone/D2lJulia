@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Concise Implementation of Linear Regression &#8212; Dive into Deep Learning - Julia</title>
+    <title>8. Concise Implementation of Linear Regression &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -64,6 +64,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_linear_regression/Concise Implementation of Linear Regression';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="7. Linear Regression" href="Linear%20Regression.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -164,8 +165,9 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter_preliminaries/Probability%20and%20Statistics.html">6. Probability and Statistics</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Linear Neural Networks for Regression</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Linear%20Regression.html">7. Linear Regression</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">8. Concise Implementation of Linear Regression</a></li>
 </ul>
 
     </div>
@@ -359,8 +361,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-the-dataset">Generating the Dataset</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">Reading the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-the-dataset">8.1. Generating the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">8.2. Reading the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-model">8.3. Defining the Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-loss-function">8.4. Defining the Loss Function</a></li>
 </ul>
             </nav>
         </div>
@@ -373,20 +377,20 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="concise-implementation-of-linear-regression">
-<h1>Concise Implementation of Linear Regression<a class="headerlink" href="#concise-implementation-of-linear-regression" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">8. </span>Concise Implementation of Linear Regression<a class="headerlink" href="#concise-implementation-of-linear-regression" title="Permalink to this heading">#</a></h1>
 <p>Deep learning has witnessed a Cambrian explosion of sorts over the past decade. The sheer number of techniques, applications and algorithms by far surpasses the progress of previous decades. This is due to a fortuitous combination of multiple factors, one of which is the powerful free tools offered by a number of open source deep learning frameworks. Theano (Bergstra et al., 2010), DistBelief (Dean et al., 2012), and Caffe (Jia et al., 2014) arguably represent the first generation of such models that found widespread adoption. In contrast to earlier (seminal) works like SN2 (Simulateur Neuristique) (Bottou and Le Cun, 1988), which provided a Lisp-like programming experience, modern frameworks offer automatic differentiation and the convenience of Julia. These frameworks allow us to automate and modularize the repetitive work of implementing gradient-based learning algorithms.</p>
 <p>In Section 3.4, we relied only on (i) tensors for data storage and linear algebra; and (ii) automatic differentiation for calculating gradients. In practice, because data iterators, loss functions, optimizers, and neural network layers are so common, modern libraries implement these components for us as well. In this section, we will show you how to implement the linear regression model from Section 3.4 concisely by using high-level APIs of deep learning frameworks.</p>
 <section id="generating-the-dataset">
-<h2>Generating the Dataset<a class="headerlink" href="#generating-the-dataset" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">8.1. </span>Generating the Dataset<a class="headerlink" href="#generating-the-dataset" title="Permalink to this heading">#</a></h2>
 <p>For this example, we will work low-dimensional for succinctness. The following code snippet generates 1000 examples with 2-dimensional features drawn from a standard normal distribution.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Distributions</span>
 
 <span class="k">function</span><span class="w"> </span><span class="n">synthetic_data</span><span class="p">(</span><span class="n">w</span><span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="p">},</span><span class="n">b</span><span class="o">::</span><span class="kt">Real</span><span class="p">,</span><span class="n">num_example</span><span class="o">::</span><span class="kt">Int</span><span class="p">)</span>
-<span class="w">    </span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">num_example</span><span class="p">,</span><span class="n">length</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+<span class="w">    </span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="n">num_example</span><span class="p">,</span><span class="n">length</span><span class="p">(</span><span class="n">w</span><span class="p">)))</span>
 <span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">.+</span><span class="w"> </span><span class="n">b</span>
-<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.01</span><span class="p">),</span><span class="n">size</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.01</span><span class="p">),(</span><span class="n">size</span><span class="p">(</span><span class="n">y</span><span class="p">)))</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">X</span><span class="o">&#39;</span><span class="p">,</span><span class="n">y</span>
 <span class="k">end</span>
 </pre></div>
@@ -406,7 +410,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>([-0.12279935073374365 0.23427746645019112 … 1.3829363043329108 1.2112783672778997; 0.7789172739040593 -0.25836222942375575 … 0.02206495866476098 0.4059850532104842], [1.3118189798786921, 5.572279364752613, 7.307934906608078, 8.053225502529461, 6.712435738255071, 6.537970797117105, 6.565968128726783, 0.9187445916390282, 5.660096541768708, 8.102444847598639  …  10.797463255194037, 5.635942451633789, -3.090376704498724, 4.4758978171393515, 1.1857546675162958, 11.964290257157334, -0.36569418941334697, 6.919690725712639, 6.889907033734347, 5.24308230244096])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>([1.9401364183013174 0.6051031869566568 … -1.7996608946334989 -0.7827883908319037; 0.8962821039550989 2.9920205398653246 … 0.2002959337533348 0.17053457834335278], [5.02517778997923, -4.743942771525808, 7.337228147234253, 4.8270888390641655, 5.28077515676432, -0.6798677732644484, 1.3393550190390109, 2.997312010767381, 5.473702497402034, 1.0979057088034359  …  3.809525753203825, 6.093459347093014, 9.43083931889319, 5.667768666629312, 4.880116091089365, 6.627730930765788, 1.8315644043338155, 7.890307049249085, -0.08220125727076076, 2.056472670349751])
 </pre></div>
 </div>
 </div>
@@ -420,15 +424,15 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>features:[-0.12279935073374365, 0.7789172739040593]
-label:1.3118189798786921
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>features:[1.9401364183013174, 0.8962821039550989]
+label:5.02517778997923
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="reading-the-dataset">
-<h2>Reading the Dataset<a class="headerlink" href="#reading-the-dataset" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">8.2. </span>Reading the Dataset<a class="headerlink" href="#reading-the-dataset" title="Permalink to this heading">#</a></h2>
 <p>To build some intuition, let’s inspect the first minibatch of data. Each minibatch of features provides us with both its size and the dimensionality of input features. Likewise, our minibatch of labels will have a matching shape given by <code class="docutils literal notranslate"><span class="pre">batch_size</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -447,6 +451,27 @@ y shape:(10,)
 </div>
 </div>
 </div>
+</section>
+<section id="defining-the-model">
+<h2><span class="section-number">8.3. </span>Defining the Model<a class="headerlink" href="#defining-the-model" title="Permalink to this heading">#</a></h2>
+<p>For standard operations, we can use a framework’s predefined layers, which allow us to focus on the layers used to construct the model rather than worrying about their implementation. Recall the architecture of a single-layer network as described in Fig. 3.1.2. The layer is called fully connected, since each of its inputs is connected to each of its outputs by means of a matrix-vector multiplication.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Dense(2</span> <span class="pre">=&gt;</span> <span class="pre">1)</span></code> layer denotes a layer of one neuron with one input (one feature) and one output.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Flux</span>
+<span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="o">=&gt;</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dense(2 =&gt; 1)       # 3 parameters
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="defining-the-loss-function">
+<h2><span class="section-number">8.4. </span>Defining the Loss Function<a class="headerlink" href="#defining-the-loss-function" title="Permalink to this heading">#</a></h2>
 </section>
 </section>
 
@@ -481,6 +506,15 @@ y shape:(10,)
   
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="Linear%20Regression.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>Linear Regression</p>
+      </div>
+    </a>
 </div></div>
   
 </div>
@@ -499,8 +533,10 @@ y shape:(10,)
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-the-dataset">Generating the Dataset</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">Reading the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-the-dataset">8.1. Generating the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">8.2. Reading the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-model">8.3. Defining the Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-loss-function">8.4. Defining the Loss Function</a></li>
 </ul>
   </nav></div>
 
