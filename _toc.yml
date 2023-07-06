@@ -17,3 +17,4 @@ parts:
     numbered: true
     chapters:
     - file: notebooks/chapter_linear_regression/Linear Regression.ipynb
+    - file: notebooks/chapter_linear_regression/Concise Implementation of Linear Regression.ipynb
