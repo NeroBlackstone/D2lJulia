@@ -395,12 +395,12 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>heads:50, tails:50 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>heads:59, tails:41 
 </pre></div>
 </div>
 </div>
 </div>
-<p>More generally, we can simulate multiple draws from any variable with a finite number of possible outcomes (like the toss of a coin or roll of a die) by calling the <a class="reference external" href="https://juliastats.org/Distributions.jl/stable/univariate/#Distributions.Binomial">Binomial</a> type from <a class="reference external" href="https://juliastats.org/Distributions.jl/stable/">Distributions.jl</a>, setting the first argument <code class="docutils literal notranslate"><span class="pre">n</span></code> to the number of draws and the second <code class="docutils literal notranslate"><span class="pre">p</span></code> as probability of success in an individual trial (omit for <code class="docutils literal notranslate"><span class="pre">p=0.5</span></code>). To simulate ten tosses of a fair coin, we omit second argumrnt <code class="docutils literal notranslate"><span class="pre">p</span></code>. The function <code class="docutils literal notranslate"><span class="pre">rand</span></code> returns a random element or array of random elements from the set of values, where tells us the number of occurrences of heads.</p>
+<p>More generally, we can simulate multiple draws from any variable with a finite number of possible outcomes (like the toss of a coin or roll of a die) by calling the <a class="reference external" href="https://juliastats.org/Distributions.jl/stable/univariate/#Distributions.Binomial">Binomial</a> type from <a class="reference external" href="https://juliastats.org/Distributions.jl/stable/">Distributions.jl</a>, setting the first argument <code class="docutils literal notranslate"><span class="pre">n</span></code> to the number of draws and the second <code class="docutils literal notranslate"><span class="pre">p</span></code> as probability of success in an individual trial (omit for <code class="docutils literal notranslate"><span class="pre">p=0.5</span></code>). To simulate ten tosses of a fair coin, we omit second argument <code class="docutils literal notranslate"><span class="pre">p</span></code>. The function <code class="docutils literal notranslate"><span class="pre">rand</span></code> returns a random element or array of random elements from the set of values, where tells us the number of occurrences of heads.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Distributions</span>
@@ -411,7 +411,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(55, 45)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(41, 59)
 </pre></div>
 </div>
 </div>
@@ -424,7 +424,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.55, 0.45)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.41, 0.59)
 </pre></div>
 </div>
 </div>
@@ -440,7 +440,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.5027, 0.4973)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.4979, 0.5021)
 </pre></div>
 </div>
 </div>
@@ -468,7 +468,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/075a2ee1f6516106c5b6d2cd1c0aca8f27a89a49943ece4572ee3a437af59fd9.png" src="../../_images/075a2ee1f6516106c5b6d2cd1c0aca8f27a89a49943ece4572ee3a437af59fd9.png" />
+<img alt="../../_images/60541c8840df18c54ce71ded38ac1fab62ef99b91f5da66c0d46761b39a10438.png" src="../../_images/60541c8840df18c54ce71ded38ac1fab62ef99b91f5da66c0d46761b39a10438.png" />
 </div>
 </div>
 <p>Each solid curve corresponds to one of the two values of the coin and gives our estimated probability that the coin turns up that value after each group of experiments. The dashed black line gives the true underlying probability. As we get more data by conducting more experiments, the curves converge towards the true probability.</p>
