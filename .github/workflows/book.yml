@@ -44,13 +44,14 @@ jobs:
       run: |
         import Pkg
         Pkg.Registry.update()
-        Pkg.add(["IJulia"])
-        import IJulia
-        IJulia.installkernel("Julia", "--project=@.")
         Pkg.activate(".")
         Pkg.instantiate()
-        Pkg.resolve()
-        Pkg.precompile()
+        # Pkg.add(["IJulia"])
+        import IJulia
+        IJulia.installkernel("Julia", "--project=@.")
+        
+        # Pkg.resolve()
+        # Pkg.precompile()
 
     # Build the book
     - name: Build the book
