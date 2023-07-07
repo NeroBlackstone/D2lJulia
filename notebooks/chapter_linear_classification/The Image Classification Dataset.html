@@ -388,7 +388,8 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># using MLDatasets</span>
 
-<span class="c"># FashionMNIST(; Tx=Float32, split=:train, dir=&quot;./&quot;)</span>
+<span class="c"># ENV[&quot;DATADEPS_ALWAYS_ACCEPT&quot;] = true</span>
+<span class="c"># FashionMNIST(; Tx=Float32, split=:train)</span>
 <span class="c"># length(train_x)#,length(text_x)</span>
 </pre></div>
 </div>

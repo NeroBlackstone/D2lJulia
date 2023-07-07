@@ -386,10 +386,10 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="concise-implementation-of-linear-regression">
 <h1><span class="section-number">8. </span>Concise Implementation of Linear Regression<a class="headerlink" href="#concise-implementation-of-linear-regression" title="Permalink to this heading">#</a></h1>
 <p>Deep learning has witnessed a Cambrian explosion of sorts over the past decade. The sheer number of techniques, applications and algorithms by far surpasses the progress of previous decades. This is due to a fortuitous combination of multiple factors, one of which is the powerful free tools offered by a number of open source deep learning frameworks. Theano (Bergstra et al., 2010), DistBelief (Dean et al., 2012), and Caffe (Jia et al., 2014) arguably represent the first generation of such models that found widespread adoption. In contrast to earlier (seminal) works like SN2 (Simulateur Neuristique) (Bottou and Le Cun, 1988), which provided a Lisp-like programming experience, modern frameworks offer automatic differentiation and the convenience of Julia. These frameworks allow us to automate and modularize the repetitive work of implementing gradient-based learning algorithms.</p>
-<p>In Section 3.4, we relied only on (i) tensors for data storage and linear algebra; and (ii) automatic differentiation for calculating gradients. In practice, because data iterators, loss functions, optimizers, and neural network layers are so common, modern libraries implement these components for us as well. In this section, we will show you how to implement the linear regression model from Section 3.4 concisely by using high-level APIs of deep learning frameworks.</p>
+<p>In practice, because data iterators, loss functions, optimizers, and neural network layers are so common, modern libraries implement these components for us as well. In this section, we will show you how to implement the linear regression model from Section 3.4 concisely by using high-level APIs of deep learning frameworks.</p>
 <section id="generating-the-dataset">
 <h2><span class="section-number">8.1. </span>Generating the Dataset<a class="headerlink" href="#generating-the-dataset" title="Permalink to this heading">#</a></h2>
-<p>For this example, we will work low-dimensional for succinctness. The following code snippet generates 1000 examples with 2-dimensional features drawn from a standard normal distribution.</p>
+<p>For this example, we will work low-dimensional for succinctness. The following code snippet generates 100 examples with 2-dimensional features drawn from a standard normal distribution.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Distributions</span>
@@ -419,7 +419,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Float32[-2.388619 0.14568527 … -0.41429695 -0.6156915; -0.5523726 0.89574814 … 0.995973 -0.3073782], [1.309594910778105 1.4299266103655102 … -0.015432115504517618 4.004960811324418])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Float32[-1.3261443 0.78187174 … -0.3378837 0.6517284; 0.2599724 -1.45039 … 0.4261142 -0.05430753], [0.6641963602160104 10.700870223715901 … 2.0901685141026976 5.6984164929017425])
 </pre></div>
 </div>
 </div>
@@ -433,8 +433,8 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>features:Float32[-2.388619, -0.5523726]
-label:1.309594910778105
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>features:Float32[-1.3261443, 0.2599724]
+label:0.6641963602160104
 </pre></div>
 </div>
 </div>
@@ -484,10 +484,7 @@ y shape:(1, 10)
 <p>The <code class="docutils literal notranslate"><span class="pre">Flux.mse</span></code> function computes the mean squared error. By default, <code class="docutils literal notranslate"><span class="pre">Flux.mse</span></code> returns the average loss over examples. It is faster (and easier to use) than implementing our own.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-<span class="w">    </span><span class="n">ŷ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="w">    </span><span class="n">Flux</span><span class="o">.</span><span class="n">mse</span><span class="p">(</span><span class="n">ŷ</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-<span class="k">end</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">mse</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -531,9 +528,9 @@ y shape:(1, 10)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>epoch 1, loss 0.340115 
-epoch 2, loss 0.005075 
-epoch 3, loss 0.000188 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>epoch 1, loss 1.188368 
+epoch 2, loss 0.042022 
+epoch 3, loss 0.001587 
 </pre></div>
 </div>
 </div>
@@ -548,8 +545,8 @@ epoch 3, loss 0.000188
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>error in estimating w:[0.0063877105712890625, -0.001546764373779208]
-error in estimating b:0.00649757385253924
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>error in estimating w:[0.021378636360168457, -0.0340463161468505]
+error in estimating b:0.019890499114990412
 </pre></div>
 </div>
 </div>
