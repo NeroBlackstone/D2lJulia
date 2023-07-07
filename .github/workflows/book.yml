@@ -23,7 +23,6 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
-        pip install notebook
 
     - name: Check Julia existence
       id: check_Julia
@@ -44,13 +43,12 @@ jobs:
       shell: julia --project="" --color=yes {0}
       run: |
         import Pkg
-        Pkg.Registry.update()
-        Pkg.activate(".")
-        Pkg.instantiate()
-        # Pkg.add(["IJulia"])
+        # Pkg.Registry.update()
+        # Pkg.activate(".")
+        # Pkg.instantiate()
+        Pkg.add(["IJulia"])
         import IJulia
         IJulia.installkernel("Julia", "--project=@.")
-        
         # Pkg.resolve()
         # Pkg.precompile()
 
