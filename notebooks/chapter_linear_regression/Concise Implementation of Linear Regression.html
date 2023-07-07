@@ -64,6 +64,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_linear_regression/Concise Implementation of Linear Regression';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="9. The Image Classification Dataset" href="../chapter_linear_classification/The%20Image%20Classification%20Dataset.html" />
     <link rel="prev" title="7. Linear Regression" href="Linear%20Regression.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -168,6 +169,10 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Linear%20Regression.html">7. Linear Regression</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">8. Concise Implementation of Linear Regression</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Linear Neural Networks for Classification</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_linear_classification/The%20Image%20Classification%20Dataset.html">9. The Image Classification Dataset</a></li>
 </ul>
 
     </div>
@@ -365,6 +370,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">8.2. Reading the Dataset</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-model">8.3. Defining the Model</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-loss-function">8.4. Defining the Loss Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-optimization-algorithm">8.5. Defining the Optimization Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">8.6. Training</a></li>
 </ul>
             </nav>
         </div>
@@ -388,10 +395,10 @@ document.write(`
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Distributions</span>
 
 <span class="k">function</span><span class="w"> </span><span class="n">synthetic_data</span><span class="p">(</span><span class="n">w</span><span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="p">},</span><span class="n">b</span><span class="o">::</span><span class="kt">Real</span><span class="p">,</span><span class="n">num_example</span><span class="o">::</span><span class="kt">Int</span><span class="p">)</span>
-<span class="w">    </span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="n">num_example</span><span class="p">,</span><span class="n">length</span><span class="p">(</span><span class="n">w</span><span class="p">)))</span>
+<span class="w">    </span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Normal</span><span class="p">(</span><span class="mf">0f0</span><span class="p">,</span><span class="mf">1f0</span><span class="p">),(</span><span class="n">num_example</span><span class="p">,</span><span class="n">length</span><span class="p">(</span><span class="n">w</span><span class="p">)))</span>
 <span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">.+</span><span class="w"> </span><span class="n">b</span>
-<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.01</span><span class="p">),(</span><span class="n">size</span><span class="p">(</span><span class="n">y</span><span class="p">)))</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">X</span><span class="o">&#39;</span><span class="p">,</span><span class="n">y</span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Normal</span><span class="p">(</span><span class="mf">0f0</span><span class="p">,</span><span class="mf">0.01f0</span><span class="p">),(</span><span class="n">size</span><span class="p">(</span><span class="n">y</span><span class="p">)))</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">X</span><span class="o">&#39;</span><span class="p">,</span><span class="n">reshape</span><span class="p">(</span><span class="n">y</span><span class="p">,(</span><span class="mi">1</span><span class="p">,</span><span class="o">:</span><span class="p">))</span>
 <span class="k">end</span>
 </pre></div>
 </div>
@@ -405,12 +412,14 @@ document.write(`
 <p>Later, we can check our estimated parameters against these ground truth values.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">features</span><span class="p">,</span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">synthetic_data</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mf">3.4</span><span class="p">],</span><span class="mf">4.2</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">true_w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mf">3.4</span><span class="p">]</span>
+<span class="n">true_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">4.2</span>
+<span class="n">features</span><span class="p">,</span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">synthetic_data</span><span class="p">(</span><span class="n">true_w</span><span class="p">,</span><span class="n">true_b</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>([1.9401364183013174 0.6051031869566568 … -1.7996608946334989 -0.7827883908319037; 0.8962821039550989 2.9920205398653246 … 0.2002959337533348 0.17053457834335278], [5.02517778997923, -4.743942771525808, 7.337228147234253, 4.8270888390641655, 5.28077515676432, -0.6798677732644484, 1.3393550190390109, 2.997312010767381, 5.473702497402034, 1.0979057088034359  …  3.809525753203825, 6.093459347093014, 9.43083931889319, 5.667768666629312, 4.880116091089365, 6.627730930765788, 1.8315644043338155, 7.890307049249085, -0.08220125727076076, 2.056472670349751])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Float32[-2.388619 0.14568527 … -0.41429695 -0.6156915; -0.5523726 0.89574814 … 0.995973 -0.3073782], [1.309594910778105 1.4299266103655102 … -0.015432115504517618 4.004960811324418])
 </pre></div>
 </div>
 </div>
@@ -424,8 +433,8 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>features:[1.9401364183013174, 0.8962821039550989]
-label:5.02517778997923
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>features:Float32[-2.388619, -0.5523726]
+label:1.309594910778105
 </pre></div>
 </div>
 </div>
@@ -446,7 +455,7 @@ label:5.02517778997923
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X shape:(2, 10)
-y shape:(10,)
+y shape:(1, 10)
 </pre></div>
 </div>
 </div>
@@ -455,7 +464,7 @@ y shape:(10,)
 <section id="defining-the-model">
 <h2><span class="section-number">8.3. </span>Defining the Model<a class="headerlink" href="#defining-the-model" title="Permalink to this heading">#</a></h2>
 <p>For standard operations, we can use a framework’s predefined layers, which allow us to focus on the layers used to construct the model rather than worrying about their implementation. Recall the architecture of a single-layer network as described in Fig. 3.1.2. The layer is called fully connected, since each of its inputs is connected to each of its outputs by means of a matrix-vector multiplication.</p>
-<p>A <code class="docutils literal notranslate"><span class="pre">Dense(2</span> <span class="pre">=&gt;</span> <span class="pre">1)</span></code> layer denotes a layer of one neuron with one input (one feature) and one output.</p>
+<p>In Flux, a <code class="docutils literal notranslate"><span class="pre">Dense(2</span> <span class="pre">=&gt;</span> <span class="pre">1)</span></code> layer denotes a layer of one neuron with two inputs (two feature) and one output.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Flux</span>
@@ -472,6 +481,79 @@ y shape:(10,)
 </section>
 <section id="defining-the-loss-function">
 <h2><span class="section-number">8.4. </span>Defining the Loss Function<a class="headerlink" href="#defining-the-loss-function" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Flux.mse</span></code> function computes the mean squared error. By default, <code class="docutils literal notranslate"><span class="pre">Flux.mse</span></code> returns the average loss over examples. It is faster (and easier to use) than implementing our own.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="w">    </span><span class="n">ŷ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="w">    </span><span class="n">Flux</span><span class="o">.</span><span class="n">mse</span><span class="p">(</span><span class="n">ŷ</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loss (generic function with 1 method)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="defining-the-optimization-algorithm">
+<h2><span class="section-number">8.5. </span>Defining the Optimization Algorithm<a class="headerlink" href="#defining-the-optimization-algorithm" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Descent</span></code> is a classic gradient descent optimiser.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">opt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Descent</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Descent(0.1)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="training">
+<h2><span class="section-number">8.6. </span>Training<a class="headerlink" href="#training" title="Permalink to this heading">#</a></h2>
+<p>You might have noticed that expressing our model through high-level APIs of a deep learning framework requires fewer lines of code. We did not have to allocate parameters individually, define our loss function, or implement gradient descent. Once we start working with much more complex models, the advantages of the high-level API will grow considerably.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Printf</span>
+<span class="n">num_epochs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span>
+<span class="k">for</span><span class="w"> </span><span class="n">epoch</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">num_epochs</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">train_loader</span>
+<span class="w">        </span><span class="n">Flux</span><span class="o">.</span><span class="n">train!</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span><span class="n">model</span><span class="p">,[</span><span class="n">data</span><span class="p">],</span><span class="n">opt</span><span class="p">)</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="nd">@printf</span><span class="w"> </span><span class="s">&quot;epoch </span><span class="si">%i</span><span class="s">, loss </span><span class="si">%f</span><span class="s"> </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span><span class="n">epoch</span><span class="w"> </span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">features</span><span class="p">,</span><span class="n">labels</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>epoch 1, loss 0.340115 
+epoch 2, loss 0.005075 
+epoch 3, loss 0.000188 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Below, we compare the model parameters learned by training on finite data and the actual parameters that generated our dataset. To access parameters, we access the weights and bias of the layer that we need. Note that our estimated parameters are close to their true counterparts.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">weight</span><span class="p">,</span><span class="n">bias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vec</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">weight</span><span class="p">),</span><span class="n">first</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">bias</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;error in estimating w:</span><span class="si">$</span><span class="p">(</span><span class="n">true_w</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">weight</span><span class="p">)</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;error in estimating b:</span><span class="si">$</span><span class="p">(</span><span class="n">true_b</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">bias</span><span class="p">)</span><span class="s">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>error in estimating w:[0.0063877105712890625, -0.001546764373779208]
+error in estimating b:0.00649757385253924
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 
@@ -515,6 +597,15 @@ y shape:(10,)
         <p class="prev-next-title"><span class="section-number">7. </span>Linear Regression</p>
       </div>
     </a>
+    <a class="right-next"
+       href="../chapter_linear_classification/The%20Image%20Classification%20Dataset.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">9. </span>The Image Classification Dataset</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div></div>
   
 </div>
@@ -537,6 +628,8 @@ y shape:(10,)
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">8.2. Reading the Dataset</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-model">8.3. Defining the Model</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-loss-function">8.4. Defining the Loss Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-optimization-algorithm">8.5. Defining the Optimization Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">8.6. Training</a></li>
 </ul>
   </nav></div>
 

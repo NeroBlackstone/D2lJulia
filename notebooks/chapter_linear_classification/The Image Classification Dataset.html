@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>4. Calculus &#8212; Dive into Deep Learning - Julia</title>
+    <title>9. The Image Classification Dataset &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -61,13 +61,10 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_preliminaries/Calculus';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_linear_classification/The Image Classification Dataset';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="5. Automatic Differentiation" href="Automatic%20Differentiation.html" />
-    <link rel="prev" title="3. Linear Algebra" href="Linear%20Algebra.html" />
+    <link rel="prev" title="8. Concise Implementation of Linear Regression" href="../chapter_linear_regression/Concise%20Implementation%20of%20Linear%20Regression.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -159,13 +156,13 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Preliminaries</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="Data%20Manipulation.html">1. Data Manipulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Data%20Preprocessing.html">2. Data Preprocessing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Linear%20Algebra.html">3. Linear Algebra</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">4. Calculus</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Automatic%20Differentiation.html">5. Automatic Differentiation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Probability%20and%20Statistics.html">6. Probability and Statistics</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preliminaries/Data%20Manipulation.html">1. Data Manipulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preliminaries/Data%20Preprocessing.html">2. Data Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preliminaries/Linear%20Algebra.html">3. Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preliminaries/Calculus.html">4. Calculus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preliminaries/Automatic%20Differentiation.html">5. Automatic Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_preliminaries/Probability%20and%20Statistics.html">6. Probability and Statistics</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Linear Neural Networks for Regression</span></p>
 <ul class="nav bd-sidenav">
@@ -173,8 +170,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../chapter_linear_regression/Concise%20Implementation%20of%20Linear%20Regression.html">8. Concise Implementation of Linear Regression</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Linear Neural Networks for Classification</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_linear_classification/The%20Image%20Classification%20Dataset.html">9. The Image Classification Dataset</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">9. The Image Classification Dataset</a></li>
 </ul>
 
     </div>
@@ -246,7 +243,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_preliminaries/Calculus.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_linear_classification/The Image Classification Dataset.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -276,7 +273,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../../_sources/notebooks/chapter_preliminaries/Calculus.ipynb" target="_blank"
+      <li><a href="../../_sources/notebooks/chapter_linear_classification/The Image Classification Dataset.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -358,7 +355,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Calculus</h1>
+    <h1>The Image Classification Dataset</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -368,8 +365,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivatives-and-differentiation">4.1. Derivatives and Differentiation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-utilities">4.2. Visualization Utilities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-the-dataset">9.1. Loading the Dataset</a></li>
 </ul>
             </nav>
         </div>
@@ -381,63 +377,21 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="calculus">
-<h1><span class="section-number">4. </span>Calculus<a class="headerlink" href="#calculus" title="Permalink to this heading">#</a></h1>
-<section id="derivatives-and-differentiation">
-<h2><span class="section-number">4.1. </span>Derivatives and Differentiation<a class="headerlink" href="#derivatives-and-differentiation" title="Permalink to this heading">#</a></h2>
-<p>Let’s develop some intuition with an example.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="the-image-classification-dataset">
+<h1><span class="section-number">9. </span>The Image Classification Dataset<a class="headerlink" href="#the-image-classification-dataset" title="Permalink to this heading">#</a></h1>
+<p>One of the widely used dataset for image classification is the MNIST dataset (LeCun et al., 1998) of handwritten digits. At the time of its release in the 1990s it posed a formidable challenge to most machine learning algorithms, consisting of 60,000 images of 28x28 pixels resolution (plus a test dataset of 10,000 images). To put things into perspective, at the time, a Sun SPARCStation 5 with a whopping 64MB of RAM and a blistering 5 MFLOPs was considered state of the art equipment for machine learning at AT&amp;T Bell Laboratories in 1995. Achieving high accuracy on digit recognition was a key component in automating letter sorting for the USPS in the 1990s. Deep networks such as LeNet-5 (LeCun et al., 1995), support vector machines with invariances (Schölkopf et al., 1996), and tangent distance classifiers (Simard et al., 1998) all allowed to reach error rates below 1%.</p>
+<p>For over a decade, MNIST served as the point of reference for comparing machine learning algorithms. While it had a good run as a benchmark dataset, even simple models by today’s standards achieve classification accuracy over 95%, making it unsuitable for distinguishing between stronger models and weaker ones. Even more so, the dataset allows for very high levels of accuracy, not typically seen in many classification problems. This skewed algorithmic development towards specific families of algorithms that can take advantage of clean datasets, such as active set methods and boundary-seeking active set algorithms. Today, MNIST serves as more of sanity checks than as a benchmark. ImageNet (Deng et al., 2009) poses a much more relevant challenge. Unfortunately, ImageNet is too large for many of the examples and illustrations in this book, as it would take too long to train to make the examples interactive. As a substitute we will focus our discussion in the coming sections on the qualitatively similar, but much smaller Fashion-MNIST dataset (Xiao et al., 2017), which was released in 2017. It contains images of 10 categories of clothing at 28x28 pixels resolution.</p>
+<section id="loading-the-dataset">
+<h2><span class="section-number">9.1. </span>Loading the Dataset<a class="headerlink" href="#loading-the-dataset" title="Permalink to this heading">#</a></h2>
+<p>Since it is such a frequently used dataset, all major frameworks provide preprocessed versions of it. We can download and read the Fashion-MNIST dataset into memory using <code class="docutils literal notranslate"><span class="pre">MLDatasets.jl</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span><span class="o">-</span><span class="mi">4</span><span class="n">x</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>f (generic function with 1 method)
-</pre></div>
-</div>
-</div>
-</div>
-<p>While this experiment lacks the rigor of a mathematical proof, we will soon see that indeed <span class="math notranslate nohighlight">\( f'(1) = 2 \)</span>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Printf</span>
-<span class="k">for</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mf">10.0</span><span class="o">.^</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">:-</span><span class="mi">1</span><span class="o">:-</span><span class="mi">5</span><span class="p">)</span>
-<span class="w">    </span><span class="nd">@printf</span><span class="w"> </span><span class="s">&quot;h=</span><span class="si">%.5f</span><span class="s">, numerical limit=</span><span class="si">%.5f</span><span class="s"> </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">h</span><span class="p">)</span><span class="o">-</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="n">h</span>
-<span class="k">end</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>h=0.10000, numerical limit=2.30000 
-h=0.01000, numerical limit=2.03000 
-h=0.00100, numerical limit=2.00300 
-h=0.00010, numerical limit=2.00030 
-h=0.00001, numerical limit=2.00003 
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="visualization-utilities">
-<h2><span class="section-number">4.2. </span>Visualization Utilities<a class="headerlink" href="#visualization-utilities" title="Permalink to this heading">#</a></h2>
-<p>We can visualize the slopes of functions using the <a class="reference external" href="https://docs.makie.org/stable/">Makie</a> package.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">CairoMakie</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># using MLDatasets</span>
 
-<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">fg</span><span class="p">,</span><span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;f(x)&quot;</span><span class="p">)</span>
-<span class="n">lines!</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="o">-&gt;</span><span class="mi">2</span><span class="n">x</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="ss">:dash</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="o">=</span><span class="s">&quot;Tangent line (x=1)&quot;</span><span class="p">)</span>
-<span class="n">axislegend</span><span class="p">(</span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:lt</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">xlabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;x&quot;</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">ylabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;f(x)&quot;</span>
-<span class="n">fg</span>
+<span class="c"># FashionMNIST(; Tx=Float32, split=:train, dir=&quot;./&quot;)</span>
+<span class="c"># length(train_x)#,length(text_x)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/fb872c01066cf603d08557b7167bfadeee2b649bc997a9874501606932d9bccc.png" src="../../_images/fb872c01066cf603d08557b7167bfadeee2b649bc997a9874501606932d9bccc.png" />
 </div>
 </div>
 </section>
@@ -456,7 +410,7 @@ h=0.00001, numerical limit=2.00003
         },
         kernelOptions: {
             name: "julia-1.9",
-            path: "./notebooks/chapter_preliminaries"
+            path: "./notebooks/chapter_linear_classification"
         },
         predefinedOutput: true
     }
@@ -475,22 +429,13 @@ h=0.00001, numerical limit=2.00003
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="Linear%20Algebra.html"
+       href="../chapter_linear_regression/Concise%20Implementation%20of%20Linear%20Regression.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">3. </span>Linear Algebra</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>Concise Implementation of Linear Regression</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="Automatic%20Differentiation.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">5. </span>Automatic Differentiation</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div></div>
   
@@ -510,8 +455,7 @@ h=0.00001, numerical limit=2.00003
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivatives-and-differentiation">4.1. Derivatives and Differentiation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-utilities">4.2. Visualization Utilities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-the-dataset">9.1. Loading the Dataset</a></li>
 </ul>
   </nav></div>
 
