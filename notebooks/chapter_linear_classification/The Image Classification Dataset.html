@@ -366,6 +366,8 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-the-dataset">9.1. Loading the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-a-minibatch">9.2. Reading a Minibatch</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">9.3. Visualization</a></li>
 </ul>
             </nav>
         </div>
@@ -386,20 +388,119 @@ document.write(`
 <p>Since it is such a frequently used dataset, all major frameworks provide preprocessed versions of it. We can download and read the Fashion-MNIST dataset into memory using <code class="docutils literal notranslate"><span class="pre">MLDatasets.jl</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># using MLDatasets</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">MLDatasets</span>
 
-<span class="c"># ENV[&quot;DATADEPS_ALWAYS_ACCEPT&quot;] = true</span>
-<span class="c"># FashionMNIST(; Tx=Float32, split=:train)</span>
-<span class="c"># length(train_x)#,length(text_x)</span>
+<span class="nb">ENV</span><span class="p">[</span><span class="s">&quot;DATADEPS_ALWAYS_ACCEPT&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+<span class="n">mnist_train</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FashionMNIST</span><span class="p">(</span><span class="ss">:train</span><span class="p">)</span>
+<span class="n">mnist_test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FashionMNIST</span><span class="p">(</span><span class="ss">:test</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dataset FashionMNIST:
   metadata  =&gt;    Dict{String, Any} with 4 entries
-  split     =&gt;    :train
-  features  =&gt;    28×28×60000 Array{Float32, 3}
-  targets   =&gt;    60000-element Vector{Int64}
+  split     =&gt;    :test
+  features  =&gt;    28×28×10000 Array{Float32, 3}
+  targets   =&gt;    10000-element Vector{Int64}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Fashion-MNIST consists of images from 10 categories, each represented by 6,000 images in the training dataset and by 1,000 in the test dataset. A test dataset is used for evaluating model performance (it must not be used for training). Consequently the training set and the test set contain 60,000 and 10,000 images, respectively.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">length</span><span class="p">(</span><span class="n">mnist_train</span><span class="p">),</span><span class="w"> </span><span class="n">length</span><span class="p">(</span><span class="n">mnist_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(60000, 10000)
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is similar to the original MNIST dataset which consisted of (binary) black and white images. Note, though, that most modern image data which has 3 channels (red, green, blue) and hyperspectral images which can have in excess of 100 channels (the HyMap sensor has 126 channels). By convention we store image as a <code class="docutils literal notranslate"><span class="pre">h</span> <span class="pre">x</span> <span class="pre">w</span></code> array, <code class="docutils literal notranslate"><span class="pre">h</span></code> is the height and <code class="docutils literal notranslate"><span class="pre">w</span></code> is the width.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">size</span><span class="p">(</span><span class="n">mnist_train</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="o">:</span><span class="p">,</span><span class="o">:</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(28, 28)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The categories of Fashion-MNIST have human-understandable names. The following code converts between numeric labels and their names.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">class_name</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="p">[</span><span class="s">&quot;T-Shirt&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Trouser&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Pullover&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Dress&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Coat&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Sandal&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Shirt&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Sneaker&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Bag&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Ankle boot&quot;</span><span class="p">]</span>
+<span class="n">get_fashion_mnist_labels</span><span class="p">(</span><span class="n">label</span><span class="o">::</span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">class_name</span><span class="p">[</span><span class="n">label</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>get_fashion_mnist_labels (generic function with 1 method)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="reading-a-minibatch">
+<h2><span class="section-number">9.2. </span>Reading a Minibatch<a class="headerlink" href="#reading-a-minibatch" title="Permalink to this heading">#</a></h2>
+<p>To see how this works, let’s load a minibatch of images by invoking the <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> method. It contains 18 images.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">MLUtils</span>
+<span class="n">train_loader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataLoader</span><span class="p">((</span><span class="n">mnist_train</span><span class="o">.</span><span class="n">features</span><span class="p">,</span><span class="n">mnist_train</span><span class="o">.</span><span class="n">targets</span><span class="p">),</span><span class="n">batchsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span><span class="n">shuffle</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3334-element DataLoader(::Tuple{Array{Float32, 3}, Vector{Int64}}, shuffle=true, batchsize=18)
+  with first element:
+  (28×28×18 Array{Float32, 3}, 18-element Vector{Int64},)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s look at the time it takes to read the images. Even though it is a built-in loader, it is not blazingly fast. Nonetheless, this is sufficient since processing images with a deep network takes quite a bit longer. Hence it is good enough that training a network will not be IO constrained.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@time</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">train_loader</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0.089176 seconds (51.81 k allocations: 183.673 MiB, 16.84% gc time, 15.37% compilation time)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualization">
+<h2><span class="section-number">9.3. </span>Visualization<a class="headerlink" href="#visualization" title="Permalink to this heading">#</a></h2>
+<p>In general, it is a good idea to visualize and inspect data that you’re training on. Humans are very good at spotting unusual aspects and as such, visualization serves as an additional safeguard against mistakes and errors in the design of experiments. Here are the images and their corresponding labels (in text) for the first few examples in the training dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># using CairoMakie</span>
+<span class="c"># using ImageShow</span>
+
+<span class="c"># function show_images(features::Array{&lt;:Real,3},targets::Vector{Int64})</span>
+<span class="c">#     column_num = 9</span>
+<span class="c">#     batch_num = size(features)[3]</span>
+<span class="c">#     row_num = ceil(batch_num / column_num)</span>
+<span class="c">#     # fig = Figure()(resolution = (28*1.5*column_num,28*1.5*row_num))</span>
+<span class="c">#     fig = Figure()</span>
+<span class="c">#     image(fig[1, 1], rotr90(convert2image(FashionMNIST,features[:,:,1])), axis = (title = &quot;$(get_fashion_mnist_labels(targets[1]))&quot;,))</span>
+<span class="c">#     fig</span>
+<span class="c"># end</span>
+<span class="c"># minist_batch = mnist_train[1:18]</span>
+
+<span class="c"># show_images(minist_batch.features,minist_batch.targets)</span>
+<span class="c"># convert2image(mnist_train,1)</span>
 </pre></div>
 </div>
 </div>
@@ -466,6 +567,8 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-the-dataset">9.1. Loading the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-a-minibatch">9.2. Reading a Minibatch</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">9.3. Visualization</a></li>
 </ul>
   </nav></div>
 

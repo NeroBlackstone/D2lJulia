@@ -30,4 +30,4 @@ You'll install all the dependencies, this may take a few minutes.
 
 Welcome to contribution! Just add `.ipynb` file in `notebooks` folder and create an entry in `_toc.yml`.
 
-The website is built using [jupyter-book](https://github.com/executablebooks/jupyter-book). 
+The website is built using [jupyter-book](https://github.com/executablebooks/jupyter-book). For faster ci build, we close notebook execution. It means you need to execute code cell locally, and save result to notebooks.
