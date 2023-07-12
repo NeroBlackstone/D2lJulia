@@ -453,14 +453,14 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">MLUtils</span>
-<span class="n">train_loader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataLoader</span><span class="p">((</span><span class="n">mnist_train</span><span class="o">.</span><span class="n">features</span><span class="p">,</span><span class="n">mnist_train</span><span class="o">.</span><span class="n">targets</span><span class="p">),</span><span class="n">batchsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span><span class="n">shuffle</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span>
+<span class="n">train_loader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataLoader</span><span class="p">((</span><span class="n">mnist_train</span><span class="o">.</span><span class="n">features</span><span class="p">,</span><span class="n">mnist_train</span><span class="o">.</span><span class="n">targets</span><span class="p">),</span><span class="n">batchsize</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span><span class="n">shuffle</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3334-element DataLoader(::Tuple{Array{Float32, 3}, Vector{Int64}}, shuffle=true, batchsize=18)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>938-element DataLoader(::Tuple{Array{Float32, 3}, Vector{Int64}}, shuffle=true, batchsize=64)
   with first element:
-  (28×28×18 Array{Float32, 3}, 18-element Vector{Int64},)
+  (28×28×64 Array{Float32, 3}, 64-element Vector{Int64},)
 </pre></div>
 </div>
 </div>
@@ -474,7 +474,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0.089176 seconds (51.81 k allocations: 183.673 MiB, 16.84% gc time, 15.37% compilation time)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0.090352 seconds (23.06 k allocations: 182.540 MiB, 17.56% gc time, 15.25% compilation time)
 </pre></div>
 </div>
 </div>
@@ -482,27 +482,43 @@ document.write(`
 </section>
 <section id="visualization">
 <h2><span class="section-number">9.3. </span>Visualization<a class="headerlink" href="#visualization" title="Permalink to this heading">#</a></h2>
-<p>In general, it is a good idea to visualize and inspect data that you’re training on. Humans are very good at spotting unusual aspects and as such, visualization serves as an additional safeguard against mistakes and errors in the design of experiments. Here are the images and their corresponding labels (in text) for the first few examples in the training dataset.</p>
+<p>We’ll be using the Fashion-MNIST dataset quite frequently. A convenience function show_images can be used to visualize the images and the associated labels.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># using CairoMakie</span>
-<span class="c"># using ImageShow</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">CairoMakie</span>
+<span class="k">using</span><span class="w"> </span><span class="n">ImageShow</span>
 
-<span class="c"># function show_images(features::Array{&lt;:Real,3},targets::Vector{Int64})</span>
-<span class="c">#     column_num = 9</span>
-<span class="c">#     batch_num = size(features)[3]</span>
-<span class="c">#     row_num = ceil(batch_num / column_num)</span>
-<span class="c">#     # fig = Figure()(resolution = (28*1.5*column_num,28*1.5*row_num))</span>
-<span class="c">#     fig = Figure()</span>
-<span class="c">#     image(fig[1, 1], rotr90(convert2image(FashionMNIST,features[:,:,1])), axis = (title = &quot;$(get_fashion_mnist_labels(targets[1]))&quot;,))</span>
-<span class="c">#     fig</span>
-<span class="c"># end</span>
-<span class="c"># minist_batch = mnist_train[1:18]</span>
-
-<span class="c"># show_images(minist_batch.features,minist_batch.targets)</span>
-<span class="c"># convert2image(mnist_train,1)</span>
+<span class="k">function</span><span class="w"> </span><span class="n">show_images</span><span class="p">(</span><span class="n">features</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="p">,</span><span class="mi">3</span><span class="p">},</span><span class="n">targets</span><span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">})</span>
+<span class="w">    </span><span class="n">column_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span>
+<span class="w">    </span><span class="n">batch_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">features</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
+<span class="w">    </span><span class="n">row_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Int</span><span class="p">(</span><span class="n">ceil</span><span class="p">(</span><span class="n">batch_num</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">column_num</span><span class="p">))</span>
+<span class="w">    </span><span class="n">fig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Figure</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="p">(</span><span class="n">column_num</span><span class="o">*</span><span class="mi">28</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span><span class="n">row_num</span><span class="o">*</span><span class="mi">28</span><span class="o">*</span><span class="mi">4</span><span class="p">))</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">slice</span><span class="p">,</span><span class="n">label</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">zip</span><span class="p">(</span><span class="n">eachslice</span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span><span class="n">targets</span><span class="p">,</span><span class="kt">CartesianIndices</span><span class="p">((</span><span class="n">row_num</span><span class="p">,</span><span class="n">column_num</span><span class="p">)))</span>
+<span class="w">        </span><span class="n">image</span><span class="p">(</span><span class="n">fig</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span><span class="w"> </span><span class="n">rotr90</span><span class="p">(</span><span class="n">convert2image</span><span class="p">(</span><span class="n">FashionMNIST</span><span class="p">,</span><span class="n">slice</span><span class="p">)),</span><span class="w"> </span><span class="n">axis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">aspect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataAspect</span><span class="p">(),</span><span class="w"> </span>
+<span class="w">            </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;</span><span class="si">$</span><span class="p">(</span><span class="n">get_fashion_mnist_labels</span><span class="p">(</span><span class="n">label</span><span class="p">))</span><span class="s">&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="n">xticksvisible</span><span class="o">=</span><span class="nb">false</span><span class="p">,</span><span class="n">xticklabelsvisible</span><span class="o">=</span><span class="nb">false</span><span class="p">,</span><span class="n">yticksvisible</span><span class="o">=</span><span class="nb">false</span><span class="p">,</span><span class="n">yticklabelsvisible</span><span class="o">=</span><span class="nb">false</span><span class="p">))</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="n">fig</span>
+<span class="k">end</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>show_images (generic function with 1 method)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s put it to good use. In general, it is a good idea to visualize and inspect data that you’re training on. Humans are very good at spotting unusual aspects and as such, visualization serves as an additional safeguard against mistakes and errors in the design of experiments. Here are the images and their corresponding labels (in text) for the first few examples in the training dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="n">targets</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">first</span><span class="p">(</span><span class="n">DataLoader</span><span class="p">((</span><span class="n">mnist_train</span><span class="o">.</span><span class="n">features</span><span class="p">,</span><span class="n">mnist_train</span><span class="o">.</span><span class="n">targets</span><span class="p">),</span><span class="n">batchsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span><span class="n">shuffle</span><span class="o">=</span><span class="nb">false</span><span class="p">))</span>
+<span class="n">show_images</span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="n">targets</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4573f4ddbca51381a94c121ed4cd554dea6368690fae7bf1d2aabb3879c0c176.png" src="../../_images/4573f4ddbca51381a94c121ed4cd554dea6368690fae7bf1d2aabb3879c0c176.png" />
 </div>
 </div>
 </section>
