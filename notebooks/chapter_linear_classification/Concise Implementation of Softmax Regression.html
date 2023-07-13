@@ -367,6 +367,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-model">10.1. Defining the Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">10.2. Training</a></li>
 </ul>
             </nav>
         </div>
@@ -383,21 +384,76 @@ document.write(`
 <p>Just as high-level deep learning frameworks made it easier to implement linear regression (see Section 3.5), they are similarly convenient here.</p>
 <section id="defining-the-model">
 <h2><span class="section-number">10.1. </span>Defining the Model<a class="headerlink" href="#defining-the-model" title="Permalink to this heading">#</a></h2>
-<p>As in Section 3.5, we construct our fully connected layer using the built-in layer.</p>
+<p>As in Section 3.5, we construct our fully connected layer using the built-in layer. We use a <code class="docutils literal notranslate"><span class="pre">flatten</span></code> layer to reshape arbitrarly-shaped input into a matrix-shaped output, preserving the size of the last dimension..</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Flux</span>
-<span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Dense</span><span class="p">(</span><span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="o">=&gt;</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Chain</span><span class="p">(</span><span class="n">Flux</span><span class="o">.</span><span class="n">flatten</span><span class="p">,</span><span class="n">Dense</span><span class="p">(</span><span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="o">=&gt;</span><span class="mi">10</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dense(784 =&gt; 10)    # 7_850 parameters
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chain(
+  Flux.flatten,
+  Dense(784 =&gt; 10),                     # 7_850 parameters
+) 
 </pre></div>
 </div>
 </div>
 </div>
-<p>This avoids both overflow and underflow. We will want to keep the conventional softmax function handy in case we ever want to evaluate the output probabilities by our model. But instead of passing softmax probabilities into our new loss function, we just pass the logits and compute the softmax and its log all at once inside the cross-entropy loss function, which does smart things like the “LogSumExp trick”.This avoids both overflow and underflow. We will want to keep the conventional softmax function handy in case we ever want to evaluate the output probabilities by our model. But instead of passing softmax probabilities into our new loss function, we just pass the logits and compute the softmax and its log all at once inside the cross-entropy loss function, which does smart things like the “LogSumExp trick”.</p>
+<p>This avoids both overflow and underflow. We will want to keep the conventional softmax function handy in case we ever want to evaluate the output probabilities by our model. But instead of passing softmax probabilities into our new loss function, we just pass the logits and compute the softmax and its log all at once inside the cross-entropy loss function, which does smart things like the “LogSumExp trick”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">logitcrossentropy</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loss (generic function with 1 method)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="training">
+<h2><span class="section-number">10.2. </span>Training<a class="headerlink" href="#training" title="Permalink to this heading">#</a></h2>
+<p>Next we train our model. We use Fashion-MNIST images, flattened to 784-dimensional feature vectors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">MLUtils</span>
+<span class="k">using</span><span class="w"> </span><span class="n">MLDatasets</span>
+
+<span class="nb">ENV</span><span class="p">[</span><span class="s">&quot;DATADEPS_ALWAYS_ACCEPT&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+<span class="n">mnist_train</span><span class="p">,</span><span class="n">mnist_test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FashionMNIST</span><span class="p">(</span><span class="ss">:train</span><span class="p">),</span><span class="n">FashionMNIST</span><span class="p">(</span><span class="ss">:test</span><span class="p">)</span>
+<span class="n">features</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mnist_train</span><span class="o">.</span><span class="n">features</span>
+<span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">onehotbatch</span><span class="p">(</span><span class="n">mnist_train</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span><span class="mi">0</span><span class="o">:</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="n">train_loader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataLoader</span><span class="p">((</span><span class="n">features</span><span class="p">,</span><span class="n">labels</span><span class="p">),</span><span class="n">batchsize</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+<span class="n">num_epochs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span>
+<span class="k">for</span><span class="w"> </span><span class="n">epoch</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">num_epochs</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">train_loader</span>
+<span class="w">        </span><span class="n">Flux</span><span class="o">.</span><span class="n">train!</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span><span class="n">model</span><span class="p">,[</span><span class="n">data</span><span class="p">],</span><span class="n">Descent</span><span class="p">())</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="nd">@show</span><span class="w"> </span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">features</span><span class="p">,</span><span class="n">labels</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loss(model, features, labels) = 0.6187518f0
+loss(model, features, labels) = 0.5422421f0
+loss(model, features, labels) = 0.50924766f0
+loss(model, features, labels) = 0.48956913f0
+loss(model, features, labels) = 0.47601458f0
+loss(model, features, labels) = 0.46589807f0
+loss(model, features, labels) = 0.45795166f0
+loss(model, features, labels) = 0.45148367f0
+loss(model, features, labels) = 0.44607836f0
+loss(model, features, labels) = 0.44146824f0
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 
@@ -460,6 +516,7 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-model">10.1. Defining the Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">10.2. Training</a></li>
 </ul>
   </nav></div>
 
