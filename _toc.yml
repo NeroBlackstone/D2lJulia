@@ -22,3 +22,4 @@ parts:
     numbered: true
     chapters:
     - file: notebooks/chapter_linear_classification/The Image Classification Dataset.ipynb
+    - file: notebooks/chapter_linear_classification/Concise Implementation of Softmax Regression.ipynb
