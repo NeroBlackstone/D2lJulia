@@ -15,7 +15,7 @@ This tutorial mainly focuses on using pure julia to implement the code in *Dive 
 - You don't need too much Julia knowledges to read this book, but you better have learned other programming languages, [chapter preliminaries](https://neroblackstone.github.io/D2lJulia/notebooks/chapter_preliminaries/Data%20Manipulation.html#) covers most of Julia knowledge you needed.
 - After reading chapter preliminaries, you can roughly browse the [MLUtils.jl](https://juliaml.github.io/MLUtils.jl/dev/) documentation, which will be of great help to your subsequent data processing.
 - Likewise, [MLBase.jl](https://github.com/JuliaStats/MLBase.jl) is another useful ML tool library, good choice for performance evaluation.
-- Check [JuliaML](https://github.com/JuliaML) and [FluxML](https://github.com/FluxML) organization have many useful ML tools. Take a look,there may be a package you are looking for.
+- [JuliaML](https://github.com/JuliaML) and [FluxML](https://github.com/FluxML) organization have many useful ML tools. Take a look,there may be a package you are looking for.
 
 ## Local installation Pre-requisites
 
