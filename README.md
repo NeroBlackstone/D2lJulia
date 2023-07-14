@@ -4,6 +4,19 @@
 
 This tutorial mainly focuses on using pure julia to implement the code in *Dive into Deep Learning*, rather than explaining the specific principles of deep learning. If you know little about specific principles, please refer to the same chapter of the original book.
 
+## Julia Code Implementation Standatd
+
+- Julian: Avoid low-quality code porting, write code in julia way.
+- Consistency: Variable and function name as consistent as possible with the original book to facilitate understanding.
+- Best Practices: Make all things easy and right.
+
+## Tips
+
+- You don't need too much Julia knowledges to read this book, but you better have learned other programming languages, [chapter preliminaries](https://neroblackstone.github.io/D2lJulia/notebooks/chapter_preliminaries/Data%20Manipulation.html#) covers most of Julia knowledge you needed.
+- After reading chapter preliminaries, you can roughly browse the [MLUtils.jl](https://juliaml.github.io/MLUtils.jl/dev/) documentation, which will be of great help to your subsequent data processing.
+- Likewise, [MLBase.jl](https://github.com/JuliaStats/MLBase.jl) is another useful ML tool library, good choice for performance evaluation.
+- Check [JuliaML](https://github.com/JuliaML) and [FluxML](https://github.com/FluxML) organization have many useful ML tools. Take a look,there may be a package you are looking for.
+
 ## Local installation Pre-requisites
 
 Install `jupyterlab-desktop` or vscode with `jupyter` plugin.
