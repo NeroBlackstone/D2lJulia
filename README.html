@@ -366,6 +366,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#julia-code-implementation-standatd">Julia Code Implementation Standatd</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips">Tips</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-installation-pre-requisites">Local installation Pre-requisites</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contribution">Contribution</a></li>
 </ul>
@@ -383,6 +385,23 @@ document.write(`
 <h1>Dive into Deep Learning - Julia<a class="headerlink" href="#dive-into-deep-learning-julia" title="Permalink to this heading">#</a></h1>
 <p><a class="reference external" href="https://d2l.ai/index.html">Dive into Deep Learning</a>, with Julia programming language and Flux.jl.</p>
 <p>This tutorial mainly focuses on using pure julia to implement the code in <em>Dive into Deep Learning</em>, rather than explaining the specific principles of deep learning. If you know little about specific principles, please refer to the same chapter of the original book.</p>
+<section id="julia-code-implementation-standatd">
+<h2>Julia Code Implementation Standatd<a class="headerlink" href="#julia-code-implementation-standatd" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Julian: Avoid low-quality code porting, write code in julia way.</p></li>
+<li><p>Consistency: Variable and function name as consistent as possible with the original book to facilitate understanding.</p></li>
+<li><p>Best Practices: Make all things easy and right.</p></li>
+</ul>
+</section>
+<section id="tips">
+<h2>Tips<a class="headerlink" href="#tips" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>You don’t need too much Julia knowledges to read this book, but you better have learned other programming languages, <a class="reference external" href="https://neroblackstone.github.io/D2lJulia/notebooks/chapter_preliminaries/Data%20Manipulation.html#">chapter preliminaries</a> covers most of Julia knowledge you needed.</p></li>
+<li><p>After reading chapter preliminaries, you can roughly browse the <a class="reference external" href="https://juliaml.github.io/MLUtils.jl/dev/">MLUtils.jl</a> documentation, which will be of great help to your subsequent data processing.</p></li>
+<li><p>Likewise, <a class="reference external" href="https://github.com/JuliaStats/MLBase.jl">MLBase.jl</a> is another useful ML tool library, good choice for performance evaluation.</p></li>
+<li><p>Check <a class="reference external" href="https://github.com/JuliaML">JuliaML</a> and <a class="reference external" href="https://github.com/FluxML">FluxML</a> organization have many useful ML tools. Take a look,there may be a package you are looking for.</p></li>
+</ul>
+</section>
 <section id="local-installation-pre-requisites">
 <h2>Local installation Pre-requisites<a class="headerlink" href="#local-installation-pre-requisites" title="Permalink to this heading">#</a></h2>
 <p>Install <code class="docutils literal notranslate"><span class="pre">jupyterlab-desktop</span></code> or vscode with <code class="docutils literal notranslate"><span class="pre">jupyter</span></code> plugin.</p>
@@ -471,6 +490,8 @@ julia&gt;<span class="w"> </span>Pkg.instantiate<span class="o">()</span>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#julia-code-implementation-standatd">Julia Code Implementation Standatd</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips">Tips</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-installation-pre-requisites">Local installation Pre-requisites</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contribution">Contribution</a></li>
 </ul>

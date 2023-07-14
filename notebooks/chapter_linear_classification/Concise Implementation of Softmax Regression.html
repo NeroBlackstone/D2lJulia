@@ -430,26 +430,27 @@ document.write(`
 
 <span class="n">train_loader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataLoader</span><span class="p">((</span><span class="n">features</span><span class="p">,</span><span class="n">labels</span><span class="p">),</span><span class="n">batchsize</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
 <span class="n">num_epochs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span>
-<span class="k">for</span><span class="w"> </span><span class="n">epoch</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">num_epochs</span>
+<span class="n">loss_volume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">map</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="n">num_epochs</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">i</span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">train_loader</span>
 <span class="w">        </span><span class="n">Flux</span><span class="o">.</span><span class="n">train!</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span><span class="n">model</span><span class="p">,[</span><span class="n">data</span><span class="p">],</span><span class="n">Descent</span><span class="p">())</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="nd">@show</span><span class="w"> </span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">features</span><span class="p">,</span><span class="n">labels</span><span class="p">)</span>
+<span class="w">    </span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">features</span><span class="p">,</span><span class="n">labels</span><span class="p">)</span>
 <span class="k">end</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loss(model, features, labels) = 0.6187518f0
-loss(model, features, labels) = 0.5422421f0
-loss(model, features, labels) = 0.50924766f0
-loss(model, features, labels) = 0.48956913f0
-loss(model, features, labels) = 0.47601458f0
-loss(model, features, labels) = 0.46589807f0
-loss(model, features, labels) = 0.45795166f0
-loss(model, features, labels) = 0.45148367f0
-loss(model, features, labels) = 0.44607836f0
-loss(model, features, labels) = 0.44146824f0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10-element Vector{Float32}:
+ 0.6156508
+ 0.54177076
+ 0.50940657
+ 0.48994175
+ 0.47646806
+ 0.46637794
+ 0.45843133
+ 0.4519492
+ 0.44652238
+ 0.44188702
 </pre></div>
 </div>
 </div>
