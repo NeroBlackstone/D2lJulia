@@ -372,7 +372,8 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-model">10.1. Defining the Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">10.2. Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#softmax-revisited">10.2. Softmax Revisited</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">10.3. Training</a></li>
 </ul>
             </nav>
         </div>
@@ -406,7 +407,9 @@ document.write(`
 </div>
 </div>
 </div>
-<p>This avoids both overflow and underflow. We will want to keep the conventional softmax function handy in case we ever want to evaluate the output probabilities by our model. But instead of passing softmax probabilities into our new loss function, we just pass the logits and compute the softmax and its log all at once inside the cross-entropy loss function, which does smart things like the “LogSumExp trick”.</p>
+</section>
+<section id="softmax-revisited">
+<h2><span class="section-number">10.2. </span>Softmax Revisited<a class="headerlink" href="#softmax-revisited" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">logitcrossentropy</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">y</span><span class="p">)</span>
@@ -421,7 +424,7 @@ document.write(`
 </div>
 </section>
 <section id="training">
-<h2><span class="section-number">10.2. </span>Training<a class="headerlink" href="#training" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.3. </span>Training<a class="headerlink" href="#training" title="Permalink to this heading">#</a></h2>
 <p>Next we train our model. We use Fashion-MNIST images, flattened to 784-dimensional feature vectors.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -546,7 +549,8 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-model">10.1. Defining the Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">10.2. Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#softmax-revisited">10.2. Softmax Revisited</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">10.3. Training</a></li>
 </ul>
   </nav></div>
 
