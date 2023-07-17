@@ -23,3 +23,7 @@ parts:
     chapters:
     - file: notebooks/chapter_linear_classification/The Image Classification Dataset.ipynb
     - file: notebooks/chapter_linear_classification/Concise Implementation of Softmax Regression.ipynb
+  - caption: Multilayer Perceptrons
+    numbered: true
+    chapters:
+    - file: notebooks/chapter_multilayer_perceptrons/Multilayer Perceptrons.ipynb
