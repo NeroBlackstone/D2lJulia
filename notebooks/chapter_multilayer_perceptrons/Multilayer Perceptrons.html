@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Multilayer Perceptrons &#8212; Dive into Deep Learning - Julia</title>
+    <title>11. Multilayer Perceptrons &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -64,6 +64,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_multilayer_perceptrons/Multilayer Perceptrons';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="10. Concise Implementation of Softmax Regression" href="../chapter_linear_classification/Concise%20Implementation%20of%20Softmax%20Regression.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -172,6 +173,10 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_linear_classification/The%20Image%20Classification%20Dataset.html">9. The Image Classification Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_linear_classification/Concise%20Implementation%20of%20Softmax%20Regression.html">10. Concise Implementation of Softmax Regression</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multilayer Perceptrons</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">11. Multilayer Perceptrons</a></li>
 </ul>
 
     </div>
@@ -365,8 +370,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-functions">Activation Functions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relu-function">ReLU Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-functions">11.1. Activation Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relu-function">11.1.1. ReLU Function</a></li>
 </ul>
 </li>
 </ul>
@@ -381,13 +386,13 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="multilayer-perceptrons">
-<h1>Multilayer Perceptrons<a class="headerlink" href="#multilayer-perceptrons" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">11. </span>Multilayer Perceptrons<a class="headerlink" href="#multilayer-perceptrons" title="Permalink to this heading">#</a></h1>
 <p>In Section 4, we introduced softmax regression (Section 4.1), implementing the algorithm from scratch (Section 4.4) and using high-level APIs (Section 4.5). This allowed us to train classifiers capable of recognizing 10 categories of clothing from low-resolution images. Along the way, we learned how to wrangle data, coerce our outputs into a valid probability distribution, apply an appropriate loss function, and minimize it with respect to our model’s parameters. Now that we have mastered these mechanics in the context of simple linear models, we can launch our exploration of deep neural networks, the comparatively rich class of models with which this book is primarily concerned.</p>
 <section id="activation-functions">
-<h2>Activation Functions<a class="headerlink" href="#activation-functions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.1. </span>Activation Functions<a class="headerlink" href="#activation-functions" title="Permalink to this heading">#</a></h2>
 <p>Activation functions decide whether a neuron should be activated or not by calculating the weighted sum and further adding bias with it. They are differentiable operators to transform input signals to outputs, while most of them add non-linearity. Because activation functions are fundamental to deep learning, let’s briefly survey some common activation functions.</p>
 <section id="relu-function">
-<h3>ReLU Function<a class="headerlink" href="#relu-function" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">11.1.1. </span>ReLU Function<a class="headerlink" href="#relu-function" title="Permalink to this heading">#</a></h3>
 <p>Informally, the ReLU function retains only positive elements and discards all negative elements by setting the corresponding activations to 0. To gain some intuition, we can plot the function. As you can see, the activation function is piecewise linear.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -437,6 +442,15 @@ document.write(`
   
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter_linear_classification/Concise%20Implementation%20of%20Softmax%20Regression.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">10. </span>Concise Implementation of Softmax Regression</p>
+      </div>
+    </a>
 </div></div>
   
 </div>
@@ -455,8 +469,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-functions">Activation Functions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relu-function">ReLU Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-functions">11.1. Activation Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relu-function">11.1.1. ReLU Function</a></li>
 </ul>
 </li>
 </ul>
