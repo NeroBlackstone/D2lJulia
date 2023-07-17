@@ -396,7 +396,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>heads:59, tails:41 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>heads:52, tails:48 
 </pre></div>
 </div>
 </div>
@@ -412,7 +412,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(41, 59)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(55, 45)
 </pre></div>
 </div>
 </div>
@@ -425,7 +425,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.41, 0.59)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.55, 0.45)
 </pre></div>
 </div>
 </div>
@@ -441,7 +441,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.4979, 0.5021)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.5111, 0.4889)
 </pre></div>
 </div>
 </div>
@@ -456,20 +456,17 @@ document.write(`
 <span class="n">estimates</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cum_counts</span><span class="w"> </span><span class="o">./</span><span class="w"> </span><span class="n">collect</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="n">num_tosses</span><span class="p">)</span>
 
 <span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">num_tosses</span>
-<span class="n">fg</span><span class="p">,</span><span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">estimates</span><span class="w"> </span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;P(coin=heads)&quot;</span><span class="p">)</span>
+<span class="n">fg</span><span class="p">,</span><span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">estimates</span><span class="w"> </span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;P(coin=heads)&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">axis</span><span class="o">=</span><span class="p">(;</span><span class="n">yticks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="o">:</span><span class="mf">0.2</span><span class="o">:</span><span class="mf">1.0</span><span class="p">,</span><span class="n">xticks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="mi">2000</span><span class="o">:</span><span class="n">num_tosses</span><span class="p">,</span><span class="n">xlabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Samples&quot;</span><span class="p">,</span><span class="n">ylabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Estimated probability&quot;</span><span class="p">))</span>
 <span class="n">lines!</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">ones</span><span class="p">(</span><span class="n">num_tosses</span><span class="p">)</span><span class="o">.-</span><span class="n">estimates</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="o">=</span><span class="s">&quot;P(coin=tails)&quot;</span><span class="p">)</span>
 <span class="n">axislegend</span><span class="p">()</span>
 <span class="n">hlines!</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="ss">:black</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="ss">:dash</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">yticks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="o">:</span><span class="mf">0.2</span><span class="o">:</span><span class="mf">1.0</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">xticks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="mi">2000</span><span class="o">:</span><span class="n">num_tosses</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">xlabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Samples&quot;</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">ylabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Estimated probability&quot;</span>
 <span class="n">fg</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/60541c8840df18c54ce71ded38ac1fab62ef99b91f5da66c0d46761b39a10438.png" src="../../_images/60541c8840df18c54ce71ded38ac1fab62ef99b91f5da66c0d46761b39a10438.png" />
+<img alt="../../_images/8f31e83f166f8b8db28fc785d66b03104cfb51ab99e05bd17ab6072e3e7c062e.png" src="../../_images/8f31e83f166f8b8db28fc785d66b03104cfb51ab99e05bd17ab6072e3e7c062e.png" />
 </div>
 </div>
 <p>Each solid curve corresponds to one of the two values of the coin and gives our estimated probability that the coin turns up that value after each group of experiments. The dashed black line gives the true underlying probability. As we get more data by conducting more experiments, the curves converge towards the true probability.</p>
