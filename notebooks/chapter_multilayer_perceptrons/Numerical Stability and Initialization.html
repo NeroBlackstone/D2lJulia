@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>11. Multilayer Perceptrons &#8212; Dive into Deep Learning - Julia</title>
+    <title>13. Numerical Stability and Initialization &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -61,11 +61,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_multilayer_perceptrons/Multilayer Perceptrons';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_multilayer_perceptrons/Numerical Stability and Initialization';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="12. Implementation of Multilayer Perceptrons" href="Implementation%20of%20Multilayer%20Perceptrons.html" />
-    <link rel="prev" title="10. Concise Implementation of Softmax Regression" href="../chapter_linear_classification/Concise%20Implementation%20of%20Softmax%20Regression.html" />
+    <link rel="next" title="14. Dropout" href="Dropout.html" />
+    <link rel="prev" title="12. Implementation of Multilayer Perceptrons" href="Implementation%20of%20Multilayer%20Perceptrons.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -177,9 +177,9 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Multilayer Perceptrons</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">11. Multilayer Perceptrons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Multilayer%20Perceptrons.html">11. Multilayer Perceptrons</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Implementation%20of%20Multilayer%20Perceptrons.html">12. Implementation of Multilayer Perceptrons</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Numerical%20Stability%20and%20Initialization.html">13. Numerical Stability and Initialization</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">13. Numerical Stability and Initialization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Dropout.html">14. Dropout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Predicting%20House%20Prices%20on%20Kaggle.html">15. Predicting House Prices on Kaggle</a></li>
 </ul>
@@ -253,7 +253,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_multilayer_perceptrons/Multilayer Perceptrons.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_multilayer_perceptrons/Numerical Stability and Initialization.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -283,7 +283,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../../_sources/notebooks/chapter_multilayer_perceptrons/Multilayer Perceptrons.ipynb" target="_blank"
+      <li><a href="../../_sources/notebooks/chapter_multilayer_perceptrons/Numerical Stability and Initialization.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -365,7 +365,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Multilayer Perceptrons</h1>
+    <h1>Numerical Stability and Initialization</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -375,12 +375,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-functions">11.1. Activation Functions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relu-function">11.1.1. ReLU Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vanishing-and-exploding-gradients">13.1. Vanishing and Exploding Gradients</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vanishing-gradients">13.1.1. Vanishing Gradients</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploding-gradients">13.1.2. Exploding Gradients</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sigmoid-function">11.2. Sigmoid Function</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tanh-function">11.3. Tanh Function</a></li>
 </ul>
             </nav>
         </div>
@@ -392,93 +391,74 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="multilayer-perceptrons">
-<h1><span class="section-number">11. </span>Multilayer Perceptrons<a class="headerlink" href="#multilayer-perceptrons" title="Permalink to this heading">#</a></h1>
-<p>In Section 4, we introduced softmax regression (Section 4.1), implementing the algorithm from scratch (Section 4.4) and using high-level APIs (Section 4.5). This allowed us to train classifiers capable of recognizing 10 categories of clothing from low-resolution images. Along the way, we learned how to wrangle data, coerce our outputs into a valid probability distribution, apply an appropriate loss function, and minimize it with respect to our model’s parameters. Now that we have mastered these mechanics in the context of simple linear models, we can launch our exploration of deep neural networks, the comparatively rich class of models with which this book is primarily concerned.</p>
-<section id="activation-functions">
-<h2><span class="section-number">11.1. </span>Activation Functions<a class="headerlink" href="#activation-functions" title="Permalink to this heading">#</a></h2>
-<p>Activation functions decide whether a neuron should be activated or not by calculating the weighted sum and further adding bias with it. They are differentiable operators to transform input signals to outputs, while most of them add non-linearity. Because activation functions are fundamental to deep learning, let’s briefly survey some common activation functions.</p>
-<section id="relu-function">
-<h3><span class="section-number">11.1.1. </span>ReLU Function<a class="headerlink" href="#relu-function" title="Permalink to this heading">#</a></h3>
-<p>Informally, the ReLU function retains only positive elements and discards all negative elements by setting the corresponding activations to 0. To gain some intuition, we can plot the function. As you can see, the activation function is piecewise linear.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="numerical-stability-and-initialization">
+<h1><span class="section-number">13. </span>Numerical Stability and Initialization<a class="headerlink" href="#numerical-stability-and-initialization" title="Permalink to this heading">#</a></h1>
+<p>Thus far, every model that we have implemented required that we initialize its parameters according to some pre-specified distribution. Until now, we took the initialization scheme for granted, glossing over the details of how these choices are made. You might have even gotten the impression that these choices are not especially important. To the contrary, the choice of initialization scheme plays a significant role in neural network learning, and it can be crucial for maintaining numerical stability. Moreover, these choices can be tied up in interesting ways with the choice of the nonlinear activation function. Which function we choose and how we initialize parameters can determine how quickly our optimization algorithm converges. Poor choices here can cause us to encounter exploding or vanishing gradients while training. In this section, we delve into these topics with greater detail and discuss some useful heuristics that you will find useful throughout your career in deep learning.</p>
+<section id="vanishing-and-exploding-gradients">
+<h2><span class="section-number">13.1. </span>Vanishing and Exploding Gradients<a class="headerlink" href="#vanishing-and-exploding-gradients" title="Permalink to this heading">#</a></h2>
+<p>The risks posed by unstable gradients go beyond numerical representation. Gradients of unpredictable magnitude also threaten the stability of our optimization algorithms. We may be facing parameter updates that are either (i) excessively large, destroying our model (the exploding gradient problem); or (ii) excessively small (the vanishing gradient problem), rendering learning impossible as parameters hardly move on each update.</p>
+<section id="vanishing-gradients">
+<h3><span class="section-number">13.1.1. </span>Vanishing Gradients<a class="headerlink" href="#vanishing-gradients" title="Permalink to this heading">#</a></h3>
+<p>Since early artificial neural networks were inspired by biological neural networks, the idea of neurons that fire either fully or not at all (like biological neurons) seemed appealing. Let’s take a closer look at the sigmoid to see why it can cause vanishing gradients.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">CairoMakie</span>
 <span class="k">using</span><span class="w"> </span><span class="n">Flux</span>
 
 <span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">8.0</span><span class="o">:</span><span class="mf">0.1</span><span class="o">:</span><span class="mf">8.0</span>
-<span class="n">lines</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">relu</span><span class="p">;</span><span class="n">axis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(;</span><span class="n">xlabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">,</span><span class="n">ylabel</span><span class="o">=</span><span class="s">&quot;relu(x)&quot;</span><span class="p">))</span>
+<span class="n">f</span><span class="p">,</span><span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">sigmoid</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;sigmoid&quot;</span><span class="p">)</span>
+<span class="n">lines!</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">sigmoid</span><span class="o">&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;gradient&quot;</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="ss">:dash</span><span class="p">)</span>
+<span class="n">axislegend</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="ss">:lt</span><span class="p">)</span>
+<span class="n">f</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/3a2dbd2fbc4dffe9f8673a48307cf95eb0de781558bf7d92e9cc75c7e81e450a.png" src="../../_images/3a2dbd2fbc4dffe9f8673a48307cf95eb0de781558bf7d92e9cc75c7e81e450a.png" />
+<img alt="../../_images/ea001a330bf22a6a3bd0b0d9f3c9eed96cc49897bb70611816d46ffa1ed90ec1.png" src="../../_images/ea001a330bf22a6a3bd0b0d9f3c9eed96cc49897bb70611816d46ffa1ed90ec1.png" />
 </div>
 </div>
-<p>When the input is negative, the derivative of the ReLU function is 0, and when the input is positive, the derivative of the ReLU function is 1. Note that the ReLU function is not differentiable when the input takes value precisely equal to 0. In these cases, we default to the left-hand-side derivative and say that the derivative is 0 when the input is 0. We can get away with this because the input may never actually be zero (mathematicians would say that it is nondifferentiable on a set of measure zero). There is an old adage that if subtle boundary conditions matter, we are probably doing (real) mathematics, not engineering. That conventional wisdom may apply here, or at least, the fact that we are not performing constrained optimization (Mangasarian, 1965, Rockafellar, 1970). We plot the derivative of the ReLU function plotted below.</p>
+<p>As you can see, the sigmoid’s gradient vanishes both when its inputs are large and when they are small. Moreover, when backpropagating through many layers, unless we are in the Goldilocks zone, where the inputs to many of the sigmoids are close to zero, the gradients of the overall product may vanish. When our network boasts many layers, unless we are careful, the gradient will likely be cut off at some layer. Indeed, this problem used to plague deep network training. Consequently, ReLUs, which are more stable (but less neurally plausible), have emerged as the default choice for practitioners.</p>
+</section>
+<section id="exploding-gradients">
+<h3><span class="section-number">13.1.2. </span>Exploding Gradients<a class="headerlink" href="#exploding-gradients" title="Permalink to this heading">#</a></h3>
+<p>The opposite problem, when gradients explode, can be similarly vexing. To illustrate this a bit better, we draw 100 Gaussian random matrices and multiply them with some initial matrix.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Zygote</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Distributions</span>
 
-<span class="n">lines</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">relu</span><span class="o">&#39;</span><span class="p">;</span><span class="n">axis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(;</span><span class="n">xlabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">,</span><span class="n">ylabel</span><span class="o">=</span><span class="s">&quot;grad of relu&quot;</span><span class="p">))</span>
+<span class="n">M</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Normal</span><span class="p">(),(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;a single matrix&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;after multiplying 100 matrices&quot;</span><span class="p">)</span>
+<span class="n">M</span><span class="o">*=</span><span class="n">reduce</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">map</span><span class="p">(</span><span class="n">x</span><span class="o">-&gt;</span><span class="n">rand</span><span class="p">(</span><span class="n">Normal</span><span class="p">(),(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)),</span><span class="mi">1</span><span class="o">:</span><span class="mi">100</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/8bdb2ae88225c1dada08d47c27f1658d8e7451dda3b1c526326a8336e64b7e1e.png" src="../../_images/8bdb2ae88225c1dada08d47c27f1658d8e7451dda3b1c526326a8336e64b7e1e.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a single matrix
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4×4 Matrix{Float64}:
+ -1.05678   -0.263555  -0.205375  -1.19783
+ -1.23638    0.675443  -1.11012    1.15837
+ -0.960691   0.628987   0.189805   1.03047
+ -0.98534    0.107866   0.917991  -0.507334
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>after multiplying 100 matrices
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4×4 Matrix{Float64}:
+ 6.98955e22  2.03892e23  1.26077e20  -8.06923e22
+ 2.07651e23  6.05706e23  3.69729e20  -2.39717e23
+ 2.68355e23  7.8281e23   4.8288e20   -3.09805e23
+ 2.11011e23  6.15556e23  3.82741e20  -2.43611e23
+</pre></div>
+</div>
 </div>
 </div>
 </section>
-</section>
-<section id="sigmoid-function">
-<h2><span class="section-number">11.2. </span>Sigmoid Function<a class="headerlink" href="#sigmoid-function" title="Permalink to this heading">#</a></h2>
-<p>Below, we plot the sigmoid function. Note that when the input is close to 0, the sigmoid function approaches a linear transformation.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">lines</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">sigmoid</span><span class="p">;</span><span class="n">axis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(;</span><span class="n">xlabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">,</span><span class="n">ylabel</span><span class="o">=</span><span class="s">&quot;sigmoid(x)&quot;</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/406474f9aa9110e1c7518623c00ae096f1fb9f2317a3ec92cb7dc95715f4ba59.png" src="../../_images/406474f9aa9110e1c7518623c00ae096f1fb9f2317a3ec92cb7dc95715f4ba59.png" />
-</div>
-</div>
-<p>The derivative of the sigmoid function is plotted below. Note that when the input is 0, the derivative of the sigmoid function reaches a maximum of 0.25. As the input diverges from 0 in either direction, the derivative approaches 0.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">lines</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">sigmoid</span><span class="o">&#39;</span><span class="p">;</span><span class="n">axis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(;</span><span class="n">xlabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">,</span><span class="n">ylabel</span><span class="o">=</span><span class="s">&quot;grad of sigmoid&quot;</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/5b8da626dacc61c94420c7b1268e632c45d585c7e6945d24c1a824822647a30c.png" src="../../_images/5b8da626dacc61c94420c7b1268e632c45d585c7e6945d24c1a824822647a30c.png" />
-</div>
-</div>
-</section>
-<section id="tanh-function">
-<h2><span class="section-number">11.3. </span>Tanh Function<a class="headerlink" href="#tanh-function" title="Permalink to this heading">#</a></h2>
-<p>We plot the tanh function below. Note that as input nears 0, the tanh function approaches a linear transformation. Although the shape of the function is similar to that of the sigmoid function, the tanh function exhibits point symmetry about the origin of the coordinate system (Kalman and Kwasny, 1992).</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">lines</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">tanh</span><span class="p">;</span><span class="n">axis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(;</span><span class="n">xlabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">,</span><span class="n">ylabel</span><span class="o">=</span><span class="s">&quot;tanh(x)&quot;</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/709a69dec6d1ffe0ee4c29e55b25b06cf807996a4687499bb1742f4c9e1be018.png" src="../../_images/709a69dec6d1ffe0ee4c29e55b25b06cf807996a4687499bb1742f4c9e1be018.png" />
-</div>
-</div>
-<p>It is plotted below. As the input nears 0, the derivative of the tanh function approaches a maximum of 1. And as we saw with the sigmoid function, as input moves away from 0 in either direction, the derivative of the tanh function approaches 0.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">lines</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">tanh</span><span class="o">&#39;</span><span class="p">;</span><span class="n">axis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(;</span><span class="n">xlabel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;x&quot;</span><span class="p">,</span><span class="n">ylabel</span><span class="o">=</span><span class="s">&quot;tanh(x)&quot;</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/35322daab6f79f0f13c2c876343bec879e73e1e593367ecd93f210ac5f1a3d4d.png" src="../../_images/35322daab6f79f0f13c2c876343bec879e73e1e593367ecd93f210ac5f1a3d4d.png" />
-</div>
-</div>
 </section>
 </section>
 
@@ -514,20 +494,20 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../chapter_linear_classification/Concise%20Implementation%20of%20Softmax%20Regression.html"
+       href="Implementation%20of%20Multilayer%20Perceptrons.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">10. </span>Concise Implementation of Softmax Regression</p>
+        <p class="prev-next-title"><span class="section-number">12. </span>Implementation of Multilayer Perceptrons</p>
       </div>
     </a>
     <a class="right-next"
-       href="Implementation%20of%20Multilayer%20Perceptrons.html"
+       href="Dropout.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">12. </span>Implementation of Multilayer Perceptrons</p>
+        <p class="prev-next-title"><span class="section-number">14. </span>Dropout</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -549,12 +529,11 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-functions">11.1. Activation Functions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relu-function">11.1.1. ReLU Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vanishing-and-exploding-gradients">13.1. Vanishing and Exploding Gradients</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vanishing-gradients">13.1.1. Vanishing Gradients</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploding-gradients">13.1.2. Exploding Gradients</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sigmoid-function">11.2. Sigmoid Function</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tanh-function">11.3. Tanh Function</a></li>
 </ul>
   </nav></div>
 
