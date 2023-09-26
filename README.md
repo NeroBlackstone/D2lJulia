@@ -4,7 +4,7 @@
 
 This tutorial mainly focuses on using pure julia to implement the code in *Dive into Deep Learning*, rather than explaining the specific principles of deep learning. If you know little about specific principles, please refer to the same chapter of the original book.
 
-## Julia Code Implementation Standatd
+## Julia Code Implementation Standard
 
 - Julian: Avoid low-quality code porting, write code in julia way.
 - Consistency: Variable and function name as consistent as possible with the original book to facilitate understanding.
