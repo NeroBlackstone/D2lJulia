@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>3. Linear Algebra &#8212; Dive into Deep Learning - Julia</title>
   
@@ -19,49 +18,45 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
-  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_preliminaries/Linear Algebra';</script>
@@ -78,10 +73,9 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>
@@ -122,11 +116,14 @@ const thebe_selector_output = ".output, .cell_output"
 </form></div>
   </div>
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -141,9 +138,11 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
   
 
 <a class="navbar-brand logo" href="../../README.html">
+  
   
   
   
@@ -153,12 +152,23 @@ const thebe_selector_output = ".output, .cell_output"
       
     
     
-    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Dive into Deep Learning - Julia - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Dive into Deep Learning - Julia - Home"/>`);</script>
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -347,6 +357,7 @@ const thebe_selector_output = ".output, .cell_output"
 </button>
 
 
+
 <script>
 document.write(`
   <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
@@ -356,6 +367,7 @@ document.write(`
   </button>
 `);
 </script>
+
 
 <script>
 document.write(`
@@ -407,13 +419,13 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="linear-algebra">
-<h1><span class="section-number">3. </span>Linear Algebra<a class="headerlink" href="#linear-algebra" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">3. </span>Linear Algebra<a class="headerlink" href="#linear-algebra" title="Link to this heading">#</a></h1>
 <p>By now, we can load datasets into Arrays and manipulate these Arrays with basic mathematical operations. To start building sophisticated models, we will also need a few tools from linear algebra. This section offers a gentle introduction to the most essential concepts, starting from scalar arithmetic and ramping up to matrix multiplication.</p>
 <section id="scalars">
-<h2><span class="section-number">3.1. </span>Scalars<a class="headerlink" href="#scalars" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.1. </span>Scalars<a class="headerlink" href="#scalars" title="Link to this heading">#</a></h2>
 <p>Scalars are implemented as numbers. Below, we assign two scalars and perform the familiar addition, multiplication, division, and exponentiation operations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -432,7 +444,7 @@ document.write(`
 </div>
 </section>
 <section id="vectors">
-<h2><span class="section-number">3.2. </span>Vectors<a class="headerlink" href="#vectors" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.2. </span>Vectors<a class="headerlink" href="#vectors" title="Link to this heading">#</a></h2>
 <p>For our purposes, you can think of vectors as fixed-length arrays of scalars.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -490,7 +502,7 @@ document.write(`
 </div>
 </section>
 <section id="matrices">
-<h2><span class="section-number">3.3. </span>Matrices<a class="headerlink" href="#matrices" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.3. </span>Matrices<a class="headerlink" href="#matrices" title="Link to this heading">#</a></h2>
 <p>We can construct any appropriately sized <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">x</span> <span class="pre">n</span></code> matrix by passing the desired shape to reshape:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -539,7 +551,7 @@ document.write(`
 <p>Matrices are useful for representing datasets. Typically, rows correspond to individual records and columns correspond to distinct attributes.</p>
 </section>
 <section id="arrays">
-<h2><span class="section-number">3.4. </span>Arrays<a class="headerlink" href="#arrays" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.4. </span>Arrays<a class="headerlink" href="#arrays" title="Link to this heading">#</a></h2>
 <p>Multi-dimensional arrays are constructed analogously to vectors and matrices, by growing the number of shape components.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -570,7 +582,7 @@ document.write(`
 </div>
 </section>
 <section id="basic-properties-of-array-arithmetic">
-<h2><span class="section-number">3.5. </span>Basic Properties of Array Arithmetic<a class="headerlink" href="#basic-properties-of-array-arithmetic" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.5. </span>Basic Properties of Array Arithmetic<a class="headerlink" href="#basic-properties-of-array-arithmetic" title="Link to this heading">#</a></h2>
 <p>Scalars, vectors, matrices, and Multi-dimensional arrays all have some handy properties. For example, elementwise operations produce outputs that have the same shape as their operands.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -644,7 +656,7 @@ document.write(`
 </div>
 </section>
 <section id="reduction">
-<h2><span class="section-number">3.6. </span>Reduction<a class="headerlink" href="#reduction" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.6. </span>Reduction<a class="headerlink" href="#reduction" title="Link to this heading">#</a></h2>
 <p>Often, we wish to calculate the sum of a array’s elements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -740,7 +752,7 @@ document.write(`
 </div>
 </section>
 <section id="non-reduction-sum">
-<h2><span class="section-number">3.7. </span>Non-Reduction Sum<a class="headerlink" href="#non-reduction-sum" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.7. </span>Non-Reduction Sum<a class="headerlink" href="#non-reduction-sum" title="Link to this heading">#</a></h2>
 <p>Sometimes it can be useful to keep the number of axes unchanged when invoking the function for calculating the sum or mean. This matters when we want to use the broadcast mechanism. In fact, this is the default behavior of <code class="docutils literal notranslate"><span class="pre">sum</span></code> or <code class="docutils literal notranslate"><span class="pre">mean</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -793,7 +805,7 @@ document.write(`
 </div>
 </section>
 <section id="dot-products">
-<h2><span class="section-number">3.8. </span>Dot Products<a class="headerlink" href="#dot-products" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.8. </span>Dot Products<a class="headerlink" href="#dot-products" title="Link to this heading">#</a></h2>
 <p>One of the most fundamental operations is the dot product. We can use <code class="docutils literal notranslate"><span class="pre">⋅</span></code> operator from <code class="docutils literal notranslate"><span class="pre">LinearAlgebra</span></code> package (where <code class="docutils literal notranslate"><span class="pre">⋅</span></code> can be typed by tab-completing <code class="docutils literal notranslate"><span class="pre">\cdot</span></code> in the REPL).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -824,7 +836,7 @@ document.write(`
 </div>
 </section>
 <section id="matrix-vector-products">
-<h2><span class="section-number">3.9. </span>Matrix-Vector Products<a class="headerlink" href="#matrix-vector-products" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.9. </span>Matrix-Vector Products<a class="headerlink" href="#matrix-vector-products" title="Link to this heading">#</a></h2>
 <p>To express a matrix-vector product in code, we use the <code class="docutils literal notranslate"><span class="pre">*</span></code> operator. Note that the column dimension of A (its length along dimension 2) must be the same as the dimension of x (its length).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -840,7 +852,7 @@ document.write(`
 </div>
 </section>
 <section id="matrix-matrix-multiplication">
-<h2><span class="section-number">3.10. </span>Matrix-Matrix Multiplication<a class="headerlink" href="#matrix-matrix-multiplication" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.10. </span>Matrix-Matrix Multiplication<a class="headerlink" href="#matrix-matrix-multiplication" title="Link to this heading">#</a></h2>
 <p>In the following snippet, we perform matrix multiplication on A and B. Here, A is a matrix with 2 rows and 3 columns, and B is a matrix with 3 rows and 4 columns. After multiplication, we obtain a matrix with 2 rows and 4 columns.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -860,7 +872,7 @@ document.write(`
 <p>The term matrix-matrix multiplication is often simplified to matrix multiplication, and should not be confused with the Hadamard product.</p>
 </section>
 <section id="norms">
-<h2><span class="section-number">3.11. </span>Norms<a class="headerlink" href="#norms" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.11. </span>Norms<a class="headerlink" href="#norms" title="Link to this heading">#</a></h2>
 <p>The method <code class="docutils literal notranslate"><span class="pre">norm</span></code> calculates the <span class="math notranslate nohighlight">\( \ell_2 \)</span> norm.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -932,7 +944,7 @@ document.write(`
               
               
                 <footer class="prev-next-footer">
-                  <!-- Previous / next buttons -->
+                  
 <div class="prev-next-area">
     <a class="left-prev"
        href="Data%20Preprocessing.html"
@@ -960,6 +972,7 @@ document.write(`
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
 
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
@@ -999,9 +1012,10 @@ By Nero Blackstone
   
   <div class="footer-item">
     
+
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>
@@ -1025,8 +1039,8 @@ By Nero Blackstone
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
   </footer>
