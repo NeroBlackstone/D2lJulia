@@ -33,5 +33,5 @@ parts:
   - caption: Builders’ Guide
     numbered: true
     chapters:
-    - file: notebooks/chapter_builders_guide/init_param.ipynb
     - file: notebooks/chapter_builders_guide/parameters.ipynb
+    - file: notebooks/chapter_builders_guide/init_param.ipynb
