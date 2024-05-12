@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Parameter Management &#8212; Dive into Deep Learning - Julia</title>
+    <title>16. Parameter Management &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -60,6 +60,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_builders_guide/parameters';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="15. Parameter Initialization" href="init_param.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -120,8 +121,6 @@
     <div class="bd-container__inner bd-page-width">
       
       
-      
-        
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -201,7 +200,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_multilayer_perceptrons/Implementation%20of%20Multilayer%20Perceptrons.html">12. Implementation of Multilayer Perceptrons</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_multilayer_perceptrons/Numerical%20Stability%20and%20Initialization.html">13. Numerical Stability and Initialization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_multilayer_perceptrons/Dropout.html">14. Dropout</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multilayer_perceptrons/Predicting%20House%20Prices%20on%20Kaggle.html">15. Predicting House Prices on Kaggle</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Builders’ Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="init_param.html">15. Parameter Initialization</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">16. Parameter Management</a></li>
 </ul>
 
     </div>
@@ -397,11 +400,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-access">Parameter Access</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#all-parameters-at-once">All Parameters at Once</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-access">16.1. Parameter Access</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#all-parameters-at-once">16.1.1. All Parameters at Once</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tied-parameters">Tied Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tied-parameters">16.2. Tied Parameters</a></li>
 </ul>
             </nav>
         </div>
@@ -414,7 +417,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="parameter-management">
-<h1>Parameter Management<a class="headerlink" href="#parameter-management" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">16. </span>Parameter Management<a class="headerlink" href="#parameter-management" title="Link to this heading">#</a></h1>
 <p>We start by focusing on an MLP with one hidden layer.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -433,7 +436,7 @@ document.write(`
 </div>
 </div>
 <section id="parameter-access">
-<h2>Parameter Access<a class="headerlink" href="#parameter-access" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">16.1. </span>Parameter Access<a class="headerlink" href="#parameter-access" title="Link to this heading">#</a></h2>
 <p>We can inspect the parameters of the second fully connected layer as follows.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -452,7 +455,7 @@ bias = Float32[0.0]
 </div>
 <p>We can see that this fully connected layer contains two parameters, corresponding to that layer’s weights and biases, respectively.</p>
 <section id="all-parameters-at-once">
-<h3>All Parameters at Once<a class="headerlink" href="#all-parameters-at-once" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">16.1.1. </span>All Parameters at Once<a class="headerlink" href="#all-parameters-at-once" title="Link to this heading">#</a></h3>
 <p>When we need to perform operations on all parameters, accessing them one-by-one can grow tedious. The situation can grow especially unwieldy when we work with more complex, e.g., nested, modules, since we would need to recurse through the entire tree to extract each sub-module’s parameters. Below we demonstrate accessing the parameters of all layers.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -481,7 +484,7 @@ bias = Float32[0.0]
 </section>
 </section>
 <section id="tied-parameters">
-<h2>Tied Parameters<a class="headerlink" href="#tied-parameters" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">16.2. </span>Tied Parameters<a class="headerlink" href="#tied-parameters" title="Link to this heading">#</a></h2>
 <p>Often, we want to share parameters across multiple layers. Let’s see how to do this elegantly. In the following we allocate a fully connected layer and then use its parameters specifically to set those of another layer. Here we need to run the forward propagation net(X) before accessing the parameters.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -536,6 +539,15 @@ true
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="init_param.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">15. </span>Parameter Initialization</p>
+      </div>
+    </a>
 </div>
                 </footer>
               
@@ -552,11 +564,11 @@ true
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-access">Parameter Access</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#all-parameters-at-once">All Parameters at Once</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-access">16.1. Parameter Access</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#all-parameters-at-once">16.1.1. All Parameters at Once</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tied-parameters">Tied Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tied-parameters">16.2. Tied Parameters</a></li>
 </ul>
   </nav></div>
 

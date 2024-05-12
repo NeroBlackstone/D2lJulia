@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>15. Predicting House Prices on Kaggle &#8212; Dive into Deep Learning - Julia</title>
+    <title>Predicting House Prices on Kaggle &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -60,7 +60,6 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_multilayer_perceptrons/Predicting House Prices on Kaggle';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="14. Dropout" href="Dropout.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -121,6 +120,8 @@
     <div class="bd-container__inner bd-page-width">
       
       
+      
+        
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -195,12 +196,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_linear_classification/Concise%20Implementation%20of%20Softmax%20Regression.html">10. Concise Implementation of Softmax Regression</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Multilayer Perceptrons</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Multilayer%20Perceptrons.html">11. Multilayer Perceptrons</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Implementation%20of%20Multilayer%20Perceptrons.html">12. Implementation of Multilayer Perceptrons</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Numerical%20Stability%20and%20Initialization.html">13. Numerical Stability and Initialization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Dropout.html">14. Dropout</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">15. Predicting House Prices on Kaggle</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Builders’ Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_builders_guide/init_param.html">15. Parameter Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_builders_guide/parameters.html">16. Parameter Management</a></li>
 </ul>
 
     </div>
@@ -396,7 +401,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-data">15.1. Downloading Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-data">Downloading Data</a></li>
 </ul>
             </nav>
         </div>
@@ -409,11 +414,11 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="predicting-house-prices-on-kaggle">
-<h1><span class="section-number">15. </span>Predicting House Prices on Kaggle<a class="headerlink" href="#predicting-house-prices-on-kaggle" title="Link to this heading">#</a></h1>
+<h1>Predicting House Prices on Kaggle<a class="headerlink" href="#predicting-house-prices-on-kaggle" title="Link to this heading">#</a></h1>
 <p>Now that we have introduced some basic tools for building and training deep networks and regularizing them with techniques including weight decay and dropout, we are ready to put all this knowledge into practice by participating in a Kaggle competition. The house price prediction competition is a great place to start. The data is fairly generic and do not exhibit exotic structure that might require specialized models (as audio or video might). This dataset, collected by De Cock (2011), covers house prices in Ames, IA from the period of 2006–2010. It is considerably larger than the famous Boston housing dataset of Harrison and Rubinfeld (1978), boasting both more examples and more features.</p>
 <p>In this section, we will walk you through details of data preprocessing, model design, and hyperparameter selection. We hope that through a hands-on approach, you will gain some intuitions that will guide you in your career as a data scientist.</p>
 <section id="downloading-data">
-<h2><span class="section-number">15.1. </span>Downloading Data<a class="headerlink" href="#downloading-data" title="Link to this heading">#</a></h2>
+<h2>Downloading Data<a class="headerlink" href="#downloading-data" title="Link to this heading">#</a></h2>
 </section>
 </section>
 
@@ -447,15 +452,6 @@ document.write(`
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="Dropout.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">14. </span>Dropout</p>
-      </div>
-    </a>
 </div>
                 </footer>
               
@@ -472,7 +468,7 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-data">15.1. Downloading Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-data">Downloading Data</a></li>
 </ul>
   </nav></div>
 

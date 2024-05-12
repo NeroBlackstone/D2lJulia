@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Parameter Initialization &#8212; Dive into Deep Learning - Julia</title>
+    <title>15. Parameter Initialization &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -60,6 +60,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_builders_guide/init_param';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="16. Parameter Management" href="parameters.html" />
+    <link rel="prev" title="14. Dropout" href="../chapter_multilayer_perceptrons/Dropout.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -120,8 +122,6 @@
     <div class="bd-container__inner bd-page-width">
       
       
-      
-        
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -201,7 +201,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_multilayer_perceptrons/Implementation%20of%20Multilayer%20Perceptrons.html">12. Implementation of Multilayer Perceptrons</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_multilayer_perceptrons/Numerical%20Stability%20and%20Initialization.html">13. Numerical Stability and Initialization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_multilayer_perceptrons/Dropout.html">14. Dropout</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_multilayer_perceptrons/Predicting%20House%20Prices%20on%20Kaggle.html">15. Predicting House Prices on Kaggle</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Builders’ Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">15. Parameter Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">16. Parameter Management</a></li>
 </ul>
 
     </div>
@@ -397,7 +401,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#built-in-initialization">Built-in Initialization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#built-in-initialization">15.1. Built-in Initialization</a></li>
 </ul>
             </nav>
         </div>
@@ -410,7 +414,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="parameter-initialization">
-<h1>Parameter Initialization<a class="headerlink" href="#parameter-initialization" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">15. </span>Parameter Initialization<a class="headerlink" href="#parameter-initialization" title="Link to this heading">#</a></h1>
 <p>Flux initialises convolutional layers and recurrent cells with <code class="docutils literal notranslate"><span class="pre">glorot_uniform</span></code> by default.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -430,7 +434,7 @@ document.write(`
 </div>
 </div>
 <section id="built-in-initialization">
-<h2>Built-in Initialization<a class="headerlink" href="#built-in-initialization" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">15.1. </span>Built-in Initialization<a class="headerlink" href="#built-in-initialization" title="Link to this heading">#</a></h2>
 <p>Let’s begin by calling on built-in initializers. The code below initializes all weight parameters as Gaussian random variables with standard deviation 0.01, while bias parameters are cleared to zero.</p>
 </section>
 </section>
@@ -465,6 +469,24 @@ document.write(`
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter_multilayer_perceptrons/Dropout.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">14. </span>Dropout</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="parameters.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">16. </span>Parameter Management</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -481,7 +503,7 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#built-in-initialization">Built-in Initialization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#built-in-initialization">15.1. Built-in Initialization</a></li>
 </ul>
   </nav></div>
 
