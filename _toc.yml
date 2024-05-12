@@ -30,4 +30,8 @@ parts:
     - file: notebooks/chapter_multilayer_perceptrons/Implementation of Multilayer Perceptrons.ipynb
     - file: notebooks/chapter_multilayer_perceptrons/Numerical Stability and Initialization.ipynb
     - file: notebooks/chapter_multilayer_perceptrons/Dropout.ipynb
-    - file: notebooks/chapter_multilayer_perceptrons/Predicting House Prices on Kaggle.ipynb
+  - caption: Builders’ Guide
+    numbered: true
+    chapters:
+    - file: notebooks/chapter_builders_guide/init_param.ipynb
+    - file: notebooks/chapter_builders_guide/parameters.ipynb
