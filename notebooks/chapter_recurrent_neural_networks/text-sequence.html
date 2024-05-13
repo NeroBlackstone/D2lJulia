@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>12. Implementation of Multilayer Perceptrons &#8212; Dive into Deep Learning - Julia</title>
+    <title>Converting Raw Text into Sequence Data &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -57,11 +57,9 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_multilayer_perceptrons/Implementation of Multilayer Perceptrons';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_recurrent_neural_networks/text-sequence';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="13. Numerical Stability and Initialization" href="Numerical%20Stability%20and%20Initialization.html" />
-    <link rel="prev" title="11. Multilayer Perceptrons" href="Multilayer%20Perceptrons.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -122,6 +120,8 @@
     <div class="bd-container__inner bd-page-width">
       
       
+      
+        
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -196,11 +196,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_linear_classification/Concise%20Implementation%20of%20Softmax%20Regression.html">10. Concise Implementation of Softmax Regression</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Multilayer Perceptrons</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="Multilayer%20Perceptrons.html">11. Multilayer Perceptrons</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">12. Implementation of Multilayer Perceptrons</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Numerical%20Stability%20and%20Initialization.html">13. Numerical Stability and Initialization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Dropout.html">14. Dropout</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multilayer_perceptrons/Multilayer%20Perceptrons.html">11. Multilayer Perceptrons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multilayer_perceptrons/Implementation%20of%20Multilayer%20Perceptrons.html">12. Implementation of Multilayer Perceptrons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multilayer_perceptrons/Numerical%20Stability%20and%20Initialization.html">13. Numerical Stability and Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_multilayer_perceptrons/Dropout.html">14. Dropout</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Builders’ Guide</span></p>
 <ul class="nav bd-sidenav">
@@ -277,7 +277,7 @@
       
       
       
-      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_multilayer_perceptrons/Implementation of Multilayer Perceptrons.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_recurrent_neural_networks/text-sequence.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -307,7 +307,7 @@
       
       
       
-      <li><a href="../../_sources/notebooks/chapter_multilayer_perceptrons/Implementation of Multilayer Perceptrons.ipynb" target="_blank"
+      <li><a href="../../_sources/notebooks/chapter_recurrent_neural_networks/text-sequence.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -391,7 +391,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Implementation of Multilayer Perceptrons</h1>
+    <h1>Converting Raw Text into Sequence Data</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -401,11 +401,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concise-implementation">12.1. Concise Implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model">12.1.1. Model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training">12.1.2. Training</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">Reading the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization">Tokenization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vocabulary">Vocabulary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-language-statistics">Exploratory Language Statistics</a></li>
 </ul>
             </nav>
         </div>
@@ -417,92 +416,131 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="implementation-of-multilayer-perceptrons">
-<h1><span class="section-number">12. </span>Implementation of Multilayer Perceptrons<a class="headerlink" href="#implementation-of-multilayer-perceptrons" title="Link to this heading">#</a></h1>
-<p>Multilayer perceptrons (MLPs) are not much more complex to implement than simple linear models. The key conceptual difference is that we now concatenate multiple layers.</p>
-<section id="concise-implementation">
-<h2><span class="section-number">12.1. </span>Concise Implementation<a class="headerlink" href="#concise-implementation" title="Link to this heading">#</a></h2>
-<p>As you might expect, by relying on the high-level APIs, we can implement MLPs even more concisely.</p>
-<section id="model">
-<h3><span class="section-number">12.1.1. </span>Model<a class="headerlink" href="#model" title="Link to this heading">#</a></h3>
-<p>As compared with our concise implementation of softmax regression implementation (Section 4.5), the only difference is that we add two fully connected layers where we previously added only one. The first is the hidden layer, the second is the output layer.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="converting-raw-text-into-sequence-data">
+<h1>Converting Raw Text into Sequence Data<a class="headerlink" href="#converting-raw-text-into-sequence-data" title="Link to this heading">#</a></h1>
+<section id="reading-the-dataset">
+<h2>Reading the Dataset<a class="headerlink" href="#reading-the-dataset" title="Link to this heading">#</a></h2>
+<p>Here, we will work with H. G. Wells’ The Time Machine, a book containing just over 30,000 words. While real applications will typically involve significantly larger datasets, this is sufficient to demonstrate the preprocessing pipeline. The following _download method reads the raw text into a string.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Flux</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Downloads</span>
 
-<span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Chain</span><span class="p">(</span><span class="n">Flux</span><span class="o">.</span><span class="n">flatten</span><span class="p">,</span><span class="n">Dense</span><span class="p">(</span><span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="o">=&gt;</span><span class="mi">256</span><span class="p">),</span><span class="n">relu</span><span class="p">,</span><span class="n">Dense</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">file_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Downloads</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s">&quot;https://www.gutenberg.org/cache/epub/35/pg35.txt&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chain(
-  Flux.flatten,
-  Dense(784 =&gt; 256),                    # 200_960 parameters
-  NNlib.relu,
-  Dense(256 =&gt; 10),                     # 2_570 parameters
-)                   # Total: 4 arrays, 203_530 parameters, 795.289 KiB.
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;/tmp/jl_eD65mPmPM9&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">raw_text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="o">-&gt;</span><span class="n">read</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="kt">String</span><span class="p">),</span><span class="n">file_path</span><span class="p">)</span>
+<span class="n">raw_text</span><span class="p">[</span><span class="k">begin</span><span class="o">:</span><span class="mi">60</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;\ufeffThe Project Gutenberg eBook of The Time Machine\r\n    \r\nTh&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>For simplicity, we ignore punctuation and capitalization when preprocessing the raw text.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lowercase</span><span class="p">(</span><span class="n">replace</span><span class="p">(</span><span class="n">raw_text</span><span class="p">,</span><span class="sa">r</span><span class="sr">&quot;[^A-Za-z]+&quot;</span><span class="o">=&gt;</span><span class="s">&quot; &quot;</span><span class="p">))</span>
+<span class="n">str</span><span class="p">[</span><span class="k">begin</span><span class="o">:</span><span class="mi">60</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot; the project gutenberg ebook of the time machine this ebook &quot;
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="training">
-<h3><span class="section-number">12.1.2. </span>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h3>
-<p>The training loop is exactly the same as when we implemented softmax regression.</p>
+<section id="tokenization">
+<h2>Tokenization<a class="headerlink" href="#tokenization" title="Link to this heading">#</a></h2>
+<p>Tokens are the atomic (indivisible) units of text. Each time step corresponds to 1 token, but what precisely constitutes a token is a design choice. For example, we could represent the sentence “Baby needs a new pair of shoes” as a sequence of 7 words, where the set of all words comprise a large vocabulary (typically tens or hundreds of thousands of words). Or we would represent the same sentence as a much longer sequence of 30 characters, using a much smaller vocabulary (there are only 256 distinct ASCII characters). Below, we tokenize our preprocessed text into a sequence of characters.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">MLUtils</span>
-<span class="k">using</span><span class="w"> </span><span class="n">MLDatasets</span>
-<span class="k">using</span><span class="w"> </span><span class="n">MLBase</span>
-
-<span class="c"># data prepare</span>
-<span class="nb">ENV</span><span class="p">[</span><span class="s">&quot;DATADEPS_ALWAYS_ACCEPT&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
-<span class="n">mnist_train</span><span class="p">,</span><span class="n">mnist_test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FashionMNIST</span><span class="p">(</span><span class="ss">:train</span><span class="p">),</span><span class="n">FashionMNIST</span><span class="p">(</span><span class="ss">:test</span><span class="p">)</span>
-<span class="n">features</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mnist_train</span><span class="o">.</span><span class="n">features</span>
-<span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">onehotbatch</span><span class="p">(</span><span class="n">mnist_train</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span><span class="mi">0</span><span class="o">:</span><span class="mi">9</span><span class="p">)</span>
-<span class="n">train_loader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataLoader</span><span class="p">((</span><span class="n">features</span><span class="p">,</span><span class="n">labels</span><span class="p">),</span><span class="n">batchsize</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
-
-<span class="n">mnist_accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">::</span><span class="kt">FashionMNIST</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">correctrate</span><span class="p">(</span><span class="n">classify</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="p">))</span><span class="o">.-</span><span class="mi">1</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">targets</span><span class="p">)</span>
-<span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">logitcrossentropy</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">y</span><span class="p">)</span>
-
-<span class="c"># train</span>
-<span class="n">num_epochs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span>
-<span class="n">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">map</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="n">num_epochs</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">i</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">train_loader</span>
-<span class="w">        </span><span class="n">Flux</span><span class="o">.</span><span class="n">train!</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span><span class="n">model</span><span class="p">,[</span><span class="n">data</span><span class="p">],</span><span class="n">Descent</span><span class="p">())</span>
-<span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">features</span><span class="p">,</span><span class="n">labels</span><span class="p">),</span><span class="n">mnist_accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">mnist_train</span><span class="p">),</span><span class="n">mnist_accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">mnist_test</span><span class="p">)</span>
-<span class="k">end</span>
-<span class="n">train_loss</span><span class="p">,</span><span class="w"> </span><span class="n">train_acc</span><span class="p">,</span><span class="w"> </span><span class="n">test_acc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">map</span><span class="p">(</span><span class="n">x</span><span class="o">-&gt;</span><span class="n">getindex</span><span class="o">.</span><span class="p">(</span><span class="n">results</span><span class="p">,</span><span class="n">x</span><span class="p">),</span><span class="mi">1</span><span class="o">:</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">tokens</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">str</span><span class="o">...</span><span class="p">]</span>
+<span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="k">begin</span><span class="o">:</span><span class="mi">30</span><span class="p">],</span><span class="s">&quot;,&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-element Vector{Vector}:
- Float32[0.68876016, 0.56865656, 0.49360403, 0.44557437, 0.4166209, 0.3979724, 0.38223523, 0.3682386, 0.3582719, 0.34964567]
- [0.7618166666666667, 0.8034333333333333, 0.8294, 0.8449666666666666, 0.8544833333333334, 0.8608833333333333, 0.86575, 0.8708833333333333, 0.8740666666666667, 0.8769666666666667]
- [0.752, 0.791, 0.8153, 0.8304, 0.8402, 0.8449, 0.849, 0.8545, 0.8566, 0.8581]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot; ,t,h,e, ,p,r,o,j,e,c,t, ,g,u,t,e,n,b,e,r,g, ,e,b,o,o,k, ,o&quot;
 </pre></div>
 </div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">CairoMakie</span>
-
-<span class="n">f</span><span class="p">,</span><span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines</span><span class="p">(</span><span class="n">train_loss</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;train_loss&quot;</span><span class="p">;</span><span class="n">axis</span><span class="o">=</span><span class="p">(;</span><span class="n">xlabel</span><span class="o">=</span><span class="s">&quot;epoch&quot;</span><span class="p">))</span>
-<span class="n">lines!</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">train_acc</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;train_acc&quot;</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="ss">:dash</span><span class="p">)</span>
-<span class="n">lines!</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">test_acc</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;test_acc&quot;</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="ss">:dashdot</span><span class="p">)</span>
-<span class="n">axislegend</span><span class="p">(</span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:rc</span><span class="p">)</span>
-<span class="n">f</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/5323aa01987682c1c1b1de650553616aefcd1e2d68a0fcd5fceaabe243a99012.png" src="../../_images/5323aa01987682c1c1b1de650553616aefcd1e2d68a0fcd5fceaabe243a99012.png" />
 </div>
 </div>
 </section>
+<section id="vocabulary">
+<h2>Vocabulary<a class="headerlink" href="#vocabulary" title="Link to this heading">#</a></h2>
+<p>We now construct a vocabulary for our dataset, converting the sequence of strings into a list of numerical indices. Note that we have not lost any information and can easily convert our dataset back to its original (string) representation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">vocab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unique</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+<span class="n">vocab_dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Dict</span><span class="p">(</span><span class="n">vocab</span><span class="w"> </span><span class="o">.=&gt;</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">length</span><span class="p">(</span><span class="n">vocab</span><span class="p">))</span>
+<span class="n">indices_dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Dict</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=&gt;</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">vocab_dict</span><span class="p">)</span>
+
+<span class="n">to_indices</span><span class="p">(</span><span class="n">v</span><span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Char</span><span class="p">})</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">vocab_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">v</span><span class="p">]</span>
+<span class="n">to_vocab</span><span class="p">(</span><span class="n">v</span><span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int</span><span class="p">})</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">indices_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">v</span><span class="p">]</span>
+
+<span class="n">indices</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">to_indices</span><span class="p">(</span><span class="n">vocab</span><span class="p">[</span><span class="k">begin</span><span class="o">:</span><span class="mi">10</span><span class="p">])</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;indices:</span><span class="si">$</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;words:</span><span class="si">$</span><span class="p">(</span><span class="n">to_vocab</span><span class="p">(</span><span class="n">indices</span><span class="p">))</span><span class="s">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>indices:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+words:[&#39; &#39;, &#39;t&#39;, &#39;h&#39;, &#39;e&#39;, &#39;p&#39;, &#39;r&#39;, &#39;o&#39;, &#39;j&#39;, &#39;c&#39;, &#39;g&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exploratory-language-statistics">
+<h2>Exploratory Language Statistics<a class="headerlink" href="#exploratory-language-statistics" title="Link to this heading">#</a></h2>
+<p>Using the real corpus and the Vocab class defined over words, we can inspect basic statistics concerning word use in our corpus. Below, we construct a vocabulary from words used in The Time Machine and print the ten most frequently occurring of them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">TextAnalysis</span>
+
+<span class="n">sd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">StringDocument</span><span class="p">(</span><span class="n">raw_text</span><span class="p">)</span>
+<span class="n">remove_case!</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span>
+<span class="n">prepare!</span><span class="p">(</span><span class="n">sd</span><span class="p">,</span><span class="w"> </span><span class="n">strip_non_letters</span><span class="p">)</span>
+<span class="n">crps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Corpus</span><span class="p">([</span><span class="n">sd</span><span class="p">])</span>
+<span class="n">update_lexicon!</span><span class="p">(</span><span class="n">crps</span><span class="p">)</span>
+<span class="n">lex_dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lexicon</span><span class="p">(</span><span class="n">crps</span><span class="p">)</span>
+
+<span class="n">partialsort</span><span class="p">([</span><span class="n">lex_dict</span><span class="o">...</span><span class="p">],</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="n">rev</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10-element view(::Vector{Pair{String, Int64}}, 1:10) with eltype Pair{String, Int64}:
+  &quot;the&quot; =&gt; 2468
+  &quot;and&quot; =&gt; 1296
+   &quot;of&quot; =&gt; 1281
+    &quot;i&quot; =&gt; 1242
+    &quot;a&quot; =&gt; 864
+   &quot;to&quot; =&gt; 760
+   &quot;in&quot; =&gt; 605
+  &quot;was&quot; =&gt; 550
+ &quot;that&quot; =&gt; 451
+   &quot;my&quot; =&gt; 439
+</pre></div>
+</div>
+</div>
+</div>
+<p>Word frequency tends to follow a power law distribution (specifically the Zipfian) as we go down the ranks. To get a better idea, we plot the figure of the word frequency.</p>
 </section>
 </section>
 
@@ -515,16 +553,16 @@ document.write(`
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "julia-1.9"
+            mode: "julia-1.10"
         },
         kernelOptions: {
-            name: "julia-1.9",
-            path: "./notebooks/chapter_multilayer_perceptrons"
+            name: "julia-1.10",
+            path: "./notebooks/chapter_recurrent_neural_networks"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'julia-1.9'</script>
+    <script>kernelName = 'julia-1.10'</script>
 
                 </article>
               
@@ -536,24 +574,6 @@ document.write(`
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="Multilayer%20Perceptrons.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">11. </span>Multilayer Perceptrons</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="Numerical%20Stability%20and%20Initialization.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">13. </span>Numerical Stability and Initialization</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -570,11 +590,10 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concise-implementation">12.1. Concise Implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model">12.1.1. Model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training">12.1.2. Training</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">Reading the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization">Tokenization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vocabulary">Vocabulary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-language-statistics">Exploratory Language Statistics</a></li>
 </ul>
   </nav></div>
 

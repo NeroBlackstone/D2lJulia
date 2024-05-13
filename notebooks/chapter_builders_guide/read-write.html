@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>File I/O &#8212; Dive into Deep Learning - Julia</title>
+    <title>16. File I/O &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -60,6 +60,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_builders_guide/read-write';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="15. Parameter Management" href="parameters.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -120,8 +121,6 @@
     <div class="bd-container__inner bd-page-width">
       
       
-      
-        
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -203,8 +202,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_multilayer_perceptrons/Dropout.html">14. Dropout</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Builders’ Guide</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="parameters.html">15. Parameter Management</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">16. File I/O</a></li>
 </ul>
 
     </div>
@@ -400,8 +400,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-and-saving-vectors">Loading and Saving Vectors</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-and-saving-model-parameters">Loading and Saving Model Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-and-saving-vectors">16.1. Loading and Saving Vectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-and-saving-model-parameters">16.2. Loading and Saving Model Parameters</a></li>
 </ul>
             </nav>
         </div>
@@ -414,9 +414,9 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="file-i-o">
-<h1>File I/O<a class="headerlink" href="#file-i-o" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">16. </span>File I/O<a class="headerlink" href="#file-i-o" title="Link to this heading">#</a></h1>
 <section id="loading-and-saving-vectors">
-<h2>Loading and Saving Vectors<a class="headerlink" href="#loading-and-saving-vectors" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">16.1. </span>Loading and Saving Vectors<a class="headerlink" href="#loading-and-saving-vectors" title="Link to this heading">#</a></h2>
 <p>For individual vectors, we can directly invoke the <code class="docutils literal notranslate"><span class="pre">serialize</span></code> and <code class="docutils literal notranslate"><span class="pre">deserialize</span></code> functions to read and write them respectively. Both functions require that we supply a name, and save requires as input the variable to be saved.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -490,7 +490,7 @@ document.write(`
 </div>
 </section>
 <section id="loading-and-saving-model-parameters">
-<h2>Loading and Saving Model Parameters<a class="headerlink" href="#loading-and-saving-model-parameters" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">16.2. </span>Loading and Saving Model Parameters<a class="headerlink" href="#loading-and-saving-model-parameters" title="Link to this heading">#</a></h2>
 <p>Saving individual weight vectors is useful, but it gets very tedious if we want to save (and later load) an entire model. After all, we might have hundreds of parameter groups sprinkled throughout. For this reason the deep learning framework provides built-in functionalities to load and save entire networks. An important detail to note is that this saves model parameters and not the entire model. For example, if we have a 3-layer MLP, we need to specify the architecture separately. The reason for this is that the models themselves can contain arbitrary code, hence they cannot be serialized as naturally. Thus, in order to reinstate a model, we need to generate the architecture in code and then load the parameters from disk. Let’s start with our familiar MLP.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -561,7 +561,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>false
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>true
 </pre></div>
 </div>
 </div>
@@ -599,6 +599,15 @@ document.write(`
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="parameters.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">15. </span>Parameter Management</p>
+      </div>
+    </a>
 </div>
                 </footer>
               
@@ -615,8 +624,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-and-saving-vectors">Loading and Saving Vectors</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-and-saving-model-parameters">Loading and Saving Model Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-and-saving-vectors">16.1. Loading and Saving Vectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-and-saving-model-parameters">16.2. Loading and Saving Model Parameters</a></li>
 </ul>
   </nav></div>
 
