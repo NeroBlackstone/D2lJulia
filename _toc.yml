@@ -34,5 +34,10 @@ parts:
     numbered: true
     chapters:
     - file: notebooks/chapter_builders_guide/parameters.ipynb
-    - file: /notebooks/chapter_builders_guide/read-write.ipynb
-
+    - file: notebooks/chapter_builders_guide/read-write.ipynb
+  - caption: Recurrent Neural Networks
+    numbered: true
+    chapters:
+    - file: chapter_recurrent_neural_networks/sequence.ipynb
+    - file: chapter_recurrent_neural_networks/text-sequence.ipynbs
+    
