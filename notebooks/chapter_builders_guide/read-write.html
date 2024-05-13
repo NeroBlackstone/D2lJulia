@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>16. Parameter Initialization &#8212; Dive into Deep Learning - Julia</title>
+    <title>File I/O &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -57,10 +57,9 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_builders_guide/init_param';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_builders_guide/read-write';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="15. Parameter Management" href="parameters.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -121,6 +120,8 @@
     <div class="bd-container__inner bd-page-width">
       
       
+      
+        
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -202,9 +203,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_multilayer_perceptrons/Dropout.html">14. Dropout</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Builders’ Guide</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="parameters.html">15. Parameter Management</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">16. Parameter Initialization</a></li>
 </ul>
 
     </div>
@@ -276,7 +276,7 @@
       
       
       
-      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_builders_guide/init_param.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_builders_guide/read-write.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -306,7 +306,7 @@
       
       
       
-      <li><a href="../../_sources/notebooks/chapter_builders_guide/init_param.ipynb" target="_blank"
+      <li><a href="../../_sources/notebooks/chapter_builders_guide/read-write.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -390,7 +390,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Parameter Initialization</h1>
+    <h1>File I/O</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -400,7 +400,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#built-in-initialization">16.1. Built-in Initialization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-and-saving-vectors">Loading and Saving Vectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-and-saving-model-parameters">Loading and Saving Model Parameters</a></li>
 </ul>
             </nav>
         </div>
@@ -412,29 +413,159 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="parameter-initialization">
-<h1><span class="section-number">16. </span>Parameter Initialization<a class="headerlink" href="#parameter-initialization" title="Link to this heading">#</a></h1>
-<p>Flux initialises convolutional layers and recurrent cells with <code class="docutils literal notranslate"><span class="pre">glorot_uniform</span></code> by default.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="file-i-o">
+<h1>File I/O<a class="headerlink" href="#file-i-o" title="Link to this heading">#</a></h1>
+<section id="loading-and-saving-vectors">
+<h2>Loading and Saving Vectors<a class="headerlink" href="#loading-and-saving-vectors" title="Link to this heading">#</a></h2>
+<p>For individual vectors, we can directly invoke the <code class="docutils literal notranslate"><span class="pre">serialize</span></code> and <code class="docutils literal notranslate"><span class="pre">deserialize</span></code> functions to read and write them respectively. Both functions require that we supply a name, and save requires as input the variable to be saved.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Flux</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Serialization</span>
 
-<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="kt">Float32</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@autosize</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">1</span><span class="p">],)</span><span class="w"> </span><span class="n">Chain</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">_</span><span class="o">=&gt;</span><span class="mi">8</span><span class="p">),</span><span class="n">relu</span><span class="p">,</span><span class="n">Dense</span><span class="p">(</span><span class="n">_</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="mi">4</span><span class="o">...</span><span class="p">]</span>
+<span class="n">serialize</span><span class="p">(</span><span class="s">&quot;x-file&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1×2 Matrix{Float32}:
- -0.0686923  -0.517646
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-element Vector{Int64}:
+ 1
+ 2
+ 3
+ 4
 </pre></div>
 </div>
 </div>
 </div>
-<section id="built-in-initialization">
-<h2><span class="section-number">16.1. </span>Built-in Initialization<a class="headerlink" href="#built-in-initialization" title="Link to this heading">#</a></h2>
-<p>Let’s begin by calling on built-in initializers. The code below initializes all weight parameters as Gaussian random variables with standard deviation 0.01, while bias parameters are cleared to zero.</p>
+<p>We can now read the data from the stored file back into memory.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">x2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">deserialize</span><span class="p">(</span><span class="s">&quot;x-file&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4-element Vector{Int64}:
+ 1
+ 2
+ 3
+ 4
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can store a list of vectors and read them back into memory.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">serialize</span><span class="p">(</span><span class="s">&quot;x-files&quot;</span><span class="p">,[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">])</span>
+<span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">deserialize</span><span class="p">(</span><span class="s">&quot;x-files&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2-element Vector{Vector{Float64}}:
+ [1.0, 2.0, 3.0, 4.0]
+ [0.0, 0.0, 0.0, 0.0]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can even write and read a dictionary that maps from strings to vectors. This is convenient when we want to read or write all the weights in a model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">mydict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Dict</span><span class="p">{</span><span class="kt">String</span><span class="p">,</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Number</span><span class="p">}}(</span><span class="s">&quot;x&quot;</span><span class="o">=&gt;</span><span class="n">x</span><span class="p">,</span><span class="s">&quot;y&quot;</span><span class="o">=&gt;</span><span class="n">y</span><span class="p">)</span>
+<span class="n">serialize</span><span class="p">(</span><span class="s">&quot;mydict&quot;</span><span class="p">,</span><span class="n">mydict</span><span class="p">)</span>
+<span class="n">mydict2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">deserialize</span><span class="p">(</span><span class="s">&quot;mydict&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dict{String, Vector{Number}} with 2 entries:
+  &quot;x&quot; =&gt; [1, 2, 3, 4]
+  &quot;y&quot; =&gt; [0.0, 0.0, 0.0, 0.0]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="loading-and-saving-model-parameters">
+<h2>Loading and Saving Model Parameters<a class="headerlink" href="#loading-and-saving-model-parameters" title="Link to this heading">#</a></h2>
+<p>Saving individual weight vectors is useful, but it gets very tedious if we want to save (and later load) an entire model. After all, we might have hundreds of parameter groups sprinkled throughout. For this reason the deep learning framework provides built-in functionalities to load and save entire networks. An important detail to note is that this saves model parameters and not the entire model. For example, if we have a 3-layer MLP, we need to specify the architecture separately. The reason for this is that the models themselves can contain arbitrary code, hence they cannot be serialized as naturally. Thus, in order to reinstate a model, we need to generate the architecture in code and then load the parameters from disk. Let’s start with our familiar MLP.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Flux</span>
+
+<span class="k">struct</span> <span class="kt">MLP</span>
+<span class="w">    </span><span class="n">net</span><span class="o">::</span><span class="kt">Chain</span>
+<span class="k">end</span>
+
+<span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="kt">Float32</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">MLP</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nd">@autosize</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">)[</span><span class="mi">1</span><span class="p">],)</span><span class="w"> </span><span class="n">Chain</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">_</span><span class="o">=&gt;</span><span class="mi">256</span><span class="p">),</span><span class="n">relu</span><span class="p">,</span><span class="n">Dense</span><span class="p">(</span><span class="n">_</span><span class="o">=&gt;</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MLP</span><span class="p">()</span><span class="w"> </span>
+<span class="n">Y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10×2 Matrix{Float32}:
+ -0.269618   -0.174497
+  0.109138   -0.03599
+ -0.0990227   0.00134618
+ -0.0878646   0.0274887
+  0.582191    0.44179
+ -0.335405   -0.183537
+ -0.168548   -0.328809
+  0.133812   -0.0234257
+  0.434612    0.216745
+  0.203886    0.0880216
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we store the parameters of the model as a file with the name “mlp.params”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">JLD2</span>
+
+<span class="n">jldsave</span><span class="p">(</span><span class="s">&quot;mlp.params&quot;</span><span class="p">;</span><span class="w"> </span><span class="n">model_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">state</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To recover the model, we instantiate a clone of the original MLP model. Instead of randomly initializing the model parameters, we read the parameters stored in the file directly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">model_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JLD2</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;mlp.params&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;model_state&quot;</span><span class="p">);</span>
+<span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MLP</span><span class="p">()</span>
+<span class="n">clone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">loadmodel!</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">model_state</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chain(
+  Dense(20 =&gt; 256),                     # 5_376 parameters
+  NNlib.relu,
+  Dense(256 =&gt; 10),                     # 2_570 parameters
+)                   # Total: 4 arrays, 7_946 parameters, 31.289 KiB.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since both instances have the same model parameters, the computational result of the same input X should be the same. Let’s verify this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">Y_clone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clone</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Y_clone</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Y</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>false
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 
@@ -447,16 +578,16 @@ document.write(`
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "julia-1.9"
+            mode: "julia-1.10"
         },
         kernelOptions: {
-            name: "julia-1.9",
+            name: "julia-1.10",
             path: "./notebooks/chapter_builders_guide"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'julia-1.9'</script>
+    <script>kernelName = 'julia-1.10'</script>
 
                 </article>
               
@@ -468,15 +599,6 @@ document.write(`
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="parameters.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">15. </span>Parameter Management</p>
-      </div>
-    </a>
 </div>
                 </footer>
               
@@ -493,7 +615,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#built-in-initialization">16.1. Built-in Initialization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-and-saving-vectors">Loading and Saving Vectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-and-saving-model-parameters">Loading and Saving Model Parameters</a></li>
 </ul>
   </nav></div>
 
