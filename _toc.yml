@@ -38,6 +38,6 @@ parts:
   - caption: Recurrent Neural Networks
     numbered: true
     chapters:
-    - file: chapter_recurrent_neural_networks/sequence.ipynb
-    - file: chapter_recurrent_neural_networks/text-sequence.ipynbs
+    - file: notebooks/chapter_recurrent_neural_networks/sequence.ipynb
+    - file: notebooks/chapter_recurrent_neural_networks/text-sequence.ipynbs
     
