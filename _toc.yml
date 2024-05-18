@@ -39,5 +39,5 @@ parts:
     numbered: true
     chapters:
     - file: notebooks/chapter_recurrent_neural_networks/sequence.ipynb
-    - file: notebooks/chapter_recurrent_neural_networks/text-sequence.ipynbs
+    - file: notebooks/chapter_recurrent_neural_networks/text-sequence.ipynb
     
