@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>17. Working with Sequences &#8212; Dive into Deep Learning - Julia</title>
+    <title>18. Working with Sequences &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -60,8 +60,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_recurrent_neural_networks/sequence';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="18. Concise Implementation of Recurrent Neural Networks" href="text-sequence.html" />
-    <link rel="prev" title="16. File I/O" href="../chapter_builders_guide/read-write.html" />
+    <link rel="next" title="19. Concise Implementation of Recurrent Neural Networks" href="text-sequence.html" />
+    <link rel="prev" title="17. GPUs" href="../chapter_builders_guide/use-gpu.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -206,11 +206,12 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_builders_guide/parameters.html">15. Parameter Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_builders_guide/read-write.html">16. File I/O</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_builders_guide/use-gpu.html">17. GPUs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Recurrent Neural Networks</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">17. Working with Sequences</a></li>
-<li class="toctree-l1"><a class="reference internal" href="text-sequence.html">18. Concise Implementation of Recurrent Neural Networks</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">18. Working with Sequences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="text-sequence.html">19. Concise Implementation of Recurrent Neural Networks</a></li>
 </ul>
 
     </div>
@@ -406,8 +407,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">17.1. Training</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wip">17.2. WIP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">18.1. Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wip">18.2. WIP</a></li>
 </ul>
             </nav>
         </div>
@@ -420,9 +421,9 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="working-with-sequences">
-<h1><span class="section-number">17. </span>Working with Sequences<a class="headerlink" href="#working-with-sequences" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">18. </span>Working with Sequences<a class="headerlink" href="#working-with-sequences" title="Link to this heading">#</a></h1>
 <section id="training">
-<h2><span class="section-number">17.1. </span>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">18.1. </span>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
 <p>Before we focus our attention on text data, let’s first try this out with some continuous-valued synthetic data.</p>
 <p>Here, our 1000 synthetic data will follow the trigonometric sin function, applied to 0.01 times the time step. To make the problem a little more interesting, we corrupt each sample with additive noise. From this sequence we extract training examples, each consisting of features and a label.</p>
 <div class="cell docutils container">
@@ -502,7 +503,7 @@ document.write(`
 </div>
 </section>
 <section id="wip">
-<h2><span class="section-number">17.2. </span>WIP<a class="headerlink" href="#wip" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">18.2. </span>WIP<a class="headerlink" href="#wip" title="Link to this heading">#</a></h2>
 </section>
 </section>
 
@@ -537,12 +538,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../chapter_builders_guide/read-write.html"
+       href="../chapter_builders_guide/use-gpu.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">16. </span>File I/O</p>
+        <p class="prev-next-title"><span class="section-number">17. </span>GPUs</p>
       </div>
     </a>
     <a class="right-next"
@@ -550,7 +551,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">18. </span>Concise Implementation of Recurrent Neural Networks</p>
+        <p class="prev-next-title"><span class="section-number">19. </span>Concise Implementation of Recurrent Neural Networks</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -570,8 +571,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">17.1. Training</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wip">17.2. WIP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">18.1. Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wip">18.2. WIP</a></li>
 </ul>
   </nav></div>
 

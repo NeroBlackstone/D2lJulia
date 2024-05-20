@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>18. Concise Implementation of Recurrent Neural Networks &#8212; Dive into Deep Learning - Julia</title>
+    <title>19. Concise Implementation of Recurrent Neural Networks &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -60,7 +60,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_recurrent_neural_networks/text-sequence';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="17. Working with Sequences" href="sequence.html" />
+    <link rel="prev" title="18. Working with Sequences" href="sequence.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -205,11 +205,12 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chapter_builders_guide/parameters.html">15. Parameter Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_builders_guide/read-write.html">16. File I/O</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_builders_guide/use-gpu.html">17. GPUs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Recurrent Neural Networks</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="sequence.html">17. Working with Sequences</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">18. Concise Implementation of Recurrent Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sequence.html">18. Working with Sequences</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">19. Concise Implementation of Recurrent Neural Networks</a></li>
 </ul>
 
     </div>
@@ -405,14 +406,14 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">18.1. Reading the Dataset</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization">18.2. Tokenization</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vocabulary">18.3. Vocabulary</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-language-statistics">18.4. Exploratory Language Statistics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-networks-with-hidden-states">18.5. Recurrent Neural Networks with Hidden States</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding">18.6. One-Hot Encoding</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-model">18.7. Defining the Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-and-predicting">18.8. Training and Predicting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">19.1. Reading the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization">19.2. Tokenization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vocabulary">19.3. Vocabulary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-language-statistics">19.4. Exploratory Language Statistics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-networks-with-hidden-states">19.5. Recurrent Neural Networks with Hidden States</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding">19.6. One-Hot Encoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-model">19.7. Defining the Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-and-predicting">19.8. Training and Predicting</a></li>
 </ul>
             </nav>
         </div>
@@ -425,9 +426,9 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="concise-implementation-of-recurrent-neural-networks">
-<h1><span class="section-number">18. </span>Concise Implementation of Recurrent Neural Networks<a class="headerlink" href="#concise-implementation-of-recurrent-neural-networks" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">19. </span>Concise Implementation of Recurrent Neural Networks<a class="headerlink" href="#concise-implementation-of-recurrent-neural-networks" title="Link to this heading">#</a></h1>
 <section id="reading-the-dataset">
-<h2><span class="section-number">18.1. </span>Reading the Dataset<a class="headerlink" href="#reading-the-dataset" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.1. </span>Reading the Dataset<a class="headerlink" href="#reading-the-dataset" title="Link to this heading">#</a></h2>
 <p>Here, we will work with H. G. Wells’ The Time Machine, a book containing just over 30,000 words. While real applications will typically involve significantly larger datasets, this is sufficient to demonstrate the preprocessing pipeline. The following _download method reads the raw text into a string.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -472,7 +473,7 @@ document.write(`
 </div>
 </section>
 <section id="tokenization">
-<h2><span class="section-number">18.2. </span>Tokenization<a class="headerlink" href="#tokenization" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.2. </span>Tokenization<a class="headerlink" href="#tokenization" title="Link to this heading">#</a></h2>
 <p>Tokens are the atomic (indivisible) units of text. Each time step corresponds to 1 token, but what precisely constitutes a token is a design choice. For example, we could represent the sentence “Baby needs a new pair of shoes” as a sequence of 7 words, where the set of all words comprise a large vocabulary (typically tens or hundreds of thousands of words). Or we would represent the same sentence as a much longer sequence of 30 characters, using a much smaller vocabulary (there are only 256 distinct ASCII characters). Below, we tokenize our preprocessed text into a sequence of characters.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -489,7 +490,7 @@ document.write(`
 </div>
 </section>
 <section id="vocabulary">
-<h2><span class="section-number">18.3. </span>Vocabulary<a class="headerlink" href="#vocabulary" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.3. </span>Vocabulary<a class="headerlink" href="#vocabulary" title="Link to this heading">#</a></h2>
 <p>We now construct a vocabulary for our dataset, converting the sequence of strings into a list of numerical indices. Note that we have not lost any information and can easily convert our dataset back to its original (string) representation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -515,7 +516,7 @@ words:[&#39;t&#39;, &#39;h&#39;, &#39;e&#39;, &#39; &#39;, &#39;i&#39;, &#39;m&#
 </div>
 </section>
 <section id="exploratory-language-statistics">
-<h2><span class="section-number">18.4. </span>Exploratory Language Statistics<a class="headerlink" href="#exploratory-language-statistics" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.4. </span>Exploratory Language Statistics<a class="headerlink" href="#exploratory-language-statistics" title="Link to this heading">#</a></h2>
 <p>Using the real corpus and the Vocab class defined over words, we can inspect basic statistics concerning word use in our corpus. Below, we construct a vocabulary from words used in The Time Machine and print the ten most frequently occurring of them.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -626,7 +627,7 @@ words:[&#39;t&#39;, &#39;h&#39;, &#39;e&#39;, &#39; &#39;, &#39;i&#39;, &#39;m&#
 </div>
 </section>
 <section id="recurrent-neural-networks-with-hidden-states">
-<h2><span class="section-number">18.5. </span>Recurrent Neural Networks with Hidden States<a class="headerlink" href="#recurrent-neural-networks-with-hidden-states" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.5. </span>Recurrent Neural Networks with Hidden States<a class="headerlink" href="#recurrent-neural-networks-with-hidden-states" title="Link to this heading">#</a></h2>
 <p>To begin with, we define matrices X, W_xh, H, and W_hh, whose shapes are (3, 1), (1, 4), (3, 4), and (4, 4), respectively. Multiplying X by W_xh, and H by W_hh, and then adding these two products, we obtain a matrix of shape (3, 4).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -663,7 +664,7 @@ words:[&#39;t&#39;, &#39;h&#39;, &#39;e&#39;, &#39; &#39;, &#39;i&#39;, &#39;m&#
 </div>
 </section>
 <section id="one-hot-encoding">
-<h2><span class="section-number">18.6. </span>One-Hot Encoding<a class="headerlink" href="#one-hot-encoding" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.6. </span>One-Hot Encoding<a class="headerlink" href="#one-hot-encoding" title="Link to this heading">#</a></h2>
 <p>For example, if the vocabulary had five elements, then the one-hot vectors corresponding to indices 1 and 3 would be the following.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -720,7 +721,7 @@ The minibatches that we sample at each iteration will take the shape (batch size
 </div>
 </section>
 <section id="defining-the-model">
-<h2><span class="section-number">18.7. </span>Defining the Model<a class="headerlink" href="#defining-the-model" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.7. </span>Defining the Model<a class="headerlink" href="#defining-the-model" title="Link to this heading">#</a></h2>
 <p>We define the model using the RNN implemented by high-level APIs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -742,7 +743,7 @@ The minibatches that we sample at each iteration will take the shape (batch size
 </div>
 </section>
 <section id="training-and-predicting">
-<h2><span class="section-number">18.8. </span>Training and Predicting<a class="headerlink" href="#training-and-predicting" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">19.8. </span>Training and Predicting<a class="headerlink" href="#training-and-predicting" title="Link to this heading">#</a></h2>
 <p>Before training the model, let’s make a prediction with a model initialized with random weights. Given that we have not trained the network, it will generate nonsensical predictions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -842,7 +843,7 @@ The minibatches that we sample at each iteration will take the shape (batch size
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">17. </span>Working with Sequences</p>
+        <p class="prev-next-title"><span class="section-number">18. </span>Working with Sequences</p>
       </div>
     </a>
 </div>
@@ -861,14 +862,14 @@ The minibatches that we sample at each iteration will take the shape (batch size
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">18.1. Reading the Dataset</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization">18.2. Tokenization</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vocabulary">18.3. Vocabulary</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-language-statistics">18.4. Exploratory Language Statistics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-networks-with-hidden-states">18.5. Recurrent Neural Networks with Hidden States</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding">18.6. One-Hot Encoding</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-model">18.7. Defining the Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-and-predicting">18.8. Training and Predicting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-dataset">19.1. Reading the Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization">19.2. Tokenization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vocabulary">19.3. Vocabulary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory-language-statistics">19.4. Exploratory Language Statistics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-networks-with-hidden-states">19.5. Recurrent Neural Networks with Hidden States</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding">19.6. One-Hot Encoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-model">19.7. Defining the Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-and-predicting">19.8. Training and Predicting</a></li>
 </ul>
   </nav></div>
 
