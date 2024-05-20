@@ -35,6 +35,7 @@ parts:
     chapters:
     - file: notebooks/chapter_builders_guide/parameters.ipynb
     - file: notebooks/chapter_builders_guide/read-write.ipynb
+    - file: notebooks/chapter_builders_guide/use-gpu.ipynb
   - caption: Recurrent Neural Networks
     numbered: true
     chapters:
