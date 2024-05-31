@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>10. Concise Implementation of Softmax Regression &#8212; Dive into Deep Learning - Julia</title>
+    <title>Long Short-Term Memory (LSTM) &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -57,11 +57,9 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_linear_classification/Concise Implementation of Softmax Regression';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_recurrent-modern/lstm';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="11. Multilayer Perceptrons" href="../chapter_multilayer_perceptrons/Multilayer%20Perceptrons.html" />
-    <link rel="prev" title="9. The Image Classification Dataset" href="The%20Image%20Classification%20Dataset.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -123,6 +121,8 @@
     <div class="bd-container__inner bd-page-width">
       
       
+      
+        
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -192,9 +192,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_linear_regression/Concise%20Implementation%20of%20Linear%20Regression.html">8. Concise Implementation of Linear Regression</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Linear Neural Networks for Classification</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="The%20Image%20Classification%20Dataset.html">9. The Image Classification Dataset</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">10. Concise Implementation of Softmax Regression</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_linear_classification/The%20Image%20Classification%20Dataset.html">9. The Image Classification Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_linear_classification/Concise%20Implementation%20of%20Softmax%20Regression.html">10. Concise Implementation of Softmax Regression</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Multilayer Perceptrons</span></p>
 <ul class="nav bd-sidenav">
@@ -284,7 +284,7 @@
       
       
       
-      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_linear_classification/Concise Implementation of Softmax Regression.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_recurrent-modern/lstm.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -314,7 +314,7 @@
       
       
       
-      <li><a href="../../_sources/notebooks/chapter_linear_classification/Concise Implementation of Softmax Regression.ipynb" target="_blank"
+      <li><a href="../../_sources/notebooks/chapter_recurrent-modern/lstm.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -398,7 +398,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Concise Implementation of Softmax Regression</h1>
+    <h1>Long Short-Term Memory (LSTM)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -408,9 +408,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-model">10.1. Defining the Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#softmax-revisited">10.2. Softmax Revisited</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">10.3. Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concise-implementation">Concise Implementation</a></li>
 </ul>
             </nav>
         </div>
@@ -422,99 +420,64 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="concise-implementation-of-softmax-regression">
-<h1><span class="section-number">10. </span>Concise Implementation of Softmax Regression<a class="headerlink" href="#concise-implementation-of-softmax-regression" title="Link to this heading">#</a></h1>
-<p>Just as high-level deep learning frameworks made it easier to implement linear regression (see Section 3.5), they are similarly convenient here.</p>
-<section id="defining-the-model">
-<h2><span class="section-number">10.1. </span>Defining the Model<a class="headerlink" href="#defining-the-model" title="Link to this heading">#</a></h2>
-<p>As in Section 3.5, we construct our fully connected layer using the built-in layer. We use a <code class="docutils literal notranslate"><span class="pre">flatten</span></code> layer to reshape arbitrarly-shaped input into a matrix-shaped output, preserving the size of the last dimension..</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="long-short-term-memory-lstm">
+<h1>Long Short-Term Memory (LSTM)<a class="headerlink" href="#long-short-term-memory-lstm" title="Link to this heading">#</a></h1>
+<section id="concise-implementation">
+<h2>Concise Implementation<a class="headerlink" href="#concise-implementation" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Flux</span>
-<span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Chain</span><span class="p">(</span><span class="n">Flux</span><span class="o">.</span><span class="n">flatten</span><span class="p">,</span><span class="n">Dense</span><span class="p">(</span><span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="o">=&gt;</span><span class="mi">10</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chain(
-  Flux.flatten,
-  Dense(784 =&gt; 10),                     # 7_850 parameters
-) 
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="softmax-revisited">
-<h2><span class="section-number">10.2. </span>Softmax Revisited<a class="headerlink" href="#softmax-revisited" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">logitcrossentropy</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">y</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loss (generic function with 1 method)
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="training">
-<h2><span class="section-number">10.3. </span>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
-<p>Next we train our model. We use Fashion-MNIST images, flattened to 784-dimensional feature vectors.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">MLUtils</span>
-<span class="k">using</span><span class="w"> </span><span class="n">MLDatasets</span>
-<span class="k">using</span><span class="w"> </span><span class="n">MLBase</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Downloads</span><span class="p">,</span><span class="n">IterTools</span><span class="p">,</span><span class="n">CUDA</span><span class="p">,</span><span class="n">Flux</span>
+<span class="k">using</span><span class="w"> </span><span class="n">StatsBase</span><span class="o">:</span><span class="w"> </span><span class="n">wsample</span>
 
-<span class="c"># data prepare</span>
-<span class="nb">ENV</span><span class="p">[</span><span class="s">&quot;DATADEPS_ALWAYS_ACCEPT&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
-<span class="n">mnist_train</span><span class="p">,</span><span class="n">mnist_test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FashionMNIST</span><span class="p">(</span><span class="ss">:train</span><span class="p">),</span><span class="n">FashionMNIST</span><span class="p">(</span><span class="ss">:test</span><span class="p">)</span>
-<span class="n">features</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mnist_train</span><span class="o">.</span><span class="n">features</span>
-<span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">onehotbatch</span><span class="p">(</span><span class="n">mnist_train</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span><span class="mi">0</span><span class="o">:</span><span class="mi">9</span><span class="p">)</span>
-<span class="n">train_loader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DataLoader</span><span class="p">((</span><span class="n">features</span><span class="p">,</span><span class="n">labels</span><span class="p">),</span><span class="n">batchsize</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+<span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">get_device</span><span class="p">(;</span><span class="w"> </span><span class="n">verbose</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span>
 
-<span class="n">mnist_accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">::</span><span class="kt">FashionMNIST</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">correctrate</span><span class="p">(</span><span class="n">classify</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="p">))</span><span class="o">.-</span><span class="mi">1</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">targets</span><span class="p">)</span>
+<span class="n">file_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Downloads</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s">&quot;http://d2l-data.s3-accelerate.amazonaws.com/timemachine.txt&quot;</span><span class="p">)</span>
+<span class="n">raw_text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="o">-&gt;</span><span class="n">read</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="kt">String</span><span class="p">),</span><span class="n">file_path</span><span class="p">)</span>
+<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lowercase</span><span class="p">(</span><span class="n">replace</span><span class="p">(</span><span class="n">raw_text</span><span class="p">,</span><span class="sa">r</span><span class="sr">&quot;[^A-Za-z]+&quot;</span><span class="o">=&gt;</span><span class="s">&quot; &quot;</span><span class="p">))</span>
+<span class="n">tokens</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">str</span><span class="o">...</span><span class="p">]</span>
+<span class="n">vocab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unique</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+<span class="n">vocab_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span>
 
-<span class="c"># train</span>
-<span class="n">num_epochs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span>
-<span class="n">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">map</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="n">num_epochs</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">i</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">train_loader</span>
-<span class="w">        </span><span class="n">Flux</span><span class="o">.</span><span class="n">train!</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span><span class="n">model</span><span class="p">,[</span><span class="n">data</span><span class="p">],</span><span class="n">Descent</span><span class="p">())</span>
-<span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">features</span><span class="p">,</span><span class="n">labels</span><span class="p">),</span><span class="n">mnist_accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">mnist_train</span><span class="p">),</span><span class="n">mnist_accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">mnist_test</span><span class="p">)</span>
+<span class="k">function</span><span class="w"> </span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">xs</span><span class="p">,</span><span class="w"> </span><span class="n">ys</span><span class="p">)</span>
+<span class="w">    </span><span class="n">Flux</span><span class="o">.</span><span class="n">reset!</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">Flux</span><span class="o">.</span><span class="n">logitcrossentropy</span><span class="o">.</span><span class="p">([</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">xs</span><span class="p">],</span><span class="w"> </span><span class="n">ys</span><span class="p">))</span>
 <span class="k">end</span>
-<span class="n">train_loss</span><span class="p">,</span><span class="w"> </span><span class="n">train_acc</span><span class="p">,</span><span class="w"> </span><span class="n">test_acc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">map</span><span class="p">(</span><span class="n">x</span><span class="o">-&gt;</span><span class="n">getindex</span><span class="o">.</span><span class="p">(</span><span class="n">results</span><span class="p">,</span><span class="n">x</span><span class="p">),</span><span class="mi">1</span><span class="o">:</span><span class="mi">3</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3-element Vector{Vector}:
- Float32[0.6151819, 0.5413316, 0.5090037, 0.4895458, 0.47606862, 0.4659756, 0.45803085, 0.45155552, 0.44613948, 0.44151744]
- [0.79765, 0.8203666666666667, 0.8302166666666667, 0.836, 0.8398, 0.8427333333333333, 0.84545, 0.84745, 0.8488333333333333, 0.85015]
- [0.7829, 0.8083, 0.8187, 0.8246, 0.8269, 0.8282, 0.8309, 0.8326, 0.8345, 0.8342]
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">CairoMakie</span>
 
-<span class="n">f</span><span class="p">,</span><span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines</span><span class="p">(</span><span class="n">train_loss</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;train_loss&quot;</span><span class="p">;</span><span class="n">axis</span><span class="o">=</span><span class="p">(;</span><span class="n">xlabel</span><span class="o">=</span><span class="s">&quot;epoch&quot;</span><span class="p">))</span>
-<span class="n">lines!</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">train_acc</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;train_acc&quot;</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="ss">:dash</span><span class="p">)</span>
-<span class="n">lines!</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">test_acc</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;test_acc&quot;</span><span class="p">,</span><span class="n">linestyle</span><span class="o">=</span><span class="ss">:dashdot</span><span class="p">)</span>
-<span class="n">axislegend</span><span class="p">(</span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:rc</span><span class="p">)</span>
-<span class="n">f</span>
+<span class="c"># n*[seq_length x feature x batch_size]</span>
+<span class="k">function</span><span class="w"> </span><span class="n">getdata</span><span class="p">(</span><span class="n">str</span><span class="o">::</span><span class="kt">String</span><span class="p">,</span><span class="n">vocab</span><span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Char</span><span class="p">},</span><span class="n">seq_length</span><span class="o">::</span><span class="kt">Int</span><span class="p">,</span><span class="n">batch_size</span><span class="o">::</span><span class="kt">Int</span><span class="p">)</span><span class="o">::</span><span class="kt">Tuple</span>
+<span class="w">    </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">collect</span><span class="o">.</span><span class="p">(</span><span class="n">partition</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="n">seq_length</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">Flux</span><span class="o">.</span><span class="n">onehotbatch</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">vocab</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">d</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">batchseq</span><span class="o">.</span><span class="p">(</span><span class="n">Flux</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">begin</span><span class="o">:</span><span class="n">end</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">batch_size</span><span class="p">))]</span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">Flux</span><span class="o">.</span><span class="n">onehotbatch</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">vocab</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">d</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">batchseq</span><span class="o">.</span><span class="p">(</span><span class="n">Flux</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="o">:</span><span class="k">end</span><span class="p">];</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">batch_size</span><span class="p">))]</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="n">y</span>
+<span class="k">end</span>
+
+<span class="k">function</span><span class="w"> </span><span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="o">::</span><span class="kt">Chain</span><span class="p">,</span><span class="w"> </span><span class="n">prefix</span><span class="o">::</span><span class="kt">String</span><span class="p">,</span><span class="w"> </span><span class="n">num_preds</span><span class="o">::</span><span class="kt">Int</span><span class="p">)</span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cpu</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="w">    </span><span class="n">Flux</span><span class="o">.</span><span class="n">reset!</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="w">    </span><span class="n">buf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">IOBuffer</span><span class="p">()</span>
+<span class="w">    </span><span class="n">write</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">prefix</span><span class="p">)</span>
+
+<span class="w">    </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wsample</span><span class="p">(</span><span class="n">vocab</span><span class="p">,</span><span class="w"> </span><span class="n">softmax</span><span class="p">([</span><span class="n">model</span><span class="p">(</span><span class="n">Flux</span><span class="o">.</span><span class="n">onehot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">vocab</span><span class="p">))</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">collect</span><span class="p">(</span><span class="n">prefix</span><span class="p">)][</span><span class="k">end</span><span class="p">]))</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">num_preds</span>
+<span class="w">        </span><span class="n">write</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">)</span>
+<span class="w">        </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wsample</span><span class="p">(</span><span class="n">vocab</span><span class="p">,</span><span class="w"> </span><span class="n">softmax</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">Flux</span><span class="o">.</span><span class="n">onehot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">vocab</span><span class="p">))))</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kt">String</span><span class="p">(</span><span class="n">take!</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+<span class="k">end</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/a5ef96f2dc746e4cb399e6623d7a6ba7b55db67c70a8191bc113a6d40b081b5a.png" src="../../_images/a5ef96f2dc746e4cb399e6623d7a6ba7b55db67c70a8191bc113a6d40b081b5a.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>┌ Info: Using backend: CUDA.
+└ @ Flux /home/nero/.julia/packages/Flux/Wz6D4/src/functor.jl:662
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>getdata (generic function with 1 method)
+</pre></div>
 </div>
 </div>
+</div>
+<p>Using high-level APIs, we can directly instantiate an LSTM model. This encapsulates all the configuration details that we made explicit above. The code is significantly faster as it uses compiled operators rather than Python for many details that we spelled out before.</p>
 </section>
 </section>
 
@@ -527,16 +490,16 @@ document.write(`
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "julia-1.9"
+            mode: "julia-1.10"
         },
         kernelOptions: {
-            name: "julia-1.9",
-            path: "./notebooks/chapter_linear_classification"
+            name: "julia-1.10",
+            path: "./notebooks/chapter_recurrent-modern"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'julia-1.9'</script>
+    <script>kernelName = 'julia-1.10'</script>
 
                 </article>
               
@@ -548,24 +511,6 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="The%20Image%20Classification%20Dataset.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">9. </span>The Image Classification Dataset</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="../chapter_multilayer_perceptrons/Multilayer%20Perceptrons.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">11. </span>Multilayer Perceptrons</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -582,9 +527,7 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-model">10.1. Defining the Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#softmax-revisited">10.2. Softmax Revisited</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">10.3. Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concise-implementation">Concise Implementation</a></li>
 </ul>
   </nav></div>
 
