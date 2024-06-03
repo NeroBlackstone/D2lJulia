@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>17. GPUs &#8212; Dive into Deep Learning - Julia</title>
+    <title>22. Deep Recurrent Neural Networks &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -57,11 +57,10 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_builders_guide/use-gpu';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_recurrent_modern/deep-rnn';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="18. Working with Sequences" href="../chapter_recurrent_neural_networks/sequence.html" />
-    <link rel="prev" title="16. File I/O" href="read-write.html" />
+    <link rel="prev" title="21. Gated Recurrent Units (GRU)" href="gru.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -204,10 +203,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_multilayer_perceptrons/Dropout.html">14. Dropout</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Builders’ Guide</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="parameters.html">15. Parameter Management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="read-write.html">16. File I/O</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">17. GPUs</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter_builders_guide/parameters.html">15. Parameter Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_builders_guide/read-write.html">16. File I/O</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter_builders_guide/use-gpu.html">17. GPUs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Recurrent Neural Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -215,10 +214,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_recurrent_neural_networks/text-sequence.html">19. Concise Implementation of Recurrent Neural Networks</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Modern Recurrent Neural Networks</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chapter_recurrent_modern/lstm.html">20. Long Short-Term Memory (LSTM)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_recurrent_modern/gru.html">21. Gated Recurrent Units (GRU)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter_recurrent_modern/deep-rnn.html">22. Deep Recurrent Neural Networks</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="lstm.html">20. Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gru.html">21. Gated Recurrent Units (GRU)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">22. Deep Recurrent Neural Networks</a></li>
 </ul>
 
     </div>
@@ -290,7 +289,7 @@
       
       
       
-      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_builders_guide/use-gpu.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_recurrent_modern/deep-rnn.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -320,7 +319,7 @@
       
       
       
-      <li><a href="../../_sources/notebooks/chapter_builders_guide/use-gpu.ipynb" target="_blank"
+      <li><a href="../../_sources/notebooks/chapter_recurrent_modern/deep-rnn.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -404,7 +403,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>GPUs</h1>
+    <h1>Deep Recurrent Neural Networks</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -414,12 +413,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-devices">17.1. Computing Devices</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectors-and-gpus">17.2. Vectors and GPUs</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#storage-on-the-gpu">17.2.1. Storage on the GPU</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-networks-and-gpus">17.2.2. Neural Networks and GPUs</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concise-implementation">22.1. Concise Implementation</a></li>
 </ul>
             </nav>
         </div>
@@ -431,81 +425,103 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="gpus">
-<h1><span class="section-number">17. </span>GPUs<a class="headerlink" href="#gpus" title="Link to this heading">#</a></h1>
-<section id="computing-devices">
-<h2><span class="section-number">17.1. </span>Computing Devices<a class="headerlink" href="#computing-devices" title="Link to this heading">#</a></h2>
-<p>We can query the number of available GPUs.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="deep-recurrent-neural-networks">
+<h1><span class="section-number">22. </span>Deep Recurrent Neural Networks<a class="headerlink" href="#deep-recurrent-neural-networks" title="Link to this heading">#</a></h1>
+<section id="concise-implementation">
+<h2><span class="section-number">22.1. </span>Concise Implementation<a class="headerlink" href="#concise-implementation" title="Link to this heading">#</a></h2>
+<p>Fortunately many of the logistical details required to implement multiple layers of an RNN are readily available in high-level APIs. Our concise implementation will use such built-in functionalities.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">CUDA</span><span class="p">,</span><span class="n">Flux</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Downloads</span><span class="p">,</span><span class="n">IterTools</span><span class="p">,</span><span class="n">CUDA</span><span class="p">,</span><span class="n">Flux</span>
+<span class="k">using</span><span class="w"> </span><span class="n">StatsBase</span><span class="o">:</span><span class="w"> </span><span class="n">wsample</span>
 
-<span class="n">CUDA</span><span class="o">.</span><span class="n">devices</span><span class="p">()</span>
+<span class="n">device</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">get_device</span><span class="p">(;</span><span class="w"> </span><span class="n">verbose</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span>
+
+<span class="n">file_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Downloads</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s">&quot;http://d2l-data.s3-accelerate.amazonaws.com/timemachine.txt&quot;</span><span class="p">)</span>
+<span class="n">raw_text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="o">-&gt;</span><span class="n">read</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="kt">String</span><span class="p">),</span><span class="n">file_path</span><span class="p">)</span>
+<span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lowercase</span><span class="p">(</span><span class="n">replace</span><span class="p">(</span><span class="n">raw_text</span><span class="p">,</span><span class="sa">r</span><span class="sr">&quot;[^A-Za-z]+&quot;</span><span class="o">=&gt;</span><span class="s">&quot; &quot;</span><span class="p">))</span>
+<span class="n">tokens</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">str</span><span class="o">...</span><span class="p">]</span>
+<span class="n">vocab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unique</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+<span class="n">vocab_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span>
+
+<span class="c"># n*[seq_length x feature x batch_size]</span>
+<span class="k">function</span><span class="w"> </span><span class="n">getdata</span><span class="p">(</span><span class="n">str</span><span class="o">::</span><span class="kt">String</span><span class="p">,</span><span class="n">vocab</span><span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Char</span><span class="p">},</span><span class="n">seq_length</span><span class="o">::</span><span class="kt">Int</span><span class="p">,</span><span class="n">batch_size</span><span class="o">::</span><span class="kt">Int</span><span class="p">)</span><span class="o">::</span><span class="kt">Tuple</span>
+<span class="w">    </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">collect</span><span class="o">.</span><span class="p">(</span><span class="n">partition</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="n">seq_length</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">Flux</span><span class="o">.</span><span class="n">onehotbatch</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">vocab</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">d</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">batchseq</span><span class="o">.</span><span class="p">(</span><span class="n">Flux</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">begin</span><span class="o">:</span><span class="n">end</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">batch_size</span><span class="p">))]</span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">Flux</span><span class="o">.</span><span class="n">onehotbatch</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">vocab</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">d</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">batchseq</span><span class="o">.</span><span class="p">(</span><span class="n">Flux</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="o">:</span><span class="k">end</span><span class="p">];</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">batch_size</span><span class="p">))]</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="n">y</span>
+<span class="k">end</span>
+
+<span class="k">function</span><span class="w"> </span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">xs</span><span class="p">,</span><span class="w"> </span><span class="n">ys</span><span class="p">)</span>
+<span class="w">    </span><span class="n">Flux</span><span class="o">.</span><span class="n">reset!</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">Flux</span><span class="o">.</span><span class="n">logitcrossentropy</span><span class="o">.</span><span class="p">([</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">xs</span><span class="p">],</span><span class="w"> </span><span class="n">ys</span><span class="p">))</span>
+<span class="k">end</span>
+
+<span class="k">function</span><span class="w"> </span><span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="o">::</span><span class="kt">Chain</span><span class="p">,</span><span class="w"> </span><span class="n">prefix</span><span class="o">::</span><span class="kt">String</span><span class="p">,</span><span class="w"> </span><span class="n">num_preds</span><span class="o">::</span><span class="kt">Int</span><span class="p">)</span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cpu</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="w">    </span><span class="n">Flux</span><span class="o">.</span><span class="n">reset!</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="w">    </span><span class="n">buf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">IOBuffer</span><span class="p">()</span>
+<span class="w">    </span><span class="n">write</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">prefix</span><span class="p">)</span>
+
+<span class="w">    </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wsample</span><span class="p">(</span><span class="n">vocab</span><span class="p">,</span><span class="w"> </span><span class="n">softmax</span><span class="p">([</span><span class="n">model</span><span class="p">(</span><span class="n">Flux</span><span class="o">.</span><span class="n">onehot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">vocab</span><span class="p">))</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">collect</span><span class="p">(</span><span class="n">prefix</span><span class="p">)][</span><span class="k">end</span><span class="p">]))</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">num_preds</span>
+<span class="w">        </span><span class="n">write</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">)</span>
+<span class="w">        </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wsample</span><span class="p">(</span><span class="n">vocab</span><span class="p">,</span><span class="w"> </span><span class="n">softmax</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">Flux</span><span class="o">.</span><span class="n">onehot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">vocab</span><span class="p">))))</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kt">String</span><span class="p">(</span><span class="n">take!</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+<span class="k">end</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CUDA.DeviceIterator() for 1 devices:
-0. NVIDIA GeForce GTX 970
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>┌ Info: Using backend: CUDA.
+└ @ Flux /home/nero/.julia/packages/Flux/Wz6D4/src/functor.jl:662
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>predict (generic function with 1 method)
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="vectors-and-gpus">
-<h2><span class="section-number">17.2. </span>Vectors and GPUs<a class="headerlink" href="#vectors-and-gpus" title="Link to this heading">#</a></h2>
-<section id="storage-on-the-gpu">
-<h3><span class="section-number">17.2.1. </span>Storage on the GPU<a class="headerlink" href="#storage-on-the-gpu" title="Link to this heading">#</a></h3>
-<p>There are several ways to store a Vector on the GPU. For example, we can specify a storage device when creating a Vector. Next, we create the Vector variable X on the first gpu. The Vector created on a GPU only consumes the memory of this GPU. We can use the nvidia-smi command to view GPU memory usage. In general, we need to make sure that we do not create data that exceeds the GPU memory limit.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cu</span><span class="p">(</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3×2 CuArray{Float32, 2, CUDA.Mem.DeviceBuffer}:
- 1.0  1.0
- 1.0  1.0
- 1.0  1.0
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="neural-networks-and-gpus">
-<h3><span class="section-number">17.2.2. </span>Neural Networks and GPUs<a class="headerlink" href="#neural-networks-and-gpus" title="Link to this heading">#</a></h3>
-<p>Similarly, a neural network model can specify devices. The following code puts the model parameters on the GPU.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Chain</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">3</span><span class="o">=&gt;</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">gpu</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Chain</span><span class="p">(</span><span class="n">GRUv3</span><span class="p">(</span><span class="n">vocab_len</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">32</span><span class="p">),</span><span class="n">GRUv3</span><span class="p">(</span><span class="mi">32</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">32</span><span class="p">),</span><span class="n">Dense</span><span class="p">(</span><span class="mi">32</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">vocab_len</span><span class="p">))</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">device</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chain(
-  Dense(3 =&gt; 1),                        # 4 parameters
-) 
+  Recur(
+    GRUv3Cell(27 =&gt; 32),                # 5_792 parameters
+  ),
+  Recur(
+    GRUv3Cell(32 =&gt; 32),                # 6_272 parameters
+  ),
+  Dense(32 =&gt; 27),                      # 891 parameters
+)         # Total: 12 trainable arrays, 12_955 parameters,
+          # plus 2 non-trainable, 64 parameters, summarysize 1.938 KiB.
 </pre></div>
 </div>
 </div>
 </div>
-<p>For example, when the input is a tensor on the GPU, the model will calculate the result on the same GPU.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">opt_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">Adam</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">),</span><span class="w"> </span><span class="n">model</span><span class="p">)</span>
+
+<span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getdata</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">vocab</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">1024</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">device</span>
+<span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">loss_train</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
+
+<span class="k">for</span><span class="w"> </span><span class="n">epoch</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">50</span>
+<span class="w">    </span><span class="nd">@show</span><span class="w"> </span><span class="s">&quot;</span><span class="si">$epoch</span><span class="s"> start&quot;</span>
+<span class="w">    </span><span class="n">Flux</span><span class="o">.</span><span class="n">reset!</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="w">    </span><span class="n">Flux</span><span class="o">.</span><span class="n">train!</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span><span class="n">model</span><span class="p">,</span><span class="n">data</span><span class="p">,</span><span class="n">opt_state</span><span class="p">)</span>
+<span class="w">    </span><span class="n">push!</span><span class="p">(</span><span class="n">loss_train</span><span class="p">,</span><span class="n">sum</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="p">(</span><span class="kt">Ref</span><span class="p">(</span><span class="n">model</span><span class="p">),</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">length</span><span class="p">(</span><span class="n">str</span><span class="p">))</span><span class="w"> </span>
+<span class="k">end</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1×2 CuArray{Float32, 2, CUDA.Mem.DeviceBuffer}:
- 0.0954295  0.0954295
-</pre></div>
 </div>
-</div>
-</div>
-</section>
 </section>
 </section>
 
@@ -522,7 +538,7 @@ document.write(`
         },
         kernelOptions: {
             name: "julia-1.10",
-            path: "./notebooks/chapter_builders_guide"
+            path: "./notebooks/chapter_recurrent_modern"
         },
         predefinedOutput: true
     }
@@ -540,22 +556,13 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="read-write.html"
+       href="gru.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">16. </span>File I/O</p>
+        <p class="prev-next-title"><span class="section-number">21. </span>Gated Recurrent Units (GRU)</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="../chapter_recurrent_neural_networks/sequence.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">18. </span>Working with Sequences</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -573,12 +580,7 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-devices">17.1. Computing Devices</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectors-and-gpus">17.2. Vectors and GPUs</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#storage-on-the-gpu">17.2.1. Storage on the GPU</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-networks-and-gpus">17.2.2. Neural Networks and GPUs</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concise-implementation">22.1. Concise Implementation</a></li>
 </ul>
   </nav></div>
 

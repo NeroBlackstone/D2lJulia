@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Long Short-Term Memory (LSTM) &#8212; Dive into Deep Learning - Julia</title>
+    <title>20. Long Short-Term Memory (LSTM) &#8212; Dive into Deep Learning - Julia</title>
   
   
   
@@ -57,9 +57,11 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_recurrent-modern/lstm';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/chapter_recurrent_modern/lstm';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="21. Gated Recurrent Units (GRU)" href="gru.html" />
+    <link rel="prev" title="19. Concise Implementation of Recurrent Neural Networks" href="../chapter_recurrent_neural_networks/text-sequence.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -121,8 +123,6 @@
     <div class="bd-container__inner bd-page-width">
       
       
-      
-        
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -214,6 +214,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter_recurrent_neural_networks/sequence.html">18. Working with Sequences</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter_recurrent_neural_networks/text-sequence.html">19. Concise Implementation of Recurrent Neural Networks</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Modern Recurrent Neural Networks</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">20. Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gru.html">21. Gated Recurrent Units (GRU)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-rnn.html">22. Deep Recurrent Neural Networks</a></li>
+</ul>
 
     </div>
 </nav></div>
@@ -284,7 +290,7 @@
       
       
       
-      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_recurrent-modern/lstm.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/NeroBlackstone/D2lJulia/issues/new?title=Issue%20on%20page%20%2Fnotebooks/chapter_recurrent_modern/lstm.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -314,7 +320,7 @@
       
       
       
-      <li><a href="../../_sources/notebooks/chapter_recurrent-modern/lstm.ipynb" target="_blank"
+      <li><a href="../../_sources/notebooks/chapter_recurrent_modern/lstm.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -408,7 +414,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concise-implementation">Concise Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concise-implementation">20.1. Concise Implementation</a></li>
 </ul>
             </nav>
         </div>
@@ -421,9 +427,9 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="long-short-term-memory-lstm">
-<h1>Long Short-Term Memory (LSTM)<a class="headerlink" href="#long-short-term-memory-lstm" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">20. </span>Long Short-Term Memory (LSTM)<a class="headerlink" href="#long-short-term-memory-lstm" title="Link to this heading">#</a></h1>
 <section id="concise-implementation">
-<h2>Concise Implementation<a class="headerlink" href="#concise-implementation" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">20.1. </span>Concise Implementation<a class="headerlink" href="#concise-implementation" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Downloads</span><span class="p">,</span><span class="n">IterTools</span><span class="p">,</span><span class="n">CUDA</span><span class="p">,</span><span class="n">Flux</span>
@@ -488,7 +494,6 @@ document.write(`
 <span class="n">loss_train</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
 
 <span class="k">for</span><span class="w"> </span><span class="n">epoch</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">50</span>
-<span class="w">    </span><span class="nd">@show</span><span class="w"> </span><span class="s">&quot;</span><span class="si">$epoch</span><span class="s"> start&quot;</span>
 <span class="w">    </span><span class="n">Flux</span><span class="o">.</span><span class="n">reset!</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 <span class="w">    </span><span class="n">Flux</span><span class="o">.</span><span class="n">train!</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span><span class="n">model</span><span class="p">,</span><span class="n">data</span><span class="p">,</span><span class="n">opt_state</span><span class="p">)</span>
 <span class="w">    </span><span class="n">push!</span><span class="p">(</span><span class="n">loss_train</span><span class="p">,</span><span class="n">sum</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="p">(</span><span class="kt">Ref</span><span class="p">(</span><span class="n">model</span><span class="p">),</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">length</span><span class="p">(</span><span class="n">str</span><span class="p">))</span><span class="w"> </span>
@@ -535,7 +540,7 @@ document.write(`
         },
         kernelOptions: {
             name: "julia-1.10",
-            path: "./notebooks/chapter_recurrent-modern"
+            path: "./notebooks/chapter_recurrent_modern"
         },
         predefinedOutput: true
     }
@@ -552,6 +557,24 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter_recurrent_neural_networks/text-sequence.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">19. </span>Concise Implementation of Recurrent Neural Networks</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="gru.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">21. </span>Gated Recurrent Units (GRU)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -568,7 +591,7 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concise-implementation">Concise Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concise-implementation">20.1. Concise Implementation</a></li>
 </ul>
   </nav></div>
 
