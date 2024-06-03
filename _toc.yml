@@ -41,10 +41,10 @@ parts:
     chapters:
     - file: notebooks/chapter_recurrent_neural_networks/sequence.ipynb
     - file: notebooks/chapter_recurrent_neural_networks/text-sequence.ipynb
-    - caption: Modern Recurrent Neural Networks
+  - caption: Modern Recurrent Neural Networks
     numbered: true
-  - chapters:
-    - file: notebooks/chapter_recurrent-modern/lstm.ipynb
-    - file: notebooks/chapter_recurrent-modern/gru.ipynb
-    - file: notebooks/chapter_recurrent-modern/deep-rnn.ipynb
+    chapters:
+    - file: notebooks/chapter_recurrent_modern/lstm.ipynb
+    - file: notebooks/chapter_recurrent_modern/gru.ipynb
+    - file: notebooks/chapter_recurrent_modern/deep-rnn.ipynb
     
