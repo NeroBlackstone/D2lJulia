@@ -2,6 +2,8 @@
 
 [Dive into Deep Learning](https://d2l.ai/index.html), with Julia programming language and Flux.jl.
 
+## Warning ⚠️: All the contents of this book will be rewritten using Lux.jl soon after some Lux.jl functions are stabilized.
+
 This tutorial mainly focuses on using pure julia to implement the code in *Dive into Deep Learning*, rather than explaining the specific principles of deep learning. If you know little about specific principles, please refer to the same chapter of the original book.
 
 ## Julia Code Implementation Standard
