@@ -495,7 +495,7 @@ y shape:(1, 10)
 <section id="defining-the-model">
 <h2><span class="section-number">8.3. </span>Defining the Model<a class="headerlink" href="#defining-the-model" title="Link to this heading">#</a></h2>
 <p>For standard operations, we can use a framework’s predefined layers, which allow us to focus on the layers used to construct the model rather than worrying about their implementation. Recall the architecture of a single-layer network as described in Fig. 3.1.2. The layer is called fully connected, since each of its inputs is connected to each of its outputs by means of a matrix-vector multiplication.</p>
-<p>In Flux, a <code class="docutils literal notranslate"><span class="pre">Dense(2</span> <span class="pre">=&gt;</span> <span class="pre">1)</span></code> layer denotes a layer of one neuron with two inputs (two feature) and one output.</p>
+<p>In Lux, a <code class="docutils literal notranslate"><span class="pre">Dense(2</span> <span class="pre">=&gt;</span> <span class="pre">1)</span></code> layer denotes a layer of one neuron with two inputs (two feature) and one output.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Lux</span><span class="p">,</span><span class="n">Random</span>
@@ -514,7 +514,7 @@ y shape:(1, 10)
 </section>
 <section id="defining-the-loss-function">
 <h2><span class="section-number">8.4. </span>Defining the Loss Function<a class="headerlink" href="#defining-the-loss-function" title="Link to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">Flux.mse</span></code> function computes the mean squared error. By default, <code class="docutils literal notranslate"><span class="pre">Flux.mse</span></code> returns the average loss over examples. It is faster (and easier to use) than implementing our own.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">MSELoss()</span></code> function computes the mean squared error. By default, <code class="docutils literal notranslate"><span class="pre">MSELoss()</span></code> returns the average loss over examples. It is faster (and easier to use) than implementing our own.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">mse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MSELoss</span><span class="p">()</span>
