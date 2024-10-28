@@ -16,17 +16,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
@@ -34,12 +36,13 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
@@ -64,6 +67,7 @@
     <link rel="prev" title="7. Linear Regression" href="Linear%20Regression.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -79,19 +83,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -99,7 +92,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -107,8 +99,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -124,7 +116,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -139,6 +132,8 @@
         <div class="sidebar-primary-item">
 
   
+    
+  
 
 <a class="navbar-brand logo" href="../../README.html">
   
@@ -152,21 +147,17 @@
     
     
     <img src="../../_static/logo.png" class="logo__image only-light" alt="Dive into Deep Learning - Julia - Home"/>
-    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Dive into Deep Learning - Julia - Home"/>`);</script>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Dive into Deep Learning - Julia - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -373,24 +364,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -443,8 +426,8 @@ document.write(`
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Distributions</span>
 
 <span class="k">function</span><span class="w"> </span><span class="n">synthetic_data</span><span class="p">(</span><span class="n">w</span><span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="p">},</span><span class="n">b</span><span class="o">::</span><span class="kt">Real</span><span class="p">,</span><span class="n">num_example</span><span class="o">::</span><span class="kt">Int</span><span class="p">)</span>
-<span class="w">    </span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Normal</span><span class="p">(</span><span class="mf">0f0</span><span class="p">,</span><span class="mf">1f0</span><span class="p">),(</span><span class="n">num_example</span><span class="p">,</span><span class="n">length</span><span class="p">(</span><span class="n">w</span><span class="p">)))</span>
-<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">.+</span><span class="w"> </span><span class="n">b</span>
+<span class="w">    </span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">randn</span><span class="p">(</span><span class="kt">Float32</span><span class="p">,(</span><span class="n">num_example</span><span class="p">,</span><span class="n">length</span><span class="p">(</span><span class="n">w</span><span class="p">)))</span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Float32</span><span class="o">.</span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">.+</span><span class="w"> </span><span class="n">b</span><span class="p">)</span>
 <span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">rand</span><span class="p">(</span><span class="n">Normal</span><span class="p">(</span><span class="mf">0f0</span><span class="p">,</span><span class="mf">0.01f0</span><span class="p">),(</span><span class="n">size</span><span class="p">(</span><span class="n">y</span><span class="p">)))</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">X</span><span class="o">&#39;</span><span class="p">,</span><span class="n">reshape</span><span class="p">(</span><span class="n">y</span><span class="p">,(</span><span class="mi">1</span><span class="p">,</span><span class="o">:</span><span class="p">))</span>
 <span class="k">end</span>
@@ -467,7 +450,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Float32[-0.4412894 1.1683054 … 1.3911616 0.98486364; -0.9546863 0.6044618 … 0.8892765 0.543286], [6.5628222349681895 4.486395385302604 … 3.9511675149202348 4.3048679489642385])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Float32[0.5049412 0.24637741 … 1.7447525 0.9225617; -0.9852763 -1.5925564 … 0.7616638 1.9118508], Float32[8.557541 10.108755 … 5.107828 -0.4439846])
 </pre></div>
 </div>
 </div>
@@ -481,8 +464,8 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>features:Float32[-0.4412894, -0.9546863]
-label:6.5628222349681895
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>features:Float32[0.5049412, -0.9852763]
+label:8.557541
 </pre></div>
 </div>
 </div>
@@ -515,13 +498,15 @@ y shape:(1, 10)
 <p>In Flux, a <code class="docutils literal notranslate"><span class="pre">Dense(2</span> <span class="pre">=&gt;</span> <span class="pre">1)</span></code> layer denotes a layer of one neuron with two inputs (two feature) and one output.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Flux</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Lux</span><span class="p">,</span><span class="n">Random</span>
+<span class="n">rng</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Xoshiro</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="o">=&gt;</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ps</span><span class="p">,</span><span class="w"> </span><span class="n">st</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Lux</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dense(2 =&gt; 1)       # 3 parameters
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((weight = Float32[-0.034858026 -0.23098828], bias = Float32[-0.68244076]), NamedTuple())
 </pre></div>
 </div>
 </div>
@@ -532,12 +517,12 @@ y shape:(1, 10)
 <p>The <code class="docutils literal notranslate"><span class="pre">Flux.mse</span></code> function computes the mean squared error. By default, <code class="docutils literal notranslate"><span class="pre">Flux.mse</span></code> returns the average loss over examples. It is faster (and easier to use) than implementing our own.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Flux</span><span class="o">.</span><span class="n">mse</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">y</span><span class="p">)</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">mse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MSELoss</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loss (generic function with 1 method)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(::GenericLossFunction{typeof(Lux.LossFunctionImpl.l2_distance_loss), typeof(mean)}) (generic function with 2 methods)
 </pre></div>
 </div>
 </div>
@@ -548,12 +533,13 @@ y shape:(1, 10)
 <p><code class="docutils literal notranslate"><span class="pre">Descent</span></code> is a classic gradient descent optimiser.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">opt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Descent</span><span class="p">()</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Optimisers</span>
+<span class="n">opt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Descent</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Descent(0.1)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Descent(0.1f0)
 </pre></div>
 </div>
 </div>
@@ -564,21 +550,23 @@ y shape:(1, 10)
 <p>You might have noticed that expressing our model through high-level APIs of a deep learning framework requires fewer lines of code. We did not have to allocate parameters individually, define our loss function, or implement gradient descent. Once we start working with much more complex models, the advantages of the high-level API will grow considerably.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Printf</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Printf</span><span class="p">,</span><span class="n">Zygote</span>
+
+<span class="n">train_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Training</span><span class="o">.</span><span class="n">TrainState</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">ps</span><span class="p">,</span><span class="w"> </span><span class="n">st</span><span class="p">,</span><span class="n">opt</span><span class="p">)</span>
 <span class="n">num_epochs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span>
 <span class="k">for</span><span class="w"> </span><span class="n">epoch</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">num_epochs</span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">train_loader</span>
-<span class="w">        </span><span class="n">Flux</span><span class="o">.</span><span class="n">train!</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span><span class="n">model</span><span class="p">,[</span><span class="n">data</span><span class="p">],</span><span class="n">opt</span><span class="p">)</span>
+<span class="w">        </span><span class="p">(</span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">loss</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">train_state</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Training</span><span class="o">.</span><span class="n">single_train_step!</span><span class="p">(</span><span class="n">AutoZygote</span><span class="p">(),</span><span class="w"> </span><span class="n">mse</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">train_state</span><span class="p">)</span>
 <span class="w">    </span><span class="k">end</span>
-<span class="w">    </span><span class="nd">@printf</span><span class="w"> </span><span class="s">&quot;epoch </span><span class="si">%i</span><span class="s">, loss </span><span class="si">%f</span><span class="s"> </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span><span class="n">epoch</span><span class="w"> </span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">features</span><span class="p">,</span><span class="n">labels</span><span class="p">)</span>
+<span class="w">    </span><span class="nd">@printf</span><span class="w"> </span><span class="s">&quot;epoch </span><span class="si">%i</span><span class="s">, loss </span><span class="si">%f</span><span class="s"> </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span><span class="n">epoch</span><span class="w"> </span><span class="n">mse</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="n">ps</span><span class="p">,</span><span class="n">st</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span><span class="n">labels</span><span class="p">)</span>
 <span class="k">end</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>epoch 1, loss 0.381278 
-epoch 2, loss 0.007915 
-epoch 3, loss 0.000265 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>epoch 1, loss 0.408317 
+epoch 2, loss 0.006815 
+epoch 3, loss 0.000224 
 </pre></div>
 </div>
 </div>
@@ -586,15 +574,15 @@ epoch 3, loss 0.000265
 <p>Below, we compare the model parameters learned by training on finite data and the actual parameters that generated our dataset. To access parameters, we access the weights and bias of the layer that we need. Note that our estimated parameters are close to their true counterparts.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">weight</span><span class="p">,</span><span class="n">bias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vec</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">weight</span><span class="p">),</span><span class="n">first</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">bias</span><span class="p">)</span>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">weight</span><span class="p">,</span><span class="n">bias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vec</span><span class="p">(</span><span class="n">ps</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="n">first</span><span class="p">(</span><span class="n">ps</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 <span class="n">println</span><span class="p">(</span><span class="s">&quot;error in estimating w:</span><span class="si">$</span><span class="p">(</span><span class="n">true_w</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">weight</span><span class="p">)</span><span class="s">&quot;</span><span class="p">)</span>
 <span class="n">println</span><span class="p">(</span><span class="s">&quot;error in estimating b:</span><span class="si">$</span><span class="p">(</span><span class="n">true_b</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">bias</span><span class="p">)</span><span class="s">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>error in estimating w:[-0.0016717910766601562, -0.0073896884918212]
-error in estimating b:0.00999946594238299
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>error in estimating w:[-0.004839897155761719, -0.0038477420806883877]
+error in estimating b:0.010038566589355646
 </pre></div>
 </div>
 </div>
@@ -611,16 +599,16 @@ error in estimating b:0.00999946594238299
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "julia-1.9"
+            mode: "julia-1.11"
         },
         kernelOptions: {
-            name: "julia-1.9",
+            name: "julia-1.11",
             path: "./notebooks/chapter_linear_regression"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'julia-1.9'</script>
+    <script>kernelName = 'julia-1.11'</script>
 
                 </article>
               
@@ -657,7 +645,8 @@ error in estimating b:0.00999946594238299
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -720,8 +709,8 @@ By Nero Blackstone
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 
   <footer class="bd-footer">
   </footer>
