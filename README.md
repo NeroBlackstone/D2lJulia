@@ -23,11 +23,11 @@ This tutorial mainly focuses on using pure julia to implement the code in *Dive 
 
 Install `jupyterlab-desktop` or vscode with `jupyter` plugin.
 
-Install `Julia` 1.10:
+Install `Julia` 1.11:
 
 ``` shell
 $ julia -v
-julia version 1.10.3
+julia version 1.11.1
 ```
 
 Clone this project and change directory to `D2lJulia` and install dependencies:
